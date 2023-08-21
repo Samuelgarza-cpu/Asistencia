@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Inside;
 
 use PDF;
-use DateTime;
+Use DateTime;
 use App\Models\User;
 use App\Models\State;
 use App\Models\Status;
@@ -48,12 +48,16 @@ use App\Http\Controllers\Controller;
 use App\Models\DisabilityCategories;
 use Illuminate\Support\Facades\Mail;
 use App\Models\RequestSupplierProduct;
+use App\Models\vRequestSupplierProduct;
 use App\Models\PhoneNumberPersonalData;
 use App\Models\RequestBuildingMaterial;
 use Illuminate\Support\Facades\Storage;
 use Luecano\NumeroALetras\NumeroALetras;
 use App\Models\DepartmentInstituteSupportProduct;
 use App\Models\EmailLog;
+use Karriere\PdfMerge\PdfMerge;
+//use setasign\fpdi;
+use setasign\Fpdi\Tcpdf\Fpdi;
 
 class RequestsController extends Controller
 {
@@ -67,7 +71,7 @@ class RequestsController extends Controller
         $disability=Disabilities::all();
         $supports = [];
         $categories = [];
-        $department_supports = InsDepSup::where('departmentsInstitutes_id','=',session('department_institute_id'))->get();
+        $department_supports = InsDepSup::where('departmentsInstitutes_id','=',session('department_institute_id'))->get(); 
         $count_ds = $department_supports->count();
         $existSup = true;
         for($i = 0; $i < $count_ds; $i++)
@@ -101,8 +105,45 @@ class RequestsController extends Controller
         $services = Service::all();
         $suppliers = Supplier::all();
         $products = Product::all();
+        $vRequestSupplierProduct=vRequestSupplierProduct::all();
         $furnitures = Furniture::all();
         $services = Service::all();
+        $session = session('department_institute_id');
+
+        $data = array(
+            // 'communities' => $communities,
+            // 'municipalities' => $municipalities,
+            // 'states' => $states,
+
+            'employments' => $employments,
+            'furnitures' => $furnitures,
+            'buildingMaterials' => $buildingMaterials,
+            'services' => $services,
+            'supports' => $supports,
+            'suppliers' => $suppliers,
+            'products' => $products,
+            'categotydisability'=> $catdisability,
+            'disabilities'=>$disability,
+            'furnitures'=>$furnitures,
+            'services'=>$services,
+            'department_institute_id'=> $session,
+            'vRequestSupplierProduct'=> $vRequestSupplierProduct,
+            'action' => 'new'
+            
+            );
+
+            //dd($data);
+
+        return view('catalogs.RequestsForm', $data);
+    }
+
+    public function update($id){
+        $states = State::all();
+        $municipalities = Municipality::all();
+        $communities = Community::all();
+        $employments = Employment::all();
+        $session = session('department_institute_id');
+
         $data = array(
             // 'communities' => $communities,
             // 'municipalities' => $municipalities,
@@ -118,22 +159,7 @@ class RequestsController extends Controller
             'disabilities'=>$disability,
             'furnitures'=>$furnitures,
             'services'=>$services,
-            'action' => 'new'
-            );
-
-        return view('catalogs.RequestsForm', $data);
-    }
-
-    public function update($id){
-        $states = State::all();
-        $municipalities = Municipality::all();
-        $communities = Community::all();
-        $employments = Employment::all();
-
-        $data = array('communities' => $communities,
-            'municipalities' => $municipalities,
-            'states' => $states,
-            'employments' => $employments,
+            'department_institute_id'=> $session,
             'action' => 'update'
         );
 
@@ -177,13 +203,14 @@ class RequestsController extends Controller
                         $requests->supports_id = $request->supports_id != null && $request->supports_id != "" ? $request->supports_id : 0;
                         $requests->categories_id = $request->categories_id != null && $request->categories_id != "" ? $request->categories_id : 0;
                         $requests->description = $request->reason != null && $request->reason != "" ? $request->reason : '';
-                        $requests->image = $request->petitionerImage != null && $request->petitionerImage != "" && $request->petitionerImage != $requests->image ? $request->petitionerImage : $requests->image;
+                        $requests->image = $request->petitionerImage; //!= null && $request->petitionerImage != "" && $request->petitionerImage != $requests->image ? $request->petitionerImage : $requests->image;
                         $requests->users_id = session('user_id');
                         $requests->usersAuth_id = $userAuth != null && $userAuth != "" ? $userAuth: session('user_id');
                         //$requests->status_id = 8;
                         $requests->date = $request->date != "" && $request->date != null ? $request->date : $today;
                         $requests->departments_institutes_id = session('department_institute_id');
                         $requests->area = $request->area != "" && $request->area != null ? $request->area : '' ;
+                        $requests->agePetitioner = $request->agePetitioner != "" && $request->agePetitioner != null ? $request->agePetitioner : '' ;                        
                     }
                     else {
                         $requests = Requisition::create([
@@ -195,61 +222,69 @@ class RequestsController extends Controller
                             'supports_id' => $request->supports_id != null && $request->supports_id != "" ? $request->supports_id : 0,
                             'categories_id' => $request->categories_id != null && $request->categories_id != "" ? $request->categories_id : 0,
                             'description' => $request->reason != null && $request->reason != "" ? $request->reason : '',
-                            'image' => $request->petitionerImage != null && $request->petitionerImage != "" ? $request->petitionerImage : "",
+                            'image' => $request->petitionerImage,   //!= null && $request->petitionerImage != "" ? $request->petitionerImage : "",
                             'users_id' => session('user_id'),
                             'usersAuth_id' => $userAuth != null && $userAuth != "" ? $userAuth: session('user_id'),
                             'status_id' => 6,
                             'date' => $request->date != "" && $request->date != null ? $request->date : $today,
                             'departments_institutes_id' => session('department_institute_id'),
-                            'area' => $request->area != "" && $request->area != null ? $request->area : ''
+                            'area' => $request->area != "" && $request->area != null ? $request->area : '',
+                            'agePetitioner' => $request->agePetitioner != "" && $request->agePetitioner != null ? $request->agePetitioner : ''
                         ]);
                         $updateReq = 'NO';
                     }
                     $requests->save();
 
-                    if($request->file('petitionerImage') != ''){
-                        $petitionerImageFile = $request->file('petitionerImage');
-                        $imageName = 'solicitante-'.$petitionerImageFile->getClientOriginalName();
-                        Storage::disk('local')->put($imageName,  \File::get($petitionerImageFile));
-                        $requests->image = $petitionerImageFile->getClientOriginalName();
-                        $requests->save();
-                    }
+                    // //if($request->file('petitionerImage') != ''){
+                    //     $petitionerImageFile = $request->file('petitionerImage');
+                    //     $imageName = 'solicitante-'.$petitionerImageFile->getClientOriginalName();
+                    //     Storage::disk('local')->put($imageName,  \File::get($petitionerImageFile));
+                    //     $requests->image = $petitionerImageFile->getClientOriginalName();
+                    //     $requests->save();
+                    // }
 
                     $countProducts = $request->countProduct;
-                    for($i = 1; $i <= $countProducts; $i++){
-                        if ($request->type == "ts") {
-                            $requestInsDepSupPro = RequestInsDepSupPro::where('requests_id', '=',$request->id)->where('products_id', '=', $request['products_id'.$i])->first();
-                            if ($requestInsDepSupPro != null) {
-                                //$requestInsDepSupPro->requests_id => $requests->id != null ? $requests->id : 0;
-                                $requestInsDepSupPro->products_id =  $request['products_id'.$i] != null && $request['products_id'.$i] != "" ? $request['products_id'.$i] : 0;
-                                $requestInsDepSupPro->qty =  $request['qty'.$i] != null && $request['qty'.$i] != "" ? $request['qty'.$i] : 0;
-                                $requestInsDepSupPro->price = $request['unitPrice'.$i] != null && $request['unitPrice'.$i] != "" ? $request['unitPrice'.$i] : 0;
-                            }
-                            else {
-                                $requestInsDepSupPro = RequestInsDepSupPro::create([
-                                    'requests_id' => $requests->id != null ? $requests->id : 0,
-                                    'products_id'=> $request['products_id'.$i] != null && $request['products_id'.$i] != "" ? $request['products_id'.$i] : 0,
-                                    'qty' => $request['qty'.$i] != null && $request['qty'.$i] != "" ? $request['qty'.$i] : 0,
-                                    'price' => $request['unitPrice'.$i] != null && $request['unitPrice'.$i] != "" ? $request['unitPrice'.$i] : 0
-                                ]);
-                            }
-                            $requestInsDepSupPro->save();
+                    for($i = 1; $i <= $countProducts; $i++)
+                    {
+                         if ($request->type == "ts") {
+                             $requestInsDepSupPro = RequestInsDepSupPro::where('requests_id', '=',$request->id)->where('products_id', '=', $request['products_id'.$i])->first();
+                             if ($requestInsDepSupPro != null)
+                             {
+                                 //$requestInsDepSupPro->requests_id => $requests->id != null ? $requests->id : 0;
+                                 $requestInsDepSupPro->products_id =  $request['products_id'.$i] != null && $request['products_id'.$i] != "" ? $request['products_id'.$i] : 0;
+                                 $requestInsDepSupPro->qty =  $request['qty'.$i] != null && $request['qty'.$i] != "" ? $request['qty'.$i] : 0;
+                                 $requestInsDepSupPro->price = $request['unitPrice'.$i] != null && $request['unitPrice'.$i] != "" ? $request['unitPrice'.$i] : 0;
+                             }
+                            else
+                             {
+                                  $requestInsDepSupPro = RequestInsDepSupPro::create([
+                                 'requests_id' => $requests->id != null ? $requests->id : 0,
+                                 'products_id'=> $request['products_id'.$i] != null && $request['products_id'.$i] != "" ? $request['products_id'.$i] : 0,
+                                 'qty' => $request['qty'.$i] != null && $request['qty'.$i] != "" ? $request['qty'.$i] : 0,
+                                 'price' => $request['unitPrice'.$i] != null && $request['unitPrice'.$i] != "" ? $request['unitPrice'.$i] : 0
+                                 ]);
+                             }
+                             $requestInsDepSupPro->save();
 
-                            $requestSuppliersProducts = RequestSupplierProduct::where('requests_id', '=',$request->id)->get();
-                            foreach($requestSuppliersProducts as $itemrequestSuppliersProducts) {
-                                $itemrequestSuppliersProducts->delete();
-                            }
-                        }
-                        else {
-                            if($request['suppliers_id'.$i] != 0){
+                             $requestSuppliersProducts = RequestSupplierProduct::where('requests_id', '=',$request->id)->get();
+                             foreach($requestSuppliersProducts as $itemrequestSuppliersProducts) {
+                                 $itemrequestSuppliersProducts->delete();
+                             }
+                         }
+                         else
+                         {
+                            if($request['suppliers_id'.$i] != 0)
+                            {
                                 $supplierProducts = SupplierProduct::where('products_id','=',$request['products_id'.$i])->where('suppliers_id','=',$request['suppliers_id'.$i])->first();
                                 $requestSuppliersProducts = RequestSupplierProduct::where('requests_id', '=',$request->id)->where('suppliersProducts_id', '=', $supplierProducts->id)->first();
-                                if ($requestSuppliersProducts != null) {
+                                if ($requestSuppliersProducts != null) 
+                                {
                                     //$requestSuppliersProducts->requests_id => $requests->id != null ? $requests->id : 0;
                                     $requestSuppliersProducts->suppliersProducts_id = $supplierProducts->id != null ? $supplierProducts->id :0;
                                     $requestSuppliersProducts->qty = $request['qty'.$i] != null ? $request['qty'.$i] : 0;
                                 }
-                                else {
+                                else
+                                {
                                     $requestSuppliersProducts = RequestSupplierProduct::create([
                                         'requests_id' => $requests->id != null ? $requests->id : 0,
                                         'suppliersProducts_id' => $supplierProducts->id != null ? $supplierProducts->id :0,
@@ -261,9 +296,9 @@ class RequestsController extends Controller
                                 $requestInsDepSupPro = RequestInsDepSupPro::where('requests_id', '=',$request->id)->get();
                                 foreach($requestInsDepSupPro as $itemrequestInsDepSupPro) {
                                     $itemrequestInsDepSupPro->delete();
-                                }
+                                }           
                             }
-                        }
+                         }
                     }
 
                     if ($request->addressesid != "" && $request->addressesid != "0") {
@@ -286,7 +321,8 @@ class RequestsController extends Controller
                     $countBeneficiaries = $request->countBeneficiary;
                     $Beneficiaries = RequestPersonalData::where('requests_id','=',$request->id)->get();
                     $countBeneficiariesBD = $Beneficiaries->count();
-                    for($i = 1; $i <= $countBeneficiaries; $i++){
+                    for($i = 1; $i <= $countBeneficiaries; $i++)
+                    {
                         if ($request['namebeneficiary'.$i] != null && $request['namebeneficiary'.$i] != "") {
                             $curp = strtoupper($request['curpbeneficiary'.$i]);
                             $personalData = PersonalData::where('curp', '=', $curp)->first();
@@ -297,6 +333,7 @@ class RequestsController extends Controller
                                 $personalData->addresses_id = $address->id != null && $address->id != "" ? $address->id : 0;
                                 $personalData->curp = $curp != null && $curp != "" ? $curp : "";
                                 $personalData->age = $request['agebeneficiary'.$i] != null && $request['agebeneficiary'.$i] != "" ? $request['agebeneficiary'.$i] : "" ;
+                                $personalData->sermedico = $request['sermedico'.$i] != null && $request['sermedico'.$i] != "" ? $request['sermedico'.$i] : "" ;
                             }else {
                                 $personalData = PersonalData::create([
                                     'name' => $request['namebeneficiary'.$i] != null && $request['namebeneficiary'.$i] != "" ? $request['namebeneficiary'.$i] : "" ,
@@ -304,7 +341,8 @@ class RequestsController extends Controller
                                     'secondLastName' => $request['secondLastNamebeneficiary'.$i] != null && $request['secondLastNamebeneficiary'.$i] != "" ? $request['secondLastNamebeneficiary'.$i] : "",
                                     'addresses_id' => $address->id != null && $address->id != "" ? $address->id : 0,
                                     'curp' => $curp != null && $curp != "" ? $curp : "",
-                                    'age' => $request['agebeneficiary'.$i] != null && $request['agebeneficiary'.$i] != "" ? $request['agebeneficiary'.$i] : ""
+                                    'age' => $request['agebeneficiary'.$i] != null && $request['agebeneficiary'.$i] != "" ? $request['agebeneficiary'.$i] : "",
+                                    'sermedico' => $request['sermedico'.$i] != null && $request['sermedico'.$i] != "" ? $request['sermedico'.$i] : ""
                                 ]);
                             }
                             $personalData->save();
@@ -331,7 +369,7 @@ class RequestsController extends Controller
 
                             $requestPersonalData = RequestPersonalData::where('requests_id','=',$request->id)->where('personalData_id', '=', $personalData->id)->first();
                             if ($requestPersonalData != null) {
-                                $requestPersonalData->familiar = $i == 0 ? 0: 1;
+                                // $requestPersonalData->familiar = $i == 0 ? 0: 1;
                                 $requestPersonalData->personalData_id = $personalData->id != null && $personalData->id != "" ? $personalData->id : 0;
                                 $requestPersonalData->requests_id = $requests->id != null && $requests->id != "" ? $requests->id : 0;
                             }
@@ -347,9 +385,11 @@ class RequestsController extends Controller
                             $countDB = $request['countDiagnosticBeneficiary'.$i];
                             $rpddisabilities2 = RPDDisabilities::where('requestsPersonalData_id','=',$personalData->id)->get();
                             $countDBBD = $rpddisabilities2->count();
+                            //dd($countDBBD);
                             $rpddisabilitiesArray = array();
                             for($x = 1; $x <= $countDB; $x++)
                             {
+                                //dd($request['disabilitycategories'.$i.'_'.$x]);
                                 if ($request['disabilitycategories'.$i.'_'.$x] != null && $request['disabilitycategories'.$i.'_'.$x] != "") {
                                     $rpddisabilities = RPDDisabilities::where('disability_id', '=', $request['disability'.$i.'_'.$x] )
                                                                     ->where('disabilitycategories_id', '=', $request['disabilitycategories'.$i.'_'.$x])
@@ -362,6 +402,7 @@ class RequestsController extends Controller
                                     }
                                     else {
                                         if($request['disabilitycategories'.$i.'_'.$x] != null){
+                                            //dd($request['disability'.$i.'_'.$x]);
                                             $rpddisabilities= RPDDisabilities::create([
                                                 'disability_id'=> $request['disability'.$i.'_'.$x] != null && $request['disability'.$i.'_'.$x] != "" ? $request['disability'.$i.'_'.$x] : "" ,
                                                 'disabilitycategories_id'=>$request['disabilitycategories'.$i.'_'.$x] != null && $request['disabilitycategories'.$i.'_'.$x] != "" ? $request['disabilitycategories'.$i.'_'.$x] : "" ,
@@ -584,17 +625,26 @@ class RequestsController extends Controller
                     break;
 
                 case 'update':
+            
+                    // if($request->file('petitionerImage') != ''){
+                    //     $petitionerImageFile = $request->file('petitionerImage');
+                    //     $imageName = 'solicitante-'.$petitionerImageFile->getClientOriginalName();
+                    //     Storage::disk('local')->put($imageName,  \File::get($petitionerImageFile));
+                    // }
 
-                    if($request->file('petitionerImage') != ''){
+                    if($request->file('petitionerImage') != '')
+                    {
                         $petitionerImageFile = $request->file('petitionerImage');
-                        $imageName = 'solicitante-'.$petitionerImageFile->getClientOriginalName();
+                        $imageName = $petitionerImageFile->getClientOriginalName();
                         Storage::disk('local')->put($imageName,  \File::get($petitionerImageFile));
                     }
-
+                    
                     $applicant=Requisition::find($request->id);
                     $applicant->type=$request->type;
                     $applicant->description=$request->reason;
                     $applicant->petitioner=$request->petitioner;
+                    //dd($request->lblpetitionerImage);
+                    //$applicant->image = $request->lblpetitionerImage;
                     $applicant->image = $request->petitionerImage != null && $request->petitionerImage != "" && $request->petitionerImage != $applicant->image ? $request->petitionerImage : $applicant->image;
                     $applicant->users_id=session('user_id');
                     $applicant->categories_id=$request->categories_id;
@@ -602,27 +652,92 @@ class RequestsController extends Controller
                     $applicant->curpPetitioner=$request->curpPetitioner1;
                     $applicant->date=$request->date;
                     $applicant->area=$request->area;
+                    $applicant->agePetitioner=$request->agePetitioner;
                     $applicant->status_id=1;
                     $applicant->save();
 
-                    if ($request->type == "ts") {
+                    if ($request->type == "ts")
+                    {
                         $products = RequestInsDepSupPro::where('requests_id', '=',$request->id)->first();
                         $priceProduct = $products->price;
                     }
-                    else {
-                        $products = RequestSupplierProduct::where('requests_id','=',$request->id)->first();
-                        $priceProduct = SupplierProduct::where('id','=',$products->suppliersProducts_id )->first();
-                        $priceProduct->products_id = $request->products_id1;
-                        $priceProduct->suppliers_id = $request->suppliers_id1;
-                        $priceProduct->save();
+                    else
+                    {
+
+                        //$products = RequestSupplierProduct::where('requests_id','=',$request->id)->first();
+                        //$priceProduct = SupplierProduct::where('id','=',$products->suppliersProducts_id )->first();
+                        //$priceProduct->products_id = $request->products_id1;
+                        //$priceProduct->suppliers_id = $request->suppliers_id1;
+                        //$priceProduct->save();
+
+                        //21/03/2023 para modificar todos los registros y no solo el primero
+                        //$products = RequestSupplierProduct::where('requests_id','=',$request->id)->first();
+                        $products = RequestSupplierProduct::where('requests_id','=',$request->id)->get();
+                        $qtyproductsRequest = $products->count();
+                        $countP= $request->countProduct;
+                       // dd($request->countProduct);
+
+                        //$MueblesRequest = RequestFurniture::where('requests_id','=',$request->id)->get();
+                        //$qtyMueblesRequest = $MueblesRequest->count();
+                        //$CountMueblesIn= $request->countFurniture;
+                    
+    
+                        for($z = 1; $z<=$countP; $z++)
+                        {
+                            if($request['products_id'.$z] != null)
+                            {
+                                                               
+                                if($z <= $qtyproductsRequest)
+                                {
+                                    $SaveProducts= $products[$z-1];
+                                    $SaveProducts1 = RequestSupplierProduct::find($SaveProducts->id);
+                                    $SaveProducts1->id = $products[$z-1]->id;
+                                    $sp = SupplierProduct::where('products_id','=',$request['products_id'.$z] )->where('suppliers_id','=',$request['suppliers_id'.$z])->first();
+                                    $SaveProducts1->suppliersProducts_id = $sp->id;
+                                    $SaveProducts1->qty = $request['qty'.$z];
+                                    $SaveProducts1->save();
+                                }
+                                else
+                                {
+                                  
+                                    $sp = SupplierProduct::where('products_id','=',$request['products_id'.$z] )->where('suppliers_id','=',$request['suppliers_id'.$z])->first();  
+                                    $ProductsCreate = RequestSupplierProduct::create([
+                                          'requests_id' => $request->id,
+                                          'suppliersProducts_id' => $sp->id,
+                                          'qty' => $request['qty'.$z]
+                                    ]);
+                                    $ProductsCreate->save();
+                                }
+                                
+                                //$products->qty = $request->qty1;
+                                //$products->save();
+                              // dd($products[$z+1]);
+                            }
+                            else
+                            {
+                               if($z <= $countP && isset($products[$z-1]))
+                               {
+                                    $phoneNumberSupplier = RequestSupplierProduct::find($products[$z-1]->id);
+                                    $phoneNumberSupplier->delete();
+                                    //$products[$z-1]->delete();
+                                }
+                            }
+                            
+                        
+                        }
+                        //$priceProduct = SupplierProduct::where('id','=',$productsRequest->suppliersProducts_id )->first();
+                        //$priceProduct->products_id = $request->products_id1;
+                        //$priceProduct->suppliers_id = $request->suppliers_id1;
+                        //$priceProduct->save();
                     }
-                    $products->qty = $request->qty1;
-                    $products->save();
+                    //$productsRequest->qty = $request->qty1;
+                    //$productsRequest->save();
 
                     $personalDataR=RequestPersonalData::where('requests_id','=',$request->id)->get();
                     $countPDR =  $personalDataR->count();
                     $arrayPersonalDataR = array();
                     $countPersonalDataInput = $request->countBeneficiary;
+                                       
 
                     for($g = 1; $g<=$countPersonalDataInput; $g++){
                         if($request['namebeneficiary'.$g] != null){
@@ -634,6 +749,7 @@ class RequestsController extends Controller
                                 $SaveFamilySituations1->lastName  = $request['lastNamebeneficiary'.$g];
                                 $SaveFamilySituations1->secondLastName  = $request['secondLastNamebeneficiary'.$g];
                                 $SaveFamilySituations1->age  = $request['agebeneficiary'.$g];
+                                $SaveFamilySituations1->sermedico  = $request['sermedico'.$g];
                                 $SaveFamilySituations1->save();
 
                                 $address = Address::find($SaveFamilySituations1->addresses_id);
@@ -654,15 +770,16 @@ class RequestsController extends Controller
                                 $qtyCountDiagnostic = $request['countDiagnosticBeneficiary'.$g];
                                 $disabilities = RPDDisabilities::where('requestsPersonalData_id','=', $SaveFamilySituations->id)->get();
                                 $countRPD= $disabilities->count();
-                                for($f = 1; $f<=$qtyCountDiagnostic; $f++){
+                                //dd($countRPD);
+                                for($f = 1; $f<=$countRPD; $f++){
                                     if($request['disabilitycategories'.$g.'_'.$f] != null){
-                                        if($f<=$countRPD){
+                                        if($f<=$qtyCountDiagnostic){
                                             $disabilities[$f-1]->disability_id = $request['disability'.$g.'_'.$f];
                                             $disabilities[$f-1]->disabilitycategories_id = $request['disabilitycategories'.$g.'_'.$f];
-                                            $disabilities[$f-1]->save();
+                                            $disabilities[$f-1]->save(); 
                                         }else{
                                             $personalDataR1=RequestPersonalData::where('requests_id','=',$request->id)->get();
-                                            $SaveFamilySituations12= $personalDataR1[$g-1];
+                                            $SaveFamilySituations12= $personalDataR1[$g];
                                             $insertRPD = RPDDisabilities::create([
                                                 'disability_id' => $request['disability'.$g.'_'.$f],
                                                 'disabilitycategories_id'=> $request['disabilitycategories'.$g.'_'.$f],
@@ -672,10 +789,10 @@ class RequestsController extends Controller
                                             }
                                     }
                                     else{
+
                                         if($f <= $countRPD && isset($disabilities[$f-1])){
                                             $disabilities[$f-1]->delete();
                                         }
-
                                     }
                                 }
                             }else{
@@ -687,6 +804,7 @@ class RequestsController extends Controller
                                     'lastName'=>$request['lastNamebeneficiary'.$g],
                                     'secondLastName'=>$request['secondLastNamebeneficiary'.$g],
                                     'age'=>$request['agebeneficiary'.$g],
+                                    'sermedico'=>$request['sermedico'.$g],
                                     'addresses_id'=>$SaveFamilySituations1->addresses_id
                                 ]);
                                 $insertarConditionFamily->save();
@@ -709,14 +827,19 @@ class RequestsController extends Controller
                                 $insertRPD->save();
 
                                 $countDisa = $request->countDiagnosticBeneficiary.$g;
-                                for($r=1 ; $r <=$countDisa; $r++){
-                                    $insertDisabilties = RPDDisabilities::create([
-                                        'disability_id'=>$request['disabilitycategories'.$g.'_'.$r],
-                                        'disabilitycategories_id'=>$request['disability'.$g.'_'.$r],
+                                //dd($countDisa);
+                                for($r=1 ; $r <$countDisa; $r++)
+                                {
+
+                                    $insertDisabilities = RPDDisabilities::create([
+                                        'disability_id'=>$request['disability'.$g.'_'.$r],
+                                        'disabilitycategories_id'=>$request['disabilitycategories'.$g.'_'.$r],
                                         'requestsPersonalData_id'=>$insertRPD->id
-                                    ]);
-                                    $insertDisabilties->save();
+                                         ]);
+                                       $insertDisabilities->save();
+                                      
                                 }
+                                
                            }
                         }
                         else{
@@ -735,6 +858,7 @@ class RequestsController extends Controller
                     }
 
                     $familySituations = FamilySituation:: where('requests_id','=',$request->id)->get();
+                  
                     $qtyFamily = $familySituations->count();
                     $countFamily = $request->countMH;
 
@@ -782,23 +906,29 @@ class RequestsController extends Controller
                     $CountMueblesIn= $request->countFurniture;
 
                     for($z = 1; $z<=$CountMueblesIn; $z++){
-                        if($request['furnitures_id'.$z] != null){
-                            if($z <= $qtyMueblesRequest){
+                        if($request['furnitures_id'.$z] != null)
+                        {
+                            if($z <= $qtyMueblesRequest)
+                            {
                                 $SaveMuebles= $MueblesRequest[$z-1];
                                 $SaveMuebles1 = RequestFurniture::find( $SaveMuebles->id);
                                 $SaveMuebles1->id = $MueblesRequest[$z-1]->id;
                                 $SaveMuebles1->furnitures_id = $request['furnitures_id'.$z];
 
                                 $SaveMuebles1->save();
-                            }else{
+                            }else
+                            {
                                 $MueblesCreate = RequestFurniture::create([
                                     'requests_id' => $request->id,
                                     'furnitures_id' => $request['furnitures_id'.$z]
                                 ]);
                                 $MueblesCreate->save();
                             }
-                        }else{
-                            if($z <= $CountMueblesIn && isset($MueblesRequest[$z-1])){
+                        }
+                        else
+                        {
+                            if($z <= $CountMueblesIn && isset($MueblesRequest[$z-1]))
+                            {
                                 $phoneNumberSupplier = RequestFurniture::find($MueblesRequest[$z-1]->id);
                                 $phoneNumberSupplier->delete();
                             }
@@ -906,7 +1036,8 @@ class RequestsController extends Controller
                         'status_id' => 1,
                         'date' => $request->date,
                         'departments_institutes_id' => session('department_institute_id'),
-                        'area' => $request->area
+                        'area' => $request->area,
+                        'agePetitioner' => $request->agePetitioner
                     ]);
                     $requests->save();
 
@@ -952,7 +1083,8 @@ class RequestsController extends Controller
                                 'secondLastName' => $request['secondLastNamebeneficiary'.$i],
                                 'addresses_id' => $address->id,
                                 'curp' => $curp,
-                                'age' => $request['agebeneficiary'.$i]
+                                'age' => $request['agebeneficiary'.$i],
+                                'sermedico' => $request['sermedico'.$i]
                             ]);
                             $personalData->save();
 
@@ -983,7 +1115,7 @@ class RequestsController extends Controller
                             }
 
                             $countTBD= $request['countDiagnosticBeneficiary'.$i];
-
+                            //dd($request['countDiagnosticBeneficiary'.$i]);
                             for($x = 1; $x <= $countTBD; $x++)
                             {
                                 if($request['disability'.$i.'_'.$x] != null){
@@ -1069,138 +1201,231 @@ class RequestsController extends Controller
                     return redirect('/solicitudes');
                     // return redirect('generardocumento/'.$requests->id);
                 break;
+
                 case 'checkCurp':
                     $countRrequi = 0;
+                if($request->curpbeneficiary != null)
+                {
+                    $curp = strtoupper($request->curpbeneficiary);
+                    $data = array();
+                    $datosGenerales = array();
+                    $dataFull = array();
+                    $exist = false;
+                    $today = New Datetime();
+                    $lastMonth = $today->modify('-1 month');
+                    $now = New Datetime();
+                    $lastMonth = date_format($lastMonth, 'Y-m-d');
+                    //dd($lastMonth);
+                    $now = date_format($now, 'Y-m-d');
 
-                    if($request->curpbeneficiary != null){
-                        $curp = strtoupper($request->curpbeneficiary);
-                        $data = array();
-                        $datosGenerales = array();
-                        $dataFull = array();
-                        $exist = false;
-                        $todayDate = New Datetime();
+                    $session = session('department_institute_id');
+                                           
+                    $requisition = Requisition::leftJoin('requests_personal_data as rPD','requests.id','=','rPD.requests_id')
+                                             ->join('personalData as PD', 'rPD.personalData_id','PD.id')
+                                             ->join('vrequests_suppliersproducts as rSP','requests.id','rSP.requests_id')
+                                             //->join('suppliers_products as sP', 'rSP.suppliersProducts_id','sP.id')
+                                             ->join('products as P','rsP.products_id','P.id')
+                                             ->join('departments_institutes as dI','requests.departments_institutes_id','dI.id')
+                                             ->join('institutes as I','dI.institutes_id','I.id')
+                                             ->where('requests.curpPetitioner','=',$curp)
+                                             ->where('requests.date','>=', $lastMonth)
+                                             ->where('requests.date','<=', $now)
+                                             ->where('status_id','!=','7')
+                                             //->distinct()s
+                                             ->get();       
 
-                        // $requisition = Requisition::where('curpPetitioner', '=', $curp)->get();
-                        $today = New Datetime();
-                        $lastMonth = $today->modify('-1 month');
-                        $now = New Datetime();
-                        $lastMonth = date_format($lastMonth, 'Y-m-d');
-                        $now = date_format($now, 'Y-m-d');
-                        $requisition = Requisition::leftJoin('requests_personal_data as rPD','requests.id','=','rPD.requests_id')
-                                                    ->join('personalData as PD', 'rPD.personalData_id','PD.id')
-                                                    ->join('requests_suppliersProducts as rSP','requests.id','rSP.requests_id')
-                                                    ->join('suppliers_products as sP', 'rSP.suppliersProducts_id','sP.id')
-                                                    ->join('products as P','sP.products_id','P.id')
-                                                    ->join('departments_institutes as dI','requests.departments_institutes_id','dI.id')
-                                                    ->join('institutes as I','dI.institutes_id','I.id')
-                                                    ->join('departments as D','dI.departments_id','D.id')
-                                                    ->where('requests.curpPetitioner','=',$curp)
-                                                    ->where('requests.date','>=', $lastMonth)
-                                                    ->where('requests.date','<=', $now)
-                                                    // ->distinct()
-                                                    ->get();
-
-                        if(isset($requisition) && $requisition->count() > 0){
-                            foreach($requisition as $key=>$value){
-                                $today = New Datetime();
-                                $fecha1 = new DateTime($value->date);
-                                $interval = $fecha1->diff($today);
-                                $requestid = $value->id;
-                                $petitioner = $value->petitioner;
-                                $findRPersonalData = RequestPersonalData::where('requests_id','=',$requestid)->first();
-                                $findPersonalData= PersonalData::where('id','=',$findRPersonalData->personalData_id)->first();
-
-                                $requestSupplier = RequestSupplierProduct::where('requests_id','=',$requestid)->first();
-                                $SupplierProductID = SupplierProduct::where('id','=',$requestSupplier->suppliersProducts_id)->first();
-                                $products = Product::where('id','=',$SupplierProductID->products_id)->first();
-                                $departamentid = $value->departments_institutes_id;
-                                $instituteID = DepartmentInstitute::find($departamentid);
-                                $instituteName = Institute::find($instituteID->institutes_id);
-                                $departmentName = Department::find( $instituteID->departments_id);
-                                if($interval->y >= 1 ){
-                                    $exist = false;
-                                }
-                                elseif($interval->m < 1) {
-                                    // array_push($datosGenerales,$findPersonalData);
-                                    // array_push($datosGenerales,$products->name);
-                                    // array_push($datosGenerales,$fecha1);
-                                    // array_push($datosGenerales,$petitioner);
-                                    // array_push($datosGenerales,$instituteName,);
-                                    // array_push($datosGenerales,$departmentName);
-                                    // $data['DatosGenerales'] = $datosGenerales;
-
-                                    $data['CualBeneficiario'.$key]= $findPersonalData;
-                                    $data['Apoyo'.$key]= $products->name;
-                                    $data['date'.$key] =$fecha1;
-                                    $data['requisition'.$key] = $petitioner;
-                                    $data['institute'.$key] = $instituteName;
-                                    $data['departament'.$key] = $departmentName;
-
-                                    $countRrequi++;
-                                    $exist = true;
-                                }
+                    // dd($requisition);
+                    if(isset($requisition) && $requisition->count() > 0)
+                    {
+                        foreach($requisition as $key=>$value)
+                        {
+                            $today = New Datetime();
+                            $fecha1 = new DateTime($value->date);
+                            $interval = $fecha1->diff($today);
+                           //$requestid = $value->id;
+                            $requestid = $value->requests_id;
+                            //dd($requestid);
+                            $petitioner = $value->petitioner;
+                            $findRPersonalData = RequestPersonalData::where('requests_id','=',$requestid)->first();
+                            //dd($findRPersonalData);
+                            $findPersonalData= PersonalData::where('id','=',$findRPersonalData->personalData_id)->first();
+                            //dd($findPersonalData);
+                            $addresses= Address::where('id','=',$findPersonalData->addresses_id)->first();
+                            $community = Community::where('id','=',$addresses->communities_id)->first();
+                            $municipality = Municipality::where('id','=',$community->municipalities_id)->first();
+                            $states =  State::where('id','=',$municipality->states_id)->first();
+                            $area = $value->area;
+                            $findExtPersonalData= ExtPersonalData::where('personal_data_id','=',$findPersonalData->id)->first();
+                            //$requestSupplier = vRequestSupplierProduct::where('requests_id','=',$requestid)->first();
+                            $vRequestSupplierProduct = vRequestSupplierProduct::where('requests_id','=',$requestid)->first();
+                            //dd($vRequestSupplierProduct);                                 
+                            //$SupplierProductID = SupplierProduct::where('id','=',$requestSupplier->suppliersProducts_id)->first();
+                            // $SupplierProductID = SupplierProduct::where('id','=',$vRequestSupplierProduct->suppliersProducts_id)->first();
+                            $products = Product::where('id','=', $vRequestSupplierProduct->products_id)->first();
+                            $suppliers = Supplier::where('id','=', $vRequestSupplierProduct->supplier_id)->first();
+                            $departamentid = $value->departments_institutes_id;
+                            $instituteID = DepartmentInstitute::find($departamentid);
+                            $instituteName = Institute::find($instituteID->institutes_id);
+                            $departmentName = Department::find($instituteID->departments_id);
+                            
+                            //dd($departmentName);
+                            if($interval->y >= 1 )
+                            {
+                                $exist = false;
                             }
-                        }else{
-                            $personalData = PersonalData::where('curp','=', $curp)->get();
-                            if(isset($personalData) && $personalData->count() > 0){
-                                $data['personalData'] = $personalData[0];
-                                foreach($personalData as $keys=>$value){
-                                    $requisitionPersonalData = RequestPersonalData::where('personalData_id','=',$value->id)->get();
-                                    if(isset($requisitionPersonalData) && $requisitionPersonalData->count() > 0){
-                                        foreach($requisitionPersonalData as $keysis=>$element){
-                                            $requisition = Requisition::find($element->requests_id);
-                                            if(isset($requisition)){
-                                                $today = New Datetime();
-                                                $fecha1 = new DateTime($requisition->date);
-                                                $interval = $fecha1->diff($today);
-                                                $requestid1 = $value->id;
-                                                $petitioner = $value->petitioner;
-                                                $instituteID = DepartmentInstitute::find($requisition->departments_institutes_id);
-                                                $instituteName = Institute::find($instituteID->institutes_id);
-                                                $departmentName = Department::find( $instituteID->departments_id);
-                                                $findRPersonalData = RequestPersonalData::where('personalData_id','=',$requestid1)->first();
-                                                $requestSupplier = RequestSupplierProduct::where('requests_id','=',$findRPersonalData->requests_id)->first();
-                                                $SupplierProductID = SupplierProduct::where('id','=',$requestSupplier->suppliersProducts_id)->first();
-                                                $products = Product::where('id','=',$SupplierProductID->products_id)->first();
+                            elseif($interval->m < 1) 
+                            {
+                                // array_push($datosGenerales,$findPersonalData);
+                                // array_push($datosGenerales,$products->name);
+                                // array_push($datosGenerales,$fecha1);
+                                // array_push($datosGenerales,$petitioner);
+                                // array_push($datosGenerales,$instituteName,);
+                                // array_push($datosGenerales,$departmentName);
+                                // $data['DatosGenerales'] = $datosGenerales;
+                                
+                                $data['requisition0']=$requestid;
+                                $data['requisition1']=$requestid;
+                                $data['Usuario'.$key]=$petitioner;
+                                $data['CualSolicitante'.$key]=$curp;
+                                $data['Apoyo'.$key]= $products->name;
+                                $data['date'.$key] = date_format($fecha1,'Y-m-d');
+                                $data['institute'.$key]=$instituteName->name;
+                                //$data['Departament'.$key]=$departmentName->name;
+                                $data['Departament'.$key]=$suppliers->companyname;
+                                $data['EdadBeneficiario'.$key]=$findPersonalData->age;
+                                $data['TelBeneficiario'.$key]=$findExtPersonalData->number;
+                                $data['NomBeneficiario'.$key]=$findPersonalData->name;
+                                $data['APBeneficiario'.$key]=$findPersonalData->lastName;
+                                $data['SLNBeneficiario'.$key]=$findPersonalData->secondLastName;
+                                $data['calle'.$key]=$addresses->street;
+                                $data['numext'.$key]=$addresses->externalNumber;
+                                $data['numint'.$key]=$addresses->internalNumber;
+                                $data['EcivilBeneficiario'.$key]=$findExtPersonalData->civilStatus;
+                                $data['EscBeneficiario'.$key]=$findExtPersonalData->scholarShip;
+                                $data['OcuBeneficiario'.$key]=$findExtPersonalData->employments_id;
+                                $data['CPBeneficiario'.$key]=$community->postalCode;
+                                $data['idColBen'.$key]=$community->id;
+                                $data['ColBeneficiario'.$key]=$community->name;
+                                $data['idMpioBen'.$key]=$municipality->id;
+                                $data['MpioBeneficiario'.$key]=$municipality->name;
+                                $data['idStateBen'.$key]=$states->id;
+                                $data['StateBeneficiario'.$key]=$states->name;
+                                $data['areaBeneficiario'.$key]=$area;
+                                $countRrequi++;
+                                $exist = true;
+                                
+                            }
+                        }
+                    }else
+                    {
+                        $personalData = PersonalData::where('curp','=', $curp)->get();
+                        //dd($personalData);
+                        if(isset($personalData) && $personalData->count() > 0)
+                        {
+                            //$data['personalData'] = $personalData[0];
+                            foreach($personalData as $keys=>$value)
+                            {
+                                $requisitionPersonalData = RequestPersonalData::where('personalData_id','=',$value->id)->get();
+                                if(isset($requisitionPersonalData) && $requisitionPersonalData->count() > 0)
+                                {
+                                    foreach($requisitionPersonalData as $keysis=>$element)
+                                    {
+                                        $requisition = Requisition::find($element->requests_id);
+                                        //dd($requisition);
+                                        if(isset($requisition))
+                                        {
+                                            $today = New Datetime();
+                                            $fecha1 = new DateTime($requisition->date);
+                                            $interval = $fecha1->diff($today);
+                                            //dd($interval);
+                                            $requestid1 = $requisition->id;
+                                            $petitioner = $requisition->petitioner;
+                                            $instituteID = DepartmentInstitute::find($requisition->departments_institutes_id);
+                                            $instituteName = Institute::find($instituteID->institutes_id);
+                                            $departmentName = Department::find($instituteID->departments_id);
+                                            $findRPersonalData = RequestPersonalData::where('personalData_id','=',$requestid1)->first();
+                                            $requestid2 = $findRPersonalData->requests_id;
 
-                                                if($interval->y >= 1){
-                                                    $exist = false;
-                                                }
-                                                elseif($interval->m < 1) {
-                                                    $data['CualSolicitante'.$keysis]=$requisition->curpPetitioner;
-                                                    $data['Apoyo'.$keysis]= $products->name;
-                                                    $data['date'.$keysis] =$fecha1;
-                                                    $data['institute'.$keysis]=$instituteName->name;
-                                                    $data['Departament'.$keysis]=$departmentName->name;
-                                                    $data['date'.$keysis] =$fecha1;
-                                                    $countRrequi++;
-                                                    $exist = true;
-                                                }
+                                            //dd($requestid2);
+                                            if ($requisition->type == 'ts')
+                                            {
+                                                $requestinsdepsuppro = RequestInsDepSupPro::where('requests_id','=',$findRPersonalData->requests_id)->first();
+                                                $products = Product::where('id','=',$requestinsdepsuppro->products_id)->first();
                                             }
+                                            else
+                                            {
+                                              //$requestSupplier = RequestSupplierProduct::where('requests_id','=',$findRPersonalData->requests_id)->first();
+                                              //$SupplierProductID = SupplierProduct::where('id','=',$requestSupplier->suppliersProducts_id)->first();
+                                              //$products = Product::where('id','=',$SupplierProductID->products_id)->first();
+                                              //$suppliers = Supplier::where('id','=',$requestSupplier->supplier_id)->first();
+                                                $vRequestSupplierProduct = vRequestSupplierProduct::where('requests_id','=',$requestid1)->first();
+                                                $products = Product::where('id','=', $vRequestSupplierProduct->products_id)->first();
+                                                $suppliers = Supplier::where('id','=', $vRequestSupplierProduct->supplier_id)->first();
+                                            }
+                                      
+                                            if($interval->y >= 1)
+                                            {
+                                                $exist = false;
+                                            }
+                                            elseif($interval->m < 1)
+                                            {
+                                                $data['requisition0']=$requestid1;
+                                                $data['requisition1']=$requestid1;
+                                                $data['Usuario'.$keysis]=$petitioner;
+                                                $data['CualSolicitante'.$keysis]=$curp;  //$requisition->curpPetitioner;
+                                                $data['Apoyo'.$keysis]= $products->name;
+                                                $data['date'.$keysis] =date_format($fecha1,'Y-m-d');                                                    
+                                                $data['institute'.$keysis]=$instituteName->name;
+                                                //$data['Departament'.$keysis]=$departmentName->name;
+                                                $data['Departament'.$keysis]=$suppliers->companyname;                                                 
+                                                $countRrequi++;
+                                                $exist = true;
+                                            }    
                                         }
                                     }
                                 }
                             }
                         }
-
-                        if($exist){
-                            $text = 'Este usuario ya recibio un apoyo dentro del mes';
-                            $id = 1;
-                            $message = array('text' => $text, 'exist' => $id);
-                            $data['message'] = $message;
-                            $data['cantidad']= $countRrequi;
-                            array_push($dataFull,$data);
-                        }
-                        else{
-                            $text = 'Este usuario NO ha recibido un apoyo dentro del mes';
-                            $id = 0;
-                            $message = array('text' => $text, 'exist' => $id);
-                            $data['message'] = $message;
-                            array_push($dataFull,$data);
-                        }
-                        return $dataFull;
                     }
-                    break;
+                    //dd($exist);
+                    if($exist)
+                    {
+                        $text = 'Este usuario ya recibio un apoyo dentro del mes';
+                        $id = 1;
+                        $message = array('text' => $text, 'exist' => $id);
+                        $data['message'] = $message;
+                        $data['cantidad']= $countRrequi;
+                        array_push($dataFull,$data);
+                    }
+                    else
+                    {
+                        $text = 'Este usuario NO ha recibido un apoyo dentro del mes';
+                        $id = 0;
+                        $message = array('text' => $text, 'exist' => $id);
+                        $data['message'] = $message;
+                        array_push($dataFull,$data);
+                    }
+
+                    //dd($data);
+                    return $dataFull;
+                }
+                else
+                {
+                    $data = array();
+                    $dataFull = array();
+                    $exist = false;
+
+                    //$text = 'Debe Proporcionar el CURP del solicitante';
+                    $text = '';
+                    $id = 0;
+                    $message = array('text' => $text, 'exist' => $id);
+                    $data['message'] = $message;
+                    array_push($dataFull,$data);
+
+                    return $dataFull;
+                }
+                break;
+
                 case 'uploadImage':
                     $folderPath = public_path('assets/img/petitioners/');
                     $image_parts = explode(";base64,", $request->image);
@@ -1215,6 +1440,7 @@ class RequestsController extends Controller
                     file_put_contents($imageFullPath, $image_base64);
                     return "hola";
                     break;
+
                 case 'getData':
                     $communities = Community::where('postalCode','=',$request->postalCode)->get();
                     $data = array();
@@ -1240,21 +1466,26 @@ class RequestsController extends Controller
                     }
                     return $categories;
                 break;
+
                 case 'getSuppliers':
                     $products = Product::where('categories_id', '=', $request->category)->get();
                     $suppliers= [];
                     $existSup = true;
-                    if($request->type != 'ts'){
+                     if($request->type != 'ts'){
                         if($products->count() > 0){
                             foreach($products as $value){
-                                $supportProducts = SupplierProduct::where('products_id', '=', $value->id)->get();
+                                $supportProducts = SupplierProduct::where('products_id', '=', $value->id)->where('active','!=','0')->get();
+                                //dd($supportProducts);
                                 if($supportProducts->count()>0){
-                                    foreach($supportProducts as $sPdts){
-                                        $supplier = Supplier::find($sPdts->suppliers_id);
+                                    foreach($supportProducts as $sPdts)
+                                    {
+                                        $supplier= Supplier::find($sPdts->suppliers_id);
                                         if($suppliers != null){
-                                            if($supplier != null){
+                                            if($supplier != null)    
+                                            {
                                                 foreach($suppliers as $valueSup){
-                                                    if($supplier->id == $valueSup->id){
+                                                    if($supplier->id == $valueSup->id )
+                                                    {
                                                         $existSup = true;
                                                         break;
                                                     }
@@ -1267,7 +1498,7 @@ class RequestsController extends Controller
                                         }
                                         else{
                                             if($supplier != null)
-                                                array_push($suppliers,$supplier);
+                                                 array_push($suppliers,$supplier);
                                         }
                                         if(!$existSup){
                                             array_push($suppliers,$supplier);
@@ -1276,15 +1507,19 @@ class RequestsController extends Controller
                                 }
                             }
                         }
-                    }
+                     }
+                     //dd($suppliers);
+                     //dd($sup);
                     return $suppliers;
                 break;
+
                 case 'getDisabilities':
                     if($request->categoryDisability != "" && $request->categoryDisability != null){
                         $disabilities = Disabilities::where('disabilitycategories_id','=',$request->categoryDisability)->get();
                     }
                     return $disabilities;
                 break;
+
                 case "getProducts":
                     if($request->supplier == "0"){
                         $products = Product::where('categories_id','=',$request->category)->get();
@@ -1301,6 +1536,7 @@ class RequestsController extends Controller
                     }
                     return $products;
                 break;
+
                 case "getPrice":
                     $price = "";
                     if($request->supplier != "0"){
@@ -1309,22 +1545,27 @@ class RequestsController extends Controller
                     }
                     return $price;
                 break;
+
                 case 'getFurnitures':
                     $furnitures = Furniture::all();
                     return $furnitures;
                 break;
+
                 case 'getEmployments':
                     $Employments = Employment::all();
                     return $Employments;
                 break;
+
                 case 'getBuildingMaterials':
                     $buildingMaterials = BuildingMaterial::all();
                     return $buildingMaterials;
                 break;
+
                 case 'getServices':
                     $services = Service::all();
                     return $services;
                 break;
+                
                 case 'getInformation':
                     $employments = Employment::all();
                     $categoryDisabilities = DisabilityCategories::all();
@@ -1350,278 +1591,403 @@ class RequestsController extends Controller
     }
 
     public function requests(Request $request)
-    {
-        switch($request->input('action')){
+    {   
+        switch($request->input('action'))
+        {
         case "query":
-            $requests = Requisition::where('departments_institutes_id','=', session('department_institute_id'))->get();
-
-            $count = 1;
-            foreach ($requests as $value)
+          $requests = Requisition::where('departments_institutes_id','=', session('department_institute_id'))->where('users_id','=', session ('user_id'))->where('status_id','!=','7')->get();
+          $count = 1;
+             foreach ($requests as $value)
             {
-                $requestPersonalData = RequestPersonalData::where('requests_id', '=', $value->id)->get();
-                $requestCount = $requestPersonalData->count();
-                $beneficiariesName = "";
-                $beneficiariesCurp = "";
-                $beneficiariesPhones = "";
-                $address="";
+                 if($value->users_id == session ('user_id'))
+                // dd($value->users_id);
+                {
+                     $requestPersonalData = RequestPersonalData::where('requests_id', '=', $value->id)->get();
+                     $requestCount = $requestPersonalData->count();
+                     $beneficiariesName = "";
+                     $beneficiariesCurp = "";
+                     $beneficiariesPhones = "";
+                     $address="";
 
-                for($i = 1; $i <= $requestCount; $i++){
-                    if($i == 1){
-                        $personalData = PersonalData::find($requestPersonalData[$i-1]->personalData_id);
+                     for($i = 1; $i <= $requestCount; $i++)
+                     {
+                         if($i == 1)
+                         {
+                           $personalData = PersonalData::find($requestPersonalData[$i-1]->personalData_id);
+                           if ($personalData != null)
+                           {
+                              $fullName = $personalData->name.' '. $personalData->lastName.' '.$personalData->secondLastName;
+                              $beneficiariesName = $fullName.'/'.'<br/>';
+                              $beneficiariesCurp = $personalData->curp.'/'.'<br/>';
+                              $extpersonalData = ExtPersonalData::where('personal_data_id','=',$personalData->id)->first();
 
-                        if ($personalData != null) {
-                            $fullName = $personalData->name.' '. $personalData->lastName.' '.$personalData->secondLastName;
-                            $beneficiariesName = $fullName.'/'.'<br/>';
-                            $beneficiariesCurp = $personalData->curp.'/'.'<br/>';
-                            $extpersonalData = ExtPersonalData::where('personal_data_id','=',$personalData->id)->first();
+                              if ($extpersonalData != null) 
+                              {
+                                  $beneficiariesPhones = $extpersonalData->number.'/'.'<br/>';
+                              }
+                           }
+                         }
+                         if($i > 1 && $i != $requestCount)
+                         {
+                             $personalData = PersonalData::find($requestPersonalData[$i-1]->personalData_id);
+                             if ($personalData != null) 
+                             {
+                               $fullName = $personalData->name.' '. $personalData->lastName.' '.$personalData->secondLastName;
+                               $beneficiariesName = $beneficiariesName.$fullName.'/'.'<br/>';
+                               $beneficiariesCurp = $beneficiariesCurp.$personalData->curp.'/'.'<br/>';
+                               $extpersonalData = ExtPersonalData::where('personal_data_id','=',$personalData->id)->first();
+                               if ($extpersonalData != null) 
+                               {
+                                  $beneficiariesPhones = $beneficiariesPhones.$extpersonalData->number.'/'.'<br/>';
+                               }
+                             }
+                         }
+                         else
+                         {
+                             $personalData = PersonalData::find($requestPersonalData[$i-1]->personalData_id);
 
-                            if ($extpersonalData != null) {
-                                $beneficiariesPhones = $extpersonalData->number.'/'.'<br/>';
-                            }
-                        }
-                    }
-                    if($i > 1 && $i != $requestCount){
-                        $personalData = PersonalData::find($requestPersonalData[$i-1]->personalData_id);
-                        if ($personalData != null) {
-                            $fullName = $personalData->name.' '. $personalData->lastName.' '.$personalData->secondLastName;
-                            $beneficiariesName = $beneficiariesName.$fullName.'/'.'<br/>';
-                            $beneficiariesCurp = $beneficiariesCurp.$personalData->curp.'/'.'<br/>';
-                            $extpersonalData = ExtPersonalData::where('personal_data_id','=',$personalData->id)->first();
-                            if ($extpersonalData != null) {
-                                $beneficiariesPhones = $beneficiariesPhones.$extpersonalData->number.'/'.'<br/>';
-                            }
-                        }
-                    }
-                    else{
-                        $personalData = PersonalData::find($requestPersonalData[$i-1]->personalData_id);
+                             if ($personalData != null)
+                             {
+                              $fullName = $personalData->name.' '. $personalData->lastName.' '.$personalData->secondLastName;
+                              $beneficiariesCurp = $personalData->curp;
+                              $beneficiariesName = $fullName;
+                              $extpersonalData = ExtPersonalData::where('personal_data_id','=',$personalData->id)->first();
+                              if ($extpersonalData != null) 
+                                 {
+                                 $beneficiariesPhones = $extpersonalData->number;
+                                 }
+                             }
 
-                        if ($personalData != null) {
-                            $fullName = $personalData->name.' '. $personalData->lastName.' '.$personalData->secondLastName;
-                            $beneficiariesCurp = $personalData->curp;
-                            $beneficiariesName = $fullName;
-                            $extpersonalData = ExtPersonalData::where('personal_data_id','=',$personalData->id)->first();
-                            if ($extpersonalData != null) {
-                                $beneficiariesPhones = $extpersonalData->number;
+                             $addresses = Address::find($personalData->addresses_id); 
 
-                            }
-                        }
+                             if ($addresses != null) 
+                             {
+                               $address_id = $personalData->addresses_id;
+                             }
+                             $community = Community::find($addresses->communities_id);
 
-                        $addresses = Address::find($personalData->addresses_id);
+                             $communityname = "";
+                             $municipalityname = "";
+                             $statename = "";
+                             if ($community != null) 
+                                 {
+                                     $communityname = $community->name;
 
-                        if ($addresses != null) {
-                            $address_id = $personalData->addresses_id;
-                        }
-                        $community = Community::find($addresses->communities_id);
+                                     $municipality = Municipality::find($community->municipalities_id);
 
-                        $communityname = "";
-                        $municipalityname = "";
-                        $statename = "";
-                        if ($community != null) {
-                            $communityname = $community->name;
+                                     if ($municipality != null) 
+                                     {
+                                         $municipalityname = $municipality->name;
+                                         $state = State::find($municipality->states_id);
+                                         if ($state != null) 
+                                         {
+                                             $statename = $state->name;
+                                         }
+                                     }
+                                 }
+                             $address = $addresses->street.' #'.$addresses->externalNumber.' '.$addresses->internalNumber.' '.$communityname.' ,'.$municipalityname.' ,'.$statename;
 
-                            $municipality = Municipality::find($community->municipalities_id);
+                         }       
+                     
+                     }
+             
+                     if ($value->type == "ts") 
+                     {
+                         $requests_idsp = RequestInsDepSupPro::select("requests_ins_dep_sup_pro.requests_id", "products.id", "products.name", "categories.name AS categoryname", "requests_ins_dep_sup_pro.qty", "products.categories_id")
+                                                             ->join("products", "requests_ins_dep_sup_pro.products_id", "=", "products.id")
+                                                             ->join("categories", "products.categories_id", "=", "categories.id")
+                                                             ->where('requests_id','=', $value->id)->get();
 
-                            if ($municipality != null) {
-                                $municipalityname = $municipality->name;
+                         foreach ($requests_idsp as $elem) 
+                         {
+                             $products = $elem->qty.' '.$elem->name.'<br>';
+                         }
+     
+                     }
+                     else
+                     {
+                         $requests_sp = RequestSupplierProduct::select("requests_suppliersProducts.requests_id", "products.id", "products.name", "categories.name AS categoryname", "requests_suppliersProducts.qty","products.categories_id")
+                                                                 ->join("suppliers_products", "requests_suppliersProducts.suppliersProducts_id", "=", "suppliers_products.id")
+                                                                 ->join("products", "suppliers_products.products_id", "=", "products.id")
+                                                                 ->join("categories", "products.categories_id", "=", "categories.id")
+                                                                 ->where('requests_id','=', $value->id)->get();
 
-                                $state = State::find($municipality->states_id);
-                                if ($state != null) {
-                                    $statename = $state->name;
-                                }
-                            }
-                        }
-                        $address = $addresses->street.' #'.$addresses->externalNumber.' '.$addresses->internalNumber.' '.$communityname.' ,'.$municipalityname.' ,'.$statename;
+                         foreach ($requests_sp as $elem)
+                         {
+                              $products = $elem->qty.' '.$elem->name.'<br>';
+                         }
+                     } 
 
-                    }
+                     if ($value->type == "ts1") 
+                         {
+                             $value->typerequest = "Trabajo Social";
+                         }
+                     else 
+                     {
+                         $value->typerequest = $value->type;
+                     }
+                    // $value->beneficiaries = $beneficiariesName;
+                     $value->beneficiaries = $value->petitioner;
+                     //$value->beneficiariesCurp = $beneficiariesCurp;
+                     $value->beneficiariesCurp = $value->curpPetitioner;
+                     $value->beneficiariesNumber = $beneficiariesPhones;
+                     $value->address = $address;
+                     $value->products = $products;
+                     $value->number = $count;
+
+                     switch($value->status_id)
+                     {
+                     case 1:
+                         $value->status = "Pendiente Anexo Archivos";
+                         if(session('user_agent') != 'DirGen'&& session('user_agent') != 'SuperAsSo' && session('user_agent') != 'Regi' && session('user_agent') != 'Asis')
+                         {
+                             $value->actions = '
+                             <a class="generatePDF" id="generatePDF" title="Generar Documentos"> <i class="fas fa-file"></i></a>
+                             <a class="addDocument" id="addDocument" title="Anexar Documento"> <i class="fas fa-paperclip"></i></a>
+                             <a class="update" id="update" title="Modificar Documentos"> <i class="far fa-edit"></i></a>';
+                         }
+                         else
+                         {
+                             $value->actions ='<a class="cancel" id="cancel" title="Cancelar"> <i class="fas fa-times-circle"></i></a>
+                             <a class="update" id="update" title="Modificar Documentos"> <i class="far fa-edit"></i></a>';  
+                         }
+                         break;
+                     case 2:
+                          $value->status = "Autorización - Pendiente Verificación";
+                         if(session('user_agent') != 'Admin' && session('user_agent') != 'DirGen'&& session('user_agent') != 'SuperAsSo' && session('user_agent') != 'TrSo')
+                         {
+                             $value->actions = '
+                             <a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>';
+                         }
+                         else
+                         {
+                             $value->actions = '
+                                 <a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>
+                                 <a class="auth" id="auth" title="Autorizar"> <i class="fas fa-check-circle"></i></a>
+                                 <a class="nauth" id="nauth" title="Rechazar"> <i class="fas fa-times-circle"></i></a>
+                                 <a class="cancel" id="cancel" title="Cancelar"> <i class="fas fa-times-circle"></i></a>';
+                         }
+                         break;
+                     case 3:
+                         $value->status = "Autorización - Pendiente Factura";
+                         if(session('user_agent') != 'Admin' && session('user_agent') != 'DirGen' && session('user_agent') != 'CoordiAsSo'&& session('user_agent') != 'SuperAsSo' && session('user_agent') != 'TrSo')
+                         {
+                             $value->actions = '
+                             <a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>';
+                         }
+                         else
+                         {
+                             $value->actions = '
+                             <a class="showDocument"id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>
+                             <a class="addDocument" id="addDocument" title="Anexar Factura"> <i class="fas fa-paperclip"></i></a>
+                             <a class="addDeliveryPicture" id="addDeliveryPicture" title="Anexar Imagen de Entrega"> <i class="fas fa-paperclip"></i></a>
+                             <a class="auth" id="auth" title="Autorizar"> <i class="fas fa-check-circle"></i></a>';
+                             //<a class="nauth" id="nauth" title="Rechazar"> <i class="fas fa-times-circle"></i></a>
+                             //<a class="cancel" id="cancel" title="Cancelar"> <i class="fas fa-times-circle"></i></a>';
+                          }
+                         break;
+                         
+                     case 4:
+                         $value->status = "Rechazada";
+                         $value->actions = '<a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>';
+                         break;
+                     case 5:
+                         $value->status = "Finalizada";
+                         $value->actions = '<a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>';
+                         break;
+                     case 6:
+                         $value->status = "Incompleta";
+                         if(session('user_agent') != 'DirGen')
+                         {
+                             $value->actions = '<a class="update" id="update" title="Modificar Documentos"> <i class="far fa-edit"></i></a>';
+                         } 
+                         else
+                         {
+                             $value->actions ='<a class="cancel" id="cancel" title="Cancelar"> <i class="fas fa-times-circle"></i></a>';
+                         }
+                         break;
+                     case 7:
+                         $value->status = "Cancelada";
+                         $value->actions = '-';
+                         break;
+                     default:
+                     break;
+                     }
+                 $count++;
                 }
-                if ($value->type == "ts") {
-                    $requests_idsp = RequestInsDepSupPro::select("requests_ins_dep_sup_pro.requests_id", "products.id", "products.name", "categories.name AS categoryname", "requests_ins_dep_sup_pro.qty", "products.categories_id")
-                                                          ->join("products", "requests_ins_dep_sup_pro.products_id", "=", "products.id")
-                                                          ->join("categories", "products.categories_id", "=", "categories.id")
-                                                          ->where('requests_id','=', $value->id)->get();
-
-                    foreach ($requests_idsp as $elem) {
-                        $products = $elem->qty.' '.$elem->name.'<br>';
-                    }
-
-                }
-                else {
-                    $requests_sp = RequestSupplierProduct::select("requests_suppliersProducts.requests_id", "products.id", "products.name", "categories.name AS categoryname", "requests_suppliersProducts.qty","products.categories_id")
-                                                            ->join("suppliers_products", "requests_suppliersProducts.suppliersProducts_id", "=", "suppliers_products.id")
-                                                            ->join("products", "suppliers_products.products_id", "=", "products.id")
-                                                            ->join("categories", "products.categories_id", "=", "categories.id")
-                                                            ->where('requests_id','=', $value->id)->get();
-
-
-
-
-                    foreach ($requests_sp as $elem) {
-                        $products = $elem->qty.' '.$elem->name.'<br>';
-                    }
-
-                }
-
-                if ($value->type == "ts") {
-                    $value->typerequest = "Trabajo Social";
-                }
-                else {
-                    $value->typerequest = $value->type;
-                }
-
-                $value->beneficiaries = $beneficiariesName;
-                $value->beneficiariesCurp = $beneficiariesCurp;
-                $value->beneficiariesNumber = $beneficiariesPhones;
-                $value->address = $address;
-                $value->products = $products;
-                $value->number = $count;
-
-                switch($value->status_id){
-                    case 1:
-                        $value->status = "Pendiente Anexo Archivos";
-                        if(session('user_agent') != 'DirGen'&& session('user_agent') != 'SuperAsSo'){
-                            $value->actions = '
-                            <a class="addDocument" id="addDocument" title="Anexar Documento"> <i class="fas fa-paperclip"></i></a>
-                            <a class="generatePDF" id="generatePDF" title="Generar Documentos"> <i class="fas fa-file"></i></a>
-                            <a class="update" id="update" title="Modificar Documentos"> <i class="far fa-edit"></i></a>';
-                        }
-                        else{
-                            $value->actions ='<a class="cancel" id="cancel" title="Cancelar"> <i class="fas fa-times-circle"></i></a>';
-                        }
-                        break;
-                    case 2:
-                        $value->status = "Autorización - Pendiente Verificación";
-                        if(session('user_agent') != 'Admin' && session('user_agent') != 'DirGen'&& session('user_agent') != 'SuperAsSo'){
-                            $value->actions = '
-                            <a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>';
-                        }
-                        else{
-                            $value->actions = '
-                                <a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>
-                                <a class="auth" id="auth" title="Autorizar"> <i class="fas fa-check-circle"></i></a>
-                                <a class="nauth" id="nauth" title="Rechazar"> <i class="fas fa-times-circle"></i></a>
-                                <a class="cancel" id="cancel" title="Cancelar"> <i class="fas fa-times-circle"></i></a>';
-                            }
-                        break;
-                    case 3:
-                        $value->status = "Autorización - Pendiente Factura";
-                        if(session('user_agent') != 'Admin' && session('user_agent') != 'DirGen' && session('user_agent') != 'CoordiAsSo'&& session('user_agent') != 'SuperAsSo'){
-                            $value->actions = '
-                            <a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>';
-                        }
-                        else{
-                            $value->actions = '
-                            <a class="showDocument"id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>
-                            <a class="auth" id="auth" title="Autorizar"> <i class="fas fa-check-circle"></i></a>
-                            <a class="nauth" id="nauth" title="Rechazar"> <i class="fas fa-times-circle"></i></a>
-                            <a class="cancel" id="cancel" title="Cancelar"> <i class="fas fa-times-circle"></i></a>';
-                        }
-                        break;
-                    case 4:
-                        $value->status = "Rechazada";
-                        $value->actions = '<a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>';
-                        break;
-                    case 5:
-                        $value->status = "Finalizada";
-                        $value->actions = '<a class="showDocument" id="showDocument" title="VerDocumento"> <i class="fas fa-eye"></i></a>';
-                        break;
-                    case 6:
-                        $value->status = "Incompleta";
-                        if(session('user_agent') != 'DirGen'){
-                            $value->actions = '<a class="update" id="update" title="Modificar Documentos"> <i class="far fa-edit"></i></a>';
-                        }
-                        else{
-                            $value->actions ='<a class="cancel" id="cancel" title="Cancelar"> <i class="fas fa-times-circle"></i></a>';
-                        }
-                        break;
-                    case 7:
-                        $value->status = "Cancelada";
-                        $value->actions = '-';
-                        break;
-                    default:
-                        break;
-                }
-                $count++;
             }
-
-            return $requests;
+        return $requests;
         break;
         case 'addDocument':
+            $stampfile=[];
             $requisition = Requisition::find($request->registerId);
-            if($requisition->count() > 0){
-                if($request->file('document') != ''){
-                    $stampFile = $request->file('document');
-                    $stampName = 'document-'.$requisition->folio.'.PDF';
+        
+            if($requisition->count() > 0)
+            {
+                $status = $requisition->status_id;
+                //dd($request->file('document'));
+                if($request->file('document') != '')
+                {
+                   $stampFile = $request->file('document');
+                   //dd($stampFile->count());
+                   $documentos = Document::where('requests_id','=',$requisition->id)->get();
+                   //dd($documentos->count());
 
-                    $document = Document::create([
-                        'name' => $stampName,
-                        'requests_id' => $requisition->id
-                    ]);
-                    $document->save();
+                   if($documentos->count() >= 1)
+                   {
+                      $x= ($documentos->count() + 1) - 1;
+                   }
+                   else
+                   {
+                       $x=0;
+                   }
+                    
+                   $i = 0;
 
-                    $status = $request->active == "on" ? 1 : 0;
-
-                    if($request->file('deliveryImage') != '' && $request->file('deliveryImage') != null){
-                        $stampFile = $request->file('deliveryImage');
-                        $stampName = 'imagenEntrega-'.$requisition->folio.'.jpg';
-
-                        $deliveryImage = deliberypictures::create([
+                   foreach($stampFile as $qdoc)
+                   {
+                     
+                     $stampName = 'document-'.$x.$requisition->folio.'.PDF';
+                     $document = Document::create([
                             'name' => $stampName,
                             'requests_id' => $requisition->id
-                        ]);
-                        $deliveryImage->save();
+                         ]);
 
-                        Storage::disk('local')->put($stampName,  \File::get($stampFile));
-                    }
+                     $document->save();
+                     //$docName = $stampFile->getClientOriginalName();
 
-                    Storage::disk('local')->put($stampName,  \File::get($stampFile));
+                     Storage::disk('local')->put($stampName,  \File::get($stampFile[$i]));
+
+                     //$petitionerImageFile = $request->file('petitionerImage');
+                     //$imageName = $petitionerImageFile->getClientOriginalName();
+                     //Storage::disk('local')->put($imageName,  \File::get($petitionerImageFile));
+
+                       $i++;
+                       $x++;
+                     }  
+                }     
+
+                    // $status = $request->active == "on" ? 1 : 1;
+
+                    // if($request->file('deliveryImage') != '' && $request->file('deliveryImage') != null)
+                    // {
+                    //  $stampFile = $request->file('deliveryImage');
+                    //   $stampName = 'imagenEntrega-'.$requisition->folio.'.jpg';
+
+                    //  $deliveryImage = deliberypictures::create([
+                    //        'name' => $stampName,
+                    //        'requests_id' => $requisition->id
+                    //  ]);
+                    //  $deliveryImage->save();
+
+                    //  Storage::disk('local')->put($stampName,  \File::get($stampFile));
+                    //  }
+
+                    //Storage::disk('local')->put($stampName,  \File::get($stampFile));
 
                     $requisition->status_id = $status == 1 ? 2 : 3;
+                    //$requisition->status_id = 2;
+                    
                     $requisition->save();
                     $status = $this->statusChange($requisition->status_id);
                     $folio=array('folio'=>$requisition->folio, 'status' => $status);
-                    Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
 
-                    $emailLog = EmailLog::create([
-                        'sender' => env('MAIL_FROM_ADDRESS'),
-                        'recipient' => env('MAIL_FROM_ADDRESS'),
-                        'status' => 'Enviado',
-                        'descriptionStatus' => 'Se ha añadido un documento a la solicitud '.$requisition->folio
-                    ]);
-                    $emailLog->save();
+                    //Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
+
+                    //$emailLog = EmailLog::create([
+                    //    'sender' => env('MAIL_FROM_ADDRESS'),
+                    //    'recipient' => env('MAIL_FROM_ADDRESS'),
+                    //    'status' => 'Enviado',
+                    //    'descriptionStatus' => 'Se ha añadido un documento a la solicitud '.$requisition->folio
+                    //]);
+                    //$emailLog->save();
 
                     return redirect('solicitudes')->with('success','Tus datos fueron almacenados de forma satisfactoria.');
-                }
-                return redirect('solicitudes')->with('error','Tus datos no fueron almacenados de forma satisfactoria.');
             }
-            return redirect('solicitudes')->with('error','Tus datos no fueron almacenados de forma satisfactoria.');
-            break;
+                return redirect('solicitudes')->with('error','Tus datos no fueron almacenados de forma satisfactoria.');
+            
+         return redirect('solicitudes')->with('error','Tus datos no fueron almacenados de forma satisfactoria.');
+         break;
+         case 'addDeliveryPicture':
+            $stampfile=[];
+            $requisition = Requisition::find($request->registerId);
+            //dd($request->registerId);
+
+            if($requisition->count() > 0)
+            {
+        
+                if($request->file('addDelivery') != '' && $request->file('addDelivery') != null)
+                {
+                    $stampFile = $request->file('addDelivery');
+                    $stampName = 'imagenEntrega-'.$requisition->folio.'.jpg';
+
+                    $deliveryImage = deliberypictures::create([
+                            'name' => $stampName,
+                            'requests_id' => $requisition->id
+                     ]);
+                     $deliveryImage->save();
+
+                     Storage::disk('local')->put($stampName,  \File::get($stampFile));
+                     }
+
+                    //Storage::disk('local')->put($stampName,  \File::get($stampFile));
+
+                    //$requisition->status_id = $status == 1 ? 2 : 3;
+                    $requisition->status_id = 5;
+                    
+                    $requisition->save();
+                    $status = $this->statusChange($requisition->status_id);
+                    $folio=array('folio'=>$requisition->folio, 'status' => $status);
+
+                    //Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
+
+                    //$emailLog = EmailLog::create([
+                    //    'sender' => env('MAIL_FROM_ADDRESS'),
+                    //    'recipient' => env('MAIL_FROM_ADDRESS'),
+                    //    'status' => 'Enviado',
+                    //    'descriptionStatus' => 'Se ha añadido un documento a la solicitud '.$requisition->folio
+                    //]);
+                    //$emailLog->save();
+
+                    return redirect('solicitudes')->with('success','Tus datos fueron almacenados de forma satisfactoria.');
+            }
+                return redirect('solicitudes')->with('error','Tus datos no fueron almacenados de forma satisfactoria.');
+            
+        return redirect('solicitudes')->with('error','Tus datos no fueron almacenados de forma satisfactoria.');
+        break;  
+
         case 'autorizar':
             $requisition = Requisition::find($request->registerId);
+        
 
             if($requisition->status_id == 2)
+            {
                 $requisition->status_id = 3;
-
-            if($requisition->status_id == 3)
-                $requisition->status_id = 5;
-
+            }
+            else
+            {
+               if($requisition->status_id == 3)
+               {
+                  $requisition->status_id = 5;
+               }   
+            }    
             $requisition->save();
+
             $status = $this->statusChange($requisition->status_id);
             $folio=array('folio'=>$requisition->folio, 'status' => $status);
 
+         // Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
 
-             Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
-
-             $emailLog = EmailLog::create([
-                'sender' => env('MAIL_FROM_ADDRESS'),
-                'recipient' => env('MAIL_FROM_ADDRESS'),
-                'status' => 'Enviado',
-                'descriptionStatus' => 'Se envio correo de modificación de estatus de solicitud folio '.$requisition->folio
-            ]);
-            $emailLog->save();
+         // $emailLog = EmailLog::create([
+         //    'sender' => env('MAIL_FROM_ADDRESS'),
+         //   'recipient' => env('MAIL_FROM_ADDRESS'),
+         //    'status' => 'Enviado',
+         //    'descriptionStatus' => 'Se envio correo de modificación de estatus de solicitud folio '.$requisition->folio
+         //]);
+         //$emailLog->save();
 
             return redirect('solicitudes')->with('success','Tus datos fueron almacenados de forma satisfactoria.');
         break;
-
         case 'rechazar':
             $requisition = Requisition::find($request->registerId);
             $requisition->status_id = 4;
@@ -1629,15 +1995,15 @@ class RequestsController extends Controller
             $status = $this->statusChange($requisition->status_id);
             $folio=array('folio'=>$requisition->folio, 'status' => $status);
 
-             Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
+            //Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
 
-             $emailLog = EmailLog::create([
-                'sender' => env('MAIL_FROM_ADDRESS'),
-                'recipient' => env('MAIL_FROM_ADDRESS'),
-                'status' => 'Enviado',
-                'descriptionStatus' => 'Se envio correo de que se rechazo la solicitud folio '.$requisition->folio
-            ]);
-            $emailLog->save();
+            //$emailLog = EmailLog::create([
+            //    'sender' => env('MAIL_FROM_ADDRESS'),
+            //    'recipient' => env('MAIL_FROM_ADDRESS'),
+            //    'status' => 'Enviado',
+            //    'descriptionStatus' => 'Se envio correo de que se rechazo la solicitud folio '.$requisition->folio
+            //]);
+            //$emailLog->save();
 
             return redirect('solicitudes')->with('success','Tus datos fueron almacenados de forma satisfactoria.');
         break;
@@ -1648,15 +2014,15 @@ class RequestsController extends Controller
             $status = $this->statusChange($requisition->status_id);
             $folio=array('folio'=>$requisition->folio, 'status' => $status);
 
-            Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
+            //Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
 
-            $emailLog = EmailLog::create([
-                'sender' => env('MAIL_FROM_ADDRESS'),
-                'recipient' => env('MAIL_FROM_ADDRESS'),
-                'status' => 'Enviado',
-                'descriptionStatus' => 'Se envio correo de que se cancelo la solicitud folio '.$requisition->folio
-            ]);
-            $emailLog->save();
+            //$emailLog = EmailLog::create([
+            //   'sender' => env('MAIL_FROM_ADDRESS'),
+            //    'recipient' => env('MAIL_FROM_ADDRESS'),
+            //    'status' => 'Enviado',
+            //    'descriptionStatus' => 'Se envio correo de que se cancelo la solicitud folio '.$requisition->folio
+            //]);
+            //$emailLog->save();
 
             return redirect('solicitudes')->with('success','Tus datos fueron almacenados de forma satisfactoria.');
         break;
@@ -1669,27 +2035,41 @@ class RequestsController extends Controller
 
             // Mail::to('cuentabusiness50@gmail.com')->send(new StatusSolicitudMail($folio));
 
-            $emailLog = EmailLog::create([
-                'sender' => env('MAIL_FROM_ADDRESS'),
-                'recipient' => env('MAIL_FROM_ADDRESS'),
-                'status' => 'Enviado',
-                'descriptionStatus' => 'Se envio correo de que se finalizo la solicitud folio '.$requisition->folio
-            ]);
-            $emailLog->save();
+            //$emailLog = EmailLog::create([
+            //    'sender' => env('MAIL_FROM_ADDRESS'),
+            //    'recipient' => env('MAIL_FROM_ADDRESS'),
+            //    'status' => 'Enviado',
+            //    'descriptionStatus' => 'Se envio correo de que se finalizo la solicitud folio '.$requisition->folio
+            //]);
+            //$emailLog->save();
+
             return redirect('solicitudes')->with('success','Tus datos fueron almacenados de forma satisfactoria.');
         break;
         case 'getDocument':
+            $document=[];
+            $file=[];
+
             $requisition = Requisition::find($request->id);
-            if($requisition->count() > 0){
-                $document = Document::where('requests_id','=',$requisition->id)->first();
-                if($document->count() > 0){
-                    $file = storage_path('app/public').'/'.$document->name;
-                    $headers = array(
-                       'Content-Type: application/pdf',
-                      );
-                    return response()->file($file, $headers);
-                    // return $document;
+            if($requisition->count() > 0)
+            {
+                //$document = Document::where('requests_id','=',$requisition->id)->first();
+                $doc = Document::where('requests_id','=',$requisition->id)->get();
+                $document = Document::paginate($doc.count());
+
+                if($document != null && $document->count() > 0)
+                {
+                    foreach ($document as $doc)
+                    {
+                        $file = storage_path('app/public').'/'.$doc->name;
+                        //$headers = array(
+                        //    'Content-Type: application/pdf',
+                        // );
+                    }     
+                    //dd($file);
+                    //return response()->file($file, $headers);
+                     return ($documet);
                 }
+
                 return 'oa';
             }
             break;
@@ -1700,24 +2080,105 @@ class RequestsController extends Controller
     }
 
     public function showDoc($id){
+        
+        $headers=[];
         $requisition = Requisition::find($id);
-        if($requisition->count() > 0){
-            $document = Document::where('requests_id','=',$requisition->id)->first();
-            if($document != null && $document->count() > 0){
-                $file = storage_path('app/public').'/'.$document->name;
+        if($requisition->count() > 0)
+        {
+            //$document = Document::where('requests_id','=',$requisition->id)->first();
+            $document = Document::where('requests_id','=',$requisition->id)->get();
+            //dd($document->count();
+
+            if($document != null && $document->count() > 0)
+            {
+                $pdf = new PdfMerge();
+                $i=0;
+                foreach($document as $doc)
+                {
+                   $file=storage_path('app/public').'/'.$doc->name;
+                //   $headers = array(
+                //   'Content-Type: application/pdf',
+                //  );
+                  $pdf->add($file);
+                  $i++;
+                }
+
                 $headers = array(
-                   'Content-Type: application/pdf',
-                  );
-                return response()->file($file, $headers);
+                    'Content-Type: application/pdf',
+                   );
+
+
+                $existe = (storage_path('app\public\completo'.$requisition->folio.'.pdf'));
+
+                // Storage::exists(storage_path('app/public/completo.pdf'));
+                // dd($existe);
+   
+                if (file_exists($existe))
+                {
+                      //dd(file_exists($existe));
+                      Storage::disk('local')->delete('completo'.$requisition->folio.'.pdf');
+                      //Storage::disk('local')->put($imageName,  \File::get($petitionerImageFile));
+                      //Storage::delete($existe);
+                }
+      
+
+                $ruta= storage_path('app/public/');
+                $pdf->Merge($ruta.'completo'.$requisition->folio.'.pdf');
+                
+                $archivo = storage_path('app/public/completo'.$requisition->folio.'.pdf');
+
+                $existe2 = (storage_path('app\public\completo1'.$requisition->folio.'.pdf'));
+
+                if (file_exists($existe2))
+                {
+                    Storage::disk('local')->delete('completo1'.$requisition->folio.'.pdf');
+                }
+      
+
+                $stampName = 'imagenEntrega-'.$requisition->folio.'.jpg'; 
+
+                $archivo1 = storage_path('app/public/').$stampName;
+
+               if (file_exists($archivo1))
+               {
+                    //$pdf = new fpdi('P', 'mm', 'A4');
+                    $pdf = new fpdi();
+                    $pages = $pdf->setSourceFile($ruta.'completo'.$requisition->folio.'.pdf');
+                    //dd($pages);
+                    //$certificate = file_get_contents('certificate.crt');
+
+                    for ($i = 1; $i <= $pages; $i++) 
+                     {
+                         $pdf->AddPage();
+                         $page = $pdf->importPage($i);
+                         $pdf->useTemplate($page, 0, 0);
+                         //$pdf->setSignature($certificate, $certificate, 'tcpdfdemo', '', 2, array());
+                     }
+                    //dd($i);
+                    $pdf->AddPage();
+                    $nuevoNombreDelPDF = $ruta.'completo1'.$requisition->folio.'.pdf';
+                    $pdf->Image($archivo1, 0, 0, 2551, 3295);
+                    $pdf->Output($nuevoNombreDelPDF, 'F');
+
+                    return response()->file($nuevoNombreDelPDF, $headers);
+                }
+                else
+                {
+                    return response()->file($archivo, $headers);
+                }   
             }
             return redirect()->back();
         }
     }
-
+ 
+    
     public function updated(Request $request, $id){
+   
         if(is_numeric($id)){
             $requisition = Requisition::find($id);
-            $requisition->imageSRC = '../assets/img/petitioners/'.$requisition->image;
+            $requisition->imageSRC = '/assets/img/petitioners/'.$requisition->image;
+            //dd($requisition->imageSRC);
+            $requisition->petitionerImage = $requisition->imageSRC;
             $requisition->lblpetitionerImage = $requisition->image;
             $supports = [];
             $categories = [];
@@ -1726,6 +2187,9 @@ class RequestsController extends Controller
             $count_ds = $department_supports->count();
             $supportProducts = SupportProduct::where('supports_id', '=', $request->support)->get();
             $existSup = true;
+            
+            $session = session('department_institute_id');
+
             for($i = 0; $i < $count_ds; $i++)
             {
                 $valueDS = $department_supports[$i];
@@ -1756,31 +2220,40 @@ class RequestsController extends Controller
                 array_push($categories, $category);
             }
 
-            if($requisition->type != 'ts'){
+            if($requisition->type != 'ts')
+            {
                 $suppliers = [];
                 $rSupPro = RequestSupplierProduct::where('requests_id', '=', $requisition->id)->get();
                 $existSup = true;
-                foreach($rSupPro as $element){
+                foreach($rSupPro as $element)
+                {
                     $supProd = SupplierProduct::find($element->suppliersProducts_id);
                     $product = Product::find($supProd->products_id);
                     $products = Product::where('categories_id', '=', $product->categories_id)->get();
-                    if($products->count() > 0){
-                        foreach($products as $value){
+                    if($products->count() > 0)
+                    {
+                        foreach($products as $value)
+                        {
                             $supportProducts = SupplierProduct::where('products_id', '=', $value->id)->get();
-                            if($supportProducts->count()>0){
-                                foreach($supportProducts as $sPdts){
+                            if($supportProducts->count()>0)
+                            {
+                                foreach($supportProducts as $sPdts)
+                                {
                                     $supplier = Supplier::find($sPdts->suppliers_id);
-                                    if($suppliers != null){
-                                        if($supplier != null){
+                                    if($suppliers != null)
+                                    {
+                                        if($supplier != null)
+                                        {
                                             foreach($suppliers as $valueSup){
-                                                if($supplier->id == $valueSup->id){
+                                                if($supplier->id == $valueSup->id)
+                                                {
                                                     $existSup = true;
                                                     break;
                                                 }
-                                                else{
+                                                else
+                                                {
                                                     $existSup = false;
                                                 }
-
                                             }
                                         }
                                     }
@@ -1793,27 +2266,64 @@ class RequestsController extends Controller
                                     }
                                 }
                             }
+
                         }
                     }
-                    $requisition->suppliers_id = $supProd->suppliers_id;
-                    $requisition->products_id = $supProd->products_id;
-                    $requisition->price = $supProd->price;
-                    $requisition->qty = $element->qty;
-                    $requisition->total = $requisition->price * $requisition->qty;
+
+                    //$requisition->suppliers_id = $supProd->suppliers_id;
+                    //$requisition->products_id = $supProd->products_id;
+                    //$requisition->price = $supProd->price;
+                    //$requisition->qty = $element->qty;
+                    //$requisition->total = $requisition->price * $requisition->qty;
                 }
+                
                 $supplierProducts = SupplierProduct::where('suppliers_id', '=', $request->supplier)->get();
-                foreach($supplierProducts as $supplierProduct){
+                foreach($supplierProducts as $supplierProduct)
+                {
                     $product = Product::find($supplierProduct->products_id);
-                    if($product->categories_id == $request->category){
+                    if($product->categories_id == $request->category)
+                    {
                         array_push($products, $product);
                     }
                 }
+
+                $requi = vRequestSupplierProduct::where('requests_id', '=', $requisition->id)->get();
+                //dd($requi);
+                $requisition->CountProduct= $requi->count();
+
+                 //dd($requisition->CountProduct);
+                if(isset($requi) && $requi->count() > 0)
+                {
+                            
+                    foreach($requi as $key=>$value)
+                    {
+                        if (($key+1) == 1)
+                        {
+                            $requisition->suppliers_id = $value->supplier_id;
+                            $requisition->products_id = $value->products_id;
+                            $requisition->price = $value->price;
+                            $requisition->qty = $value->qty;
+                            $requisition->total = $value->qty * $value->price;
+                        }
+                        else 
+                        {
+                            $requisition['suppliers_id'.($key + 1)] = $value->supplier_id;        
+                            $requisition['products_id'.($key + 1)] = $value->products_id; 
+                            $requisition['unitPrice'.($key + 1)] = $value->price; 
+                            $requisition['qty'.($key + 1)] = $value->qty;
+                            $requisition['totalPrice'.($key + 1)] = $value->qty * $value->price;
+                        }    
+                    } 
+                }
+
             }
-            else{
+            else 
+            {
                 $rIDSP = RequestInsDepSupPro::where('requests_id','=',$requisition->id)->get();;
                 $requisition->suppliers_id = 0;
                 $existSup = true;
-                foreach($rIDSP as $element){
+                foreach($rIDSP as $element) 
+                {
                     $product = Product::find($element->products_id);
                     $products = Product::where('categories_id', '=', $product->categories_id)->get();
                     $requisition->products_id = $element->products_id;
@@ -1827,7 +2337,9 @@ class RequestsController extends Controller
             $countPersonalD = $requestPersonalData->count();
             $requisition->countPersonalD = $countPersonalD;
             $communities = "";
-            foreach($requestPersonalData as $key => $element){
+
+            foreach($requestPersonalData as $key => $element)
+            {
                 $personalData = PersonalData::find($element->personalData_id);
                 if ($personalData != null) {
                     $requisition->address = $address = Address::find($personalData->addresses_id);
@@ -1836,6 +2348,7 @@ class RequestsController extends Controller
                     $communities = Community::where('postalCode', '=', $community->postalCode)->get();
                     $requisition['address']->municipalities = $municipality = Municipality::find($community->municipalities_id);
                     $requisition['address']->states = State::find($municipality->states_id);
+                    $requisition['sermedico'.($key + 1)] = $personalData->sermedico;
                     $extPersonalData = ExtPersonalData::where('personal_data_id', '=', $personalData->id)->first();
                     $personalData->ext = $extPersonalData;
                     $requisition['beneficiary'.($key + 1)] = $personalData;
@@ -1843,7 +2356,7 @@ class RequestsController extends Controller
 
 
                 $rpdDisabilities = RPDDisabilities::where('requestsPersonalData_id','=',$element->id)->get();
-                //dd($rpdDisabilities);
+                
                 foreach($rpdDisabilities as $index => $value){
                     $catDisabilities = DisabilityCategories::find($value->disabilitycategories_id);
                     $disabilities = Disabilities::where('disabilitycategories_id','=',$catDisabilities->id)->get();
@@ -1856,14 +2369,18 @@ class RequestsController extends Controller
 
                 }
             }
+
             //dd($requisition);
+
             $catDisabilities = DisabilityCategories::all();
             $employments = Employment::all();
             $familySituation = FamilySituation::where('requests_id','=', $requisition->id)->get();
+         
             $requisition->CountConditionsFamily = $familySituation->count();
             foreach($familySituation as $key => $element){
                 $requisition['ConditionsFamily'.($key + 1)] = $element;
             }
+          
             $economicData = EconomicData::where('requests_id','=', $requisition->id)->first();
             $lifeConditions = LifeCondition::where('requests_id','=',$requisition->id)->first();
 
@@ -1902,11 +2419,14 @@ class RequestsController extends Controller
                 'services' => $services,
                 'buildingMaterials' => $buildingMaterials,
                 'catDisabilities' => $catDisabilities,
+                'department_institute_id'=> $session,
                 'action'=>'update'
             );
+       
             if($requisition->type != 'ts'){
                 $data['suppliers'] = $suppliers;
             }
+            //dd($data);
             return view ('Catalogs.requestsForm',$data);
         }
         else{
@@ -1923,6 +2443,8 @@ class RequestsController extends Controller
             $requests->public_path = $folderPath;
             $requests->mainPublic_path= public_path('storage/');
             $requests->images_path = public_path('assets/img/');
+            $requests->imageSRC = '/assets/img/petitioners/'.$requests->image;
+            //dd($requests->imageSRC);
             $date = date_format($requests->created_at, 'd/m/Y');
             $months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
             $day = date_format($requests->created_at, 'd');
@@ -1945,7 +2467,8 @@ class RequestsController extends Controller
             $userAuth->stamp = $departmentsInstitutes->stamp;
             $user = User::find($requests->users_id);
 
-            $requestSupplierProducts = RequestSupplierProduct::where('requests_id','=',$requests->id)->first();
+            //$requestSupplierProducts = RequestSupplierProduct::where('requests_id','=',$requests->id)->first();
+            $requestSupplierProducts = RequestSupplierProduct::where('requests_id','=',$requests->id)->get();
 
             $requestServices = RequestService::where('requests_id','=',$requests->id)->get();
             $requestFurnitures = RequestFurniture::where('requests_id','=',$requests->id)->get();
@@ -1957,19 +2480,26 @@ class RequestsController extends Controller
             $economicData = EconomicData::where('requests_id','=',$requests->id)->get();
             $familySituation = FamilySituation::where('requests_id','=',$requests->id)->get();
 
-            if($familySituation != null){
+            if($familySituation != null)
+            {
                 foreach($familySituation as $value){
                     $employments = Employment::find($value->employments_id);
                     $value->employmentName = $employments->name;
                 }
             }
-            if($requests->type == "foliado" || $requests->type == "responsiva" ){
-                $supplierProducts = SupplierProduct::find($requestSupplierProducts->suppliersProducts_id);
-                $products = Product::find($supplierProducts->products_id);
-                $categories = Category::find($products->categories_id);
-                $categoryName = $categories->name;
+            
+            if($requests->type == "foliado" || $requests->type == "responsiva" || $requests->type == "ts1" )
+            {
+                foreach($requestSupplierProducts as $value)
+                {
+                    $supplierProducts = SupplierProduct::find($value->suppliersProducts_id);
+                    $products = Product::find($supplierProducts->products_id);
+                    $categories = Category::find($products->categories_id);
+                    $categoryName = $categories->name;
+                }    
             }
-            else{  //especie
+            else
+            {  //especie
                 $requestProducts = RequestInsDepSupPro::where('requests_id','=',$requests->id)->first();
                 $products = Product::find($requestProducts->products_id);
                 $categories = Category::find($products->categories_id);
@@ -1980,25 +2510,50 @@ class RequestsController extends Controller
             $address = [];
             $products = [];
 
-            if($requestSupplierProducts != null){
-                $supplierProduct = SupplierProduct::find($requestSupplierProducts->suppliersProducts_id);
+            if($requestSupplierProducts != null)
+            {
+                foreach($requestSupplierProducts as $value)
+                {
+             
+                    //$supplierProduct = SupplierProduct::find($requestSupplierProducts->suppliersProducts_id);
 
-                $product = Product::find($supplierProduct->products_id);
-                $supplier = Supplier::find($supplierProduct->suppliers_id);
+                    $supplierProduct = SupplierProduct::find($value->suppliersProducts_id);
 
-                $addresssupplier = AddressSupplier::where('suppliers_id','=',$supplier->id)->first();
-                $address = Address::find($addresssupplier->addresses_id);
-                $community = Community::find($address->communities_id);
+                    $product = Product::find($supplierProduct->products_id);    
+                    $supplier = Supplier::find($supplierProduct->suppliers_id);
 
-                $requestSupplierProducts->productName = $product->name;
-                $requestSupplierProducts->companyName = $supplier->companyname;
-                $requestSupplierProducts->companyAddress = $address->street.' # '.$address->externalNumber;
-                $requestSupplierProducts->companyColoni = $community->name;
-                $requestSupplierProducts->RFC = $supplier->RFC;
-                $requestSupplierProducts->email = $supplier->email;
-                $requestSupplierProducts->description = $supplier->description;
-                $requestSupplierProducts->price = $supplierProduct->price;
-                $requestSupplierProducts->total = $supplierProduct->price * $requestSupplierProducts->qty;
+                    $addresssupplier = AddressSupplier::where('suppliers_id','=',$supplier->id)->first();
+                    $address = Address::find($addresssupplier->addresses_id);
+                    $community = Community::find($address->communities_id);
+
+                    // $requestSupplierProducts->productName = $product->name;
+                    // $requestSupplierProducts->companyName = $supplier->companyname;
+                    // $requestSupplierProducts->companyAddress = $address->street.' # '.$address->externalNumber;
+                    // $requestSupplierProducts->companyColoni = $community->name;
+                    // $requestSupplierProducts->RFC = $supplier->RFC;
+                    // $requestSupplierProducts->email = $supplier->email;
+                    // $requestSupplierProducts->description = $supplier->description;
+                    // $requestSupplierProducts->price = $supplierProduct->price;
+                    // $requestSupplierProducts->total = $supplierProduct->price * $requestSupplierProducts->qty;    
+
+                    $value->productName = $product->name;
+                    $value->companyName = $supplier->companyname;
+                    $value->companyAddress = $address->street.' # '.$address->externalNumber;
+                    $value->companyColoni = $community->name;
+                    $value->RFC = $supplier->RFC;
+                    $value->email = $supplier->email;
+                    $value->description = $supplier->description;
+                    if($supplierProduct->price !=0)
+                    {
+                        $value->price = $supplierProduct->price;
+                        $value->total = $supplierProduct->price * $value->qty;    
+                    }    
+                    else
+                    {
+                        $value->price = 0;
+                        $value->total = $value->qty;    
+                    }    
+                }
 
             }
 
@@ -2025,7 +2580,8 @@ class RequestsController extends Controller
             }
 
             if($requestPersonalData != null){
-                foreach($requestPersonalData as $value){
+                foreach($requestPersonalData as $value)
+                {
                     $personalData = PersonalData::find($value->personalData_id);
                     $extPersonalData = ExtPersonalData::where('personal_data_id','=',$personalData->id)->first();
                     $employments = Employment::find($extPersonalData->employments_id);
@@ -2038,24 +2594,35 @@ class RequestsController extends Controller
                     $value->lastName = $personalData->lastName;
                     $value->secondLastName = $personalData->secondLastName;
                     $value->age = $personalData->age;
+                    $value->sermedico = $personalData->sermedico;
                     $value->familiar = $personalData->familiar;
                     $value->civilStatus = $extPersonalData->civilStatus;
                     $value->scholarShip = $extPersonalData->scholarShip;
                     $value->number = $extPersonalData->number;
                     $value->employmentName = $employments->name;
-
                     $address->community = $community;
                     $address->municipality = $municipality;
                     $address->state = $state;
                 }
             }
 
+            $ttotal = 0.00;
+            //dd($requestSupplierProducts);
+            foreach($requestSupplierProducts as $value)
+            {
+                $ttotal = $ttotal + $value->total;
+            }  
 
-             $formatter = NumeroALetras::convert($requestSupplierProducts != null ? $requestSupplierProducts->total : "0", "pesos MXN", true);
+            //dd($ttotal);
+             //$formatter = NumeroALetras::convert($requestSupplierProducts != null ? $requestSupplierProducts->total : "0", "pesos MXN", true);
+            $formatter = NumeroALetras::convert($ttotal != null ? $ttotal : "0", "pesos MXN", true);
+            //dd($requestSupplierProducts);
 
+            //'total' => $requestSupplierProducts == null ? "" : $requestSupplierProducts->total , en array
             $data = array(
                 'address' => $address,
                 'requestPersonalData' => $requestPersonalData,
+                'extPersonalData' => $extPersonalData,
                 'requestBuildingMaterial' => $requestBuildingMaterial,
                 'requestSupplierProducts' =>  $requestSupplierProducts == null ? "" : $requestSupplierProducts,
                 'requestFurnitures' => $requestFurnitures,
@@ -2068,7 +2635,7 @@ class RequestsController extends Controller
                 'familySituation' => $familySituation,
                 'requisition' => $requests,
                 'requestProducts' => $requestProducts,
-                'total' => $requestSupplierProducts == null ? "" : $requestSupplierProducts->total ,
+                'total' => $ttotal,
                 'apoyo' => $requestServices[0]->name,
                 'totalletter' => $formatter ,
                 'daytoday' => $daytoday,
@@ -2076,7 +2643,9 @@ class RequestsController extends Controller
                 'monthtodayletter' => $monthtodayletter,
                 'categoria' =>  $categoryName
             );
-// dd($data);
+
+            //dd($data);
+
             $pdf = PDF::loadView('PDF.requestsDocument', $data);
             $pdf->setPaper('A4', 'portrait');
             return $pdf->stream('pdf_file.pdf');

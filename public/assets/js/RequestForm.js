@@ -1,6 +1,5 @@
 $(function() {
     'use strict';
-
     $('#income').mask('#######0.00', { reverse: true });
     $('#expense').mask('########0.00', { reverse: true });
     $('#unitPrice1').mask('########00.0000', { reverse: true });
@@ -141,6 +140,9 @@ window.operateEvents = {
 }
 
 function addProduct() {
+
+   // debugger
+ 
     var count = $('#countProduct').val();
     count++;
     $('#countProduct').val(count);
@@ -197,7 +199,7 @@ function addProduct() {
     selectSupplier.setAttribute("required", "required");
     selectSupplier.setAttribute("id", suppliersId);
     selectSupplier.setAttribute("name", suppliersId);
-    selectSupplier.setAttribute("disabled", "disabled");
+    //selectSupplier.setAttribute("disabled", "disabled");
 
     var optionSupplier = document.createElement('option');
     optionSupplier.setAttribute("value", "");
@@ -331,6 +333,11 @@ function addProduct() {
     $('#products_id' + count).change(getPrice);
     $('#unitPrice' + count).change(enabledQty);
     $('#qty' + count).change(totalQty);
+   
+    //suppliersId.setAttribute("onchange", "getProducts(this)");
+    //productsId.setAttribute("onchange", "getPrice(this)");
+    //unitPriceId.setAttribute("onchange", "enabledQty(this)");
+    //qtyId.setAttribute("onchange", "totalQty(this)");
 
     // selectSupplier.setAttribute("onchange", "getProducts(this)");
     // selectProduct.setAttribute("onchange", "getPrice(this)");
@@ -368,14 +375,21 @@ function addProduct() {
 }
 
 function deleteProduct(deletebtn) {
+
+   // debugger
     var deletebtnId = deletebtn.id;
     var deleteArray = deletebtnId.split('-')
     var registerId = deleteArray[1];
+
     var count = $('#countTotalP').val();
     count--;
-    $('#countTotalP').val(count);
 
+    $('#countTotalP').val(count);
+ 
     var products = $('#fieldsProducts').val();
+    products--;
+    products = products + ',' + count;
+  
     var productsArray = products.split(',');
     var countProducts = productsArray.length;
     let pos = productsArray.indexOf(registerId);
@@ -976,6 +990,7 @@ function addBeneficiary() {
     var requestHeaderId = "requestHeader" + count;
     var curpId = "curpbeneficiary" + count;
     var ageId = "agebeneficiary" + count;
+    var sermedicoId = "sermedico" + count;
     var NumberId = "phonenumber" + count;
     var familiarId = "statusBeneficiary" + count;
     var nameId = "namebeneficiary" + count;
@@ -1024,7 +1039,7 @@ function addBeneficiary() {
     thirdFormRow.setAttribute("class", "form-row");
 
     var curpFormGroup = document.createElement('div');
-    curpFormGroup.setAttribute("class", "form-group col-md-7");
+    curpFormGroup.setAttribute("class", "form-group col-md-3");
 
     var labelCurp = document.createElement('label');
     labelCurp.setAttribute("for", curpId);
@@ -1052,10 +1067,12 @@ function addBeneficiary() {
 
     var invalidCurp = document.createElement('div');
     invalidCurp.setAttribute("class", "invalid-feedback");
-    invalidCurp.textContent = "Favor de ingresar el código postal";
+    invalidCurp.textContent = "Favor de ingresar el CURP";
 
     var ageFormGroup = document.createElement('div');
-    ageFormGroup.setAttribute("class", "form-group col-md-2");
+    ageFormGroup.setAttribute("class", "form-group col-md-3");
+
+    //debugger
 
     var labelAge = document.createElement('label');
     labelAge.setAttribute("for", ageId);
@@ -1075,6 +1092,29 @@ function addBeneficiary() {
     var invalidAge = document.createElement('div');
     invalidAge.setAttribute("class", "invalid-feedback");
     invalidAge.textContent = "Favor de ingresar la edad";
+    //edad
+
+    var sermedicoFormGroup = document.createElement('div');
+    sermedicoFormGroup.setAttribute("class", "form-group col-md-3");
+
+    var labelsermedico = document.createElement('label');
+    labelsermedico.setAttribute("for", sermedicoId);
+    labelsermedico.textContent = "Servicio Médico";
+
+    var inputsermedico = document.createElement('input');
+    inputsermedico.setAttribute("type", "text");
+    inputsermedico.setAttribute("class", "form-control");
+    inputsermedico.setAttribute("id", sermedicoId);
+    inputsermedico.setAttribute("name", sermedicoId);
+
+
+    inputsermedico.setAttribute("required", "required");
+    inputsermedico.setAttribute("placeholder", "Ingresar Servicio Médico");
+
+    var invalidsermedico = document.createElement('div');
+    invalidsermedico.setAttribute("class", "invalid-feedback");
+    invalidsermedico.textContent = "Favor de ingresar Servicio Médico";
+    // telefono
 
     var phoneNumberFormGroup = document.createElement('div');
     phoneNumberFormGroup.setAttribute("class", "form-group col-md-3");
@@ -1275,18 +1315,21 @@ function addBeneficiary() {
     var disvspan = document.createElement("div");
     var spandisc1 = document.createElement("SPAN");
     spandisc1.setAttribute("class", "m-0 font-weight-bold text-primary headerAppend");
-    spandisc1.innerHTML = 'Diagnostico de Beneficiario';
+    spandisc1.innerHTML = 'Diagnostico de Beneficiario ' + count;
     var divDiscCat = document.createElement("div");
     divDiscCat.setAttribute("class", "form-row");
 
     var divDiscCat1 = document.createElement('div');
     divDiscCat1.setAttribute("class", "form-group col-md-5");
 
-    var btnAddDisc = document.createElement("button");
-    btnAddDisc.setAttribute("type", "button");
-    btnAddDisc.setAttribute("id", btnagregardisc);
-    btnAddDisc.setAttribute("class", "btn btn-primary float-right");
-    btnAddDisc.textContent = "Agregar";
+    // var btnAddDisc = document.createElement("button");
+    // btnAddDisc.setAttribute("type", "button");
+    // btnAddDisc.setAttribute("id", btnagregardisc);
+    // btnAddDisc.setAttribute("class", "btn btn-primary float-right");
+    // btnAddDisc.textContent = "Agregar";
+
+
+
     var labelDiscCat = document.createElement('label');
     labelDiscCat.setAttribute("for", discat);
     labelDiscCat.textContent = "Categoria del Diagnostico";
@@ -1348,6 +1391,12 @@ function addBeneficiary() {
     ageFormGroup.append(inputAge);
     ageFormGroup.append(invalidAge);
 
+    firstFormRow.append(sermedicoFormGroup);
+    sermedicoFormGroup.append(labelsermedico);
+    sermedicoFormGroup.append(inputsermedico);
+    sermedicoFormGroup.append(invalidsermedico);
+
+
     firstFormRow.append(phoneNumberFormGroup);
     phoneNumberFormGroup.append(labelPhoneNumber);
     phoneNumberFormGroup.append(inputPhoneNumber);
@@ -1395,7 +1444,7 @@ function addBeneficiary() {
     selectemployment.append(optionemployment);
 
     disvspan.append(spandisc1);
-    spandisc1.append(btnAddDisc);
+    // spandisc1.append(btnAddDisc);
 
     divDiscCat.append(divDiscCat1);
     divDiscCat1.append(labelDiscCat);
@@ -1468,7 +1517,8 @@ function addDisabilities(btnaddDisabilities) {
     if (btnaddDisabilities.value != null) {
         // var categoryDisabilities = selectcategoryDisabilities.value;
         var registerId = btnaddDisabilities.id.substr(24, 1);
-    } else {
+    } else 
+    {
         // var categoryDisabilities = $(this).val();
         // var registerId = this.id.substr(20, 3);
         var registerId = this.id.charAt(this.id.length - 1);
@@ -1778,6 +1828,7 @@ function getCategories(btn) {
 }
 
 function getSuppliers(category) {
+    //debugger
     var category = $(this).val();
     var type = $('#type').val();
     if (category != "") {
@@ -1815,7 +1866,49 @@ function getSuppliers(category) {
     }
 }
 
+function getSuppli(element) {
+    //debugger
+    var category = $(element).val();
+    var type = $('#type').val();
+    if (category != "") {
+        var action = 'getSuppliers';
+        var array = [];
+
+        $.ajax({
+                type: "POST",
+                url: "nueva_solicitud",
+                data: { 'action': action, 'category': category, 'type': type, "_token": $("meta[name='csrf-token']").attr("content") }
+            })
+            .done(function(response) {
+                petitionerFormStair(2, 0);
+                var products = $('#fieldsProducts').val();
+                var productsArray = products.split(',');
+                var countProducts = productsArray.length;
+                for (var i = 0; i < countProducts; i++) {
+                    var supplier = $('#suppliers_id' + productsArray[i]);
+                    supplier.prop('disabled', false);
+                    supplier.find('option').remove();
+                    supplier.append('<option value="">selecciona...</option>')
+                    if (response.length == 0 && type == 'ts')
+                        supplier.append('<option value="0">sin Proveedor</option>')
+                    $(response).each(function(i, v) { // indice, valor
+                        supplier.append('<option value="' + v.id + '">' + v.companyname + '</option>');
+                    });
+                }
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {})
+    } else {
+        petitionerFormStair(2, 0);
+    }
+}
+
+
+
 function getProducts(supplier) {
+    //debugger
     var supplier = $(this).val();
     var id = this.id.charAt(this.id.length - 1);
     var category = $('#categories_id').val();
@@ -1848,6 +1941,40 @@ function getProducts(supplier) {
     }
 }
 
+
+function getProd(element) {
+    //debugger
+    var supplier = $(element).val();
+    var id = element.id.charAt(element.id.length - 1);
+    var category = $('#categories_id').val();
+    if (supplier != "") {
+        var action = 'getProducts';
+        var array = [];
+
+        $.ajax({
+                type: "POST",
+                url: "nueva_solicitud",
+                data: { 'action': action, 'supplier': supplier, 'category': category, "_token": $("meta[name='csrf-token']").attr("content") }
+            })
+            .done(function(response) {
+                petitionerFormStair(3, id);
+                var supplier = $('#products_id' + id);
+                supplier.prop('disabled', false);
+                supplier.find('option').remove();
+                supplier.append('<option value="">selecciona...</option>')
+                $(response).each(function(i, v) { // indice, valor
+                    supplier.append('<option value="' + v.id + '">' + v.name + '</option>');
+                });
+                console.log(response);
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {})
+    } else {
+        petitionerFormStair(3, id);
+    }
+}
 
 function getDisabilities(selectcategoryDisabilities) {
     if (selectcategoryDisabilities.value != null) {
@@ -1920,10 +2047,54 @@ function getPrice(product) {
     }
 }
 
+function getPrecio(element) {
+    var product = $(element).val();
+    var id = element.id.charAt(element.id.length - 1);
+    var supplier = $('#suppliers_id' + id).val();
+    if (product != "") {
+        var action = 'getPrice';
+        var array = [];
+
+        $.ajax({
+                type: "POST",
+                url: "nueva_solicitud",
+                data: { 'action': action, 'supplier': supplier, 'product': product, "_token": $("meta[name='csrf-token']").attr("content") }
+            })
+            .done(function(response) {
+                petitionerFormStair(4, id);
+                if (response.length > 0) {
+                    $('#unitPrice' + id).val(response);
+                    $('#qty' + id).prop('disabled', false);
+                } else {
+                    $('#unitPrice' + id).prop('disabled', false);
+                }
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {})
+    } else {
+        petitionerFormStair(4, id);
+    }
+}
+
 function enabledQty(price) {
     var unitPrice = $(this).val();
     if (unitPrice != "") {
         var id = this.id.charAt(this.id.length - 1);
+        $('#qty' + id).prop('disabled', false);
+        if ($('#qty' + id).val() != "" && $('#qty' + id) != "0") {
+            var qty = $('#qty' + id).val();
+            var total = qty * unitPrice;
+            $('#totalPrice' + id).val(total);
+        }
+    }
+}
+
+function enabledCantidad(element) {
+    var unitPrice = $(element).val();
+    if (unitPrice != "") {
+        var id = element.id.charAt(element.id.length - 1);
         $('#qty' + id).prop('disabled', false);
         if ($('#qty' + id).val() != "" && $('#qty' + id) != "0") {
             var qty = $('#qty' + id).val();
@@ -1946,6 +2117,20 @@ function totalQty(qty) {
         petitionerFormStair(6, id);
     }
 }
+
+function totalCantidad(element) {
+    var qty = $(element).val();
+    var id = element.id.charAt(element.id.length - 1);
+    if (qty != "") {
+        petitionerFormStair(6, id);
+        var unitPrice = $('#unitPrice' + id).val();
+        var total = qty * unitPrice;
+        $('#totalPrice' + id).val(total);
+    } else {
+        petitionerFormStair(6, id);
+    }
+}
+
 
 function petitionerFormStair(step, id) {
     switch (step) {
@@ -2162,37 +2347,117 @@ function verifyCurp(btn) {
             data: { 'action': action, 'curpbeneficiary': curpbeneficiary, "_token": $("meta[name='csrf-token']").attr("content") }
         })
         .done(function(response) {
-            console.log(response);
-            var name = $('#namebeneficiary' + registerId);
-            var lastName = $('#lastNamebeneficiary' + registerId);
-            var secondLastName = $('#secondLastNamebeneficiary' + registerId);
-            var age = $('#agebeneficiary' + registerId);
+            var petitionerName = $('#petitioner');
+            //console.log(response[0]);
+            if (response[0]['requisition1'] != null || response[0]['requisition0'] != null) {
+                //petitionerName.val(response['requisition']);
+                petitionerName.val(response[0]['Usuario0']);
+                if (response[0]['message'] != null && response[0]['message']['exist'] == 1) {
+                    var divModal = $('#alert-container');
+                    // console.log(response[0]);S
+                    if (response[0].cantidad == 1) {
+                         $('#alert-container').find('P').remove();
+                         $('#alert-container').find('HR').remove();
+                         for (let x = 0; x < response[0].cantidad; x++) {
+                             var Usuario = document.createElement("P"); // Create a <p> element
+                             Usuario.innerText = 'El usuario: ' + response[0]['Usuario' + x];
+                             var Apoyo = document.createElement("P"); // Create a <p> element
+                             Apoyo.innerText = 'Le brindaron el apoyo de: ' + response[0]['Apoyo' + x];
+                             var fecha = document.createElement("P"); // Create a <p> element
+                             fecha.innerText = 'Solicitado el dia: ' + response[0]['date' + x]; //['date'].substr(-30, 10);
+                             var Curp = document.createElement("P"); // Create a <p> element
+                             Curp.innerText = 'Al beneficiario con la CURP: ' + response[0]['CualSolicitante' + x];  //['curp'];
+                             var institucion = document.createElement("P"); // Create a <p> element
+                             institucion.innerText = 'De la institución: ' + response[0]['institute' + x];  //['name'];
+                             var Department = document.createElement("P"); // Create a <p> element
+                             Department.innerText = 'Del departamento: ' + response[0]['Departament' + x];  //['name'];
+                             var linea = document.createElement("HR");
 
-            if (response['personalData'] != null) {
-                name.val(response['personalData']['name']);
-                lastName.val(response['personalData']['lastName']);
-                secondLastName.val(response['personalData']['secondLastName']);
-                age.val(response['personalData']['age']);
-                if (response['message'] != null && response['message']['exist'] == 1) {
-                    var fecha = response['date']['date'];
-                    alertify.error(response['message']['text']);
-                    $('#alert-container').text('el usuario:  ' + response['personalData']['name'] + '  ya le brindaron un apoyo de: ' + response['Apoyo'] + ' solicitado el dia: ' + fecha.substr(-30, 10) + ' al solicitante con la CURP: ' + response['CualSolicitante'] + ' de la institución: ' + response['institute'] + ' departamento: ' + response['Departament']);
-                    $('#modal-warning').modal('toggle');
-                } else {
-                    alertify.success(response['message']['text']);
-                }
-            } else if (response['requisition'] != null) {
-                name.val(response['requisition']['petitioner']);
-                if (response['message'] != null && response['message']['exist'] == 1) {
-                    var fecha = response['date']['date'];
-                    alertify.error(response['message']['text']);
-                    $('#alert-container').text('el usuario:  ' + response['requisition'] + '  ya le brindaron un apoyo de: ' + response['Apoyo'] + ' solicitado el dia: ' + fecha.substr(-30, 10) + ' al Benefificario con la CURP: ' + response['CualBeneficiario']['curp'] + ' de la institución: ' + response['institute'] + ' departamento: ' + response['Departament']);
-                    $('#modal-warning').modal('toggle');
-                } else {
-                    alertify.success(response['message']['text']);
-                }
+                             divModal.append(Usuario);
+                             divModal.append(Apoyo);
+                             divModal.append(fecha);
+                             divModal.append(Curp);
+                             divModal.append(institucion);
+                             divModal.append(Department);
+                             divModal.append(linea);
+                         }
+                         alertify.error(response[0]['message']['text']);
+                         $('#modal-warning').modal('toggle');
+                    } else {
+                         if (response[0].cantidad > 1) {
+                             $('#alert-container').find('P').remove();
+                             $('#alert-container').find('HR').remove();
+                             for (let y = 0; y < response[0].cantidad; y++) {
+                                 var Usuario = document.createElement("P"); // Create a <p> element
+                                 Usuario.innerText = 'El usuario: ' + response[0]['Usuario' + y];
+                                 var Apoyo = document.createElement("P"); // Create a <p> element
+                                 Apoyo.innerText = 'Le brindaron el apoyo de: ' + response[0]['Apoyo' + y];
+                                 var fecha = document.createElement("P"); // Create a <p> element
+                                 fecha.innerText = 'Solicitado el dia: ' + response[0]['date' + y]; //['date'].substr(-30, 10);
+                                 var Curp = document.createElement("P"); // Create a <p> element
+                                 Curp.innerText = 'Al beneficiario con la CURP: ' + response[0]['CualSolicitante' + y]; //['curp'];
+                                 var institucion = document.createElement("P"); // Create a <p> element
+                                 institucion.innerText = 'De la institución: ' + response[0]['institute' + y]; //['name'];
+                                 var Department = document.createElement("P"); // Create a <p> element
+                                 Department.innerText = 'Del departamento: ' + response[0]['Departament' + y]; //['name'];
+                                var linea = document.createElement("HR");
+                                
+                                 divModal.append(Usuario);
+                                 divModal.append(Apoyo);
+                                 divModal.append(fecha);
+                                 divModal.append(Curp);
+                                 divModal.append(institucion);
+                                 divModal.append(Department);
+                                 divModal.append(linea);
+                             }
+                             alertify.error(response[0]['message']['text']);
+                             $('#modal-warning').modal('toggle');
+                         }
+                    }
+                 }
+                 else
+                 {
+                     alertify.success(response[0]['message']['text']);
+                 }
+             }
+             else if (response[0]['personalData'] != null) 
+             {
+                 if (response[0]['message'] != null && response[0]['message']['exist'] == 1) {
+                     var divModal = $('#alert-container');
+                     if (response[0].cantidad == 1) {
+                         $('#alert-container').find('P').remove();
+                         $('#alert-container').find('HR').remove();
+                         for (let x = 0; x < response[0].cantidad; x++) {
+                             var Usuario = document.createElement("P"); // Create a <p> element
+                             Usuario.innerText = 'El usuario: ' + response[0]['personalData'];['name'];
+                             var Apoyo = document.createElement("P"); // Create a <p> element
+                             Apoyo.innerText = 'Le brindaron el apoyo de: ' + response[0]['Apoyo' + x];
+                             var fecha = document.createElement("P"); // Create a <p> element
+                             fecha.innerText = 'Solicitado el dia: ' + response[0]['date' + x]; //['date'].substr(-30, 10);
+                             var Curp = document.createElement("P"); // Create a <p> element
+                             Curp.innerText = 'Al Beneficiario con la CURP: ' + response[0]['CualSolicitante' + x];
+                             var institucion = document.createElement("P"); // Create a <p> element
+                             institucion.innerText = 'De la institución: ' + response[0]['institute' + x];
+                             var Department = document.createElement("P"); // Create a <p> element
+                             Department.innerText = 'Del departamento: ' + response[0]['Departament' + x];
+                             var linea = document.createElement("HR");
+
+                             divModal.append(Usuario);
+                             divModal.append(Apoyo);
+                             divModal.append(fecha);
+                             divModal.append(Curp);
+                             divModal.append(institucion);
+                             divModal.append(Department);
+                             divModal.append(linea);
+                         }
+                         alertify.error(response[0]['message']['text']);
+                         $('#modal-warning').modal('toggle');
+                     }
+                     //console.log(response[0]);
+               }
+
             } else
-                alertify.success(response['message']['text']);
+                 alertify.success(response[0]['message']['text']);
         })
         .fail(function() {
             console.log("error");
@@ -2209,118 +2474,159 @@ function verifyCurpPetitioner(btn) {
             data: { 'action': action, 'curpbeneficiary': curpbeneficiary, "_token": $("meta[name='csrf-token']").attr("content") }
         })
         .done(function(response) {
-            // var petitionerName = $('#petitioner');
-            // console.log(response[0]);
-            // if (response[0]['requisition1'] != null || response[0]['requisition0'] != null) {
-            //     petitionerName.val(response['requisition']);
-            //     if (response[0]['message'] != null && response[0]['message']['exist'] == 1) {
-            //         var divModal = $('#alert-container');
-            //         console.log(response[0]);
-            //         if (response[0].cantidad == 1) {
-            //             $('#alert-container').find('P').remove();
-            //             $('#alert-container').find('HR').remove();
-            //             for (let x = 1; x <= response[0].cantidad; x++) {
-            //                 var Usuario = document.createElement("P"); // Create a <p> element
-            //                 Usuario.innerText = 'El usuario: ' + response[0]['requisition' + x];
-            //                 var Apoyo = document.createElement("P"); // Create a <p> element
-            //                 Apoyo.innerText = 'Le brindaron el apoyo de: ' + response[0]['Apoyo' + x];
-            //                 var fecha = document.createElement("P"); // Create a <p> element
-            //                 fecha.innerText = 'Solicitado el dia: ' + response[0]['date' + x]['date'].substr(-30, 10);
-            //                 var Curp = document.createElement("P"); // Create a <p> element
-            //                 Curp.innerText = 'Al beneficiario con la CURP: ' + response[0]['CualBeneficiario' + x]['curp'];
-            //                 var institucion = document.createElement("P"); // Create a <p> element
-            //                 institucion.innerText = 'De la institución: ' + response[0]['institute' + x]['name'];
-            //                 var Department = document.createElement("P"); // Create a <p> element
-            //                 Department.innerText = 'Del departamento: ' + response[0]['departament' + x]['name'];
-            //                 var linea = document.createElement("HR");
+            var petitionerName = $('#petitioner');
+            var curpbeneficiaryP = $('#curpbeneficiary1');
+            var EdadbeneficiaryP = $('#agebeneficiary1');
+            var TelbeneficiaryP = $('#phonenumber1');
+            var NombeneficiaryP = $('#namebeneficiary1');
+            var APbeneficiaryP = $('#lastNamebeneficiary1');
+            var AMbeneficiaryP = $('#secondLastNamebeneficiary1');
+            var calle = $('#street');
+            var numexterno = $('#externalNumber');
+            var numinterno = $('#internalNumber');
+            var EcivilBeneficiario = $('#civilStatusbeneficiary1');
+            var EscBeneficiario = $('#scholarShipbeneficiary1');
+            var OcuBeneficiario = $('#employments_idbeneficiary1');
+            var CPBeneficiario =  $('#postalCode1');
+            var idColBen = $('#communities_id1');
+            var idMpioBen= $('#municipalities_id1');
+            var idStateBen= $('#states_id1');
+            var areaBen= $('#area');
+            var sermedico = $('#sermedico1');
+            
+            if (response[0]['requisition1'] != null || response[0]['requisition0'] != null) 
+            {
+                //petitionerName.val(response['requisition']);
+                petitionerName.val(response[0]['Usuario0']);
+                curpbeneficiaryP.val(response[0]['CualSolicitante0']);      
+                EdadbeneficiaryP.val(response[0]['EdadBeneficiario0']);      
+                sermedico.val(response[0]['sermedico0']);      
+                TelbeneficiaryP.val(response[0]['TelBeneficiario0']);      
+                NombeneficiaryP.val((response[0]['NomBeneficiario0']));
+                APbeneficiaryP.val((response[0]['APBeneficiario0'])); 
+                AMbeneficiaryP.val((response[0]['SLNBeneficiario0']));
+                EcivilBeneficiario.val((response[0]['EcivilBeneficiario0']));
+                EscBeneficiario.val((response[0]['EscBeneficiario0']));
+                OcuBeneficiario.val((response[0]['OcuBeneficiario0']));
+                calle.val((response[0]['calle0']));
+                numexterno.val((response[0]['numext0']));
+                numinterno.val((response[0]['numint0']));
+                CPBeneficiario.val((response[0]['CPBeneficiario0']));
+                idColBen.prop('disabled',false);
+                idColBen.append('<option selected  value="' + (response[0]['idColBen0']) + '">' + (response[0]['ColBeneficiario0']) + '</option>');
+                //communities.append('<option value="' + v.id + '">' + v.name + '</option>');
+                idMpioBen.prop('disabled',false);
+                idMpioBen.append('<option selected  value="' + (response[0]['idMpioBen0']) + '">' + (response[0]['MpioBeneficiario0']) + '</option>');
+                idStateBen.prop('disabled',false);
+                idStateBen.append('<option selected  value="' + (response[0]['idStateBen0']) + '">' + (response[0]['StateBeneficiario0']) + '</option>');
+                areaBen.val((response[0]['areaBeneficiario0']));
+                //console.log(response[0]);
+                if (response[0]['message'] != null && response[0]['message']['exist'] == 1) {
+                    var divModal = $('#alert-container');
+                     //console.log(response[0]);
+                     if (response[0].cantidad == 1) {
+                         $('#alert-container').find('P').remove();
+                         $('#alert-container').find('HR').remove();
+                         for (let x = 0; x < response[0].cantidad; x++) {
+                             var Usuario = document.createElement("P"); // Create a <p> element
+                             Usuario.innerText = 'El usuario: ' + response[0]['Usuario' + x];
+                             var Apoyo = document.createElement("P"); // Create a <p> element
+                             Apoyo.innerText = 'Le brindaron el apoyo de: ' + response[0]['Apoyo' + x];
+                             var fecha = document.createElement("P"); // Create a <p> element
+                             fecha.innerText = 'Solicitado el dia: ' + response[0]['date' + x];   //['date'].substr(-30, 10);
+                             var Curp = document.createElement("P"); // Create a <p> element
+                             Curp.innerText = 'Al Solicitante con la CURP: ' + response[0]['CualSolicitante' + x];  //['curp'];
+                             var institucion = document.createElement("P"); // Create a <p> element
+                             institucion.innerText = 'De la institución: ' + response[0]['institute' + x];  //['name'];
+                             var Department = document.createElement("P"); // Create a <p> element
+                             Department.innerText = 'Del departamento: ' + response[0]['Departament' + x];  //['name'];
+                             var linea = document.createElement("HR");
 
-            //                 divModal.append(Usuario);
-            //                 divModal.append(Apoyo);
-            //                 divModal.append(fecha);
-            //                 divModal.append(Curp);
-            //                 divModal.append(institucion);
-            //                 divModal.append(Department);
-            //                 divModal.append(linea);
+                             divModal.append(Usuario);
+                             divModal.append(Apoyo);
+                             divModal.append(fecha);
+                             divModal.append(Curp);
+                             divModal.append(institucion);
+                             divModal.append(Department);
+                             divModal.append(linea);
+                            // console.log(response[0]);
+                         }
+                         alertify.error(response[0]['message']['text']);
+                         $('#modal-warning').modal('toggle');
+                     } else {
+                         if (response[0].cantidad > 1) {
+                             $('#alert-container').find('P').remove();
+                             $('#alert-container').find('HR').remove();
+                             for (let y = 0; y < response[0].cantidad; y++) {
+                                 var Usuario = document.createElement("P"); // Create a <p> element
+                                 Usuario.innerText = 'El usuario: ' + response[0]['Usuario' + y];
+                                 var Apoyo = document.createElement("P"); // Create a <p> element
+                                 Apoyo.innerText = 'Le brindaron el apoyo de: ' + response[0]['Apoyo' + y];
+                                 var fecha = document.createElement("P"); // Create a <p> element
+                                 fecha.innerText = 'Solicitado el dia: ' + response[0]['date' + y];    // ['date'].substr(-30, 10);
+                                 var Curp = document.createElement("P"); // Create a <p> element
+                                 Curp.innerText = 'Al Solicitante con la CURP: ' + response[0]['CualSolicitante' + y];  // ['curp'];
+                                 var institucion = document.createElement("P"); // Create a <p> element
+                                 institucion.innerText = 'De la institución: ' + response[0]['institute' + y]; //['name'];
+                                 var Department = document.createElement("P"); // Create a <p> element
+                                 Department.innerText = 'Del departamento: ' + response[0]['Departament' + y]; //['name'];
+                                 var linea = document.createElement("HR");
 
-            //             }
-            //             alertify.error(response[0]['message']['text']);
-            //             $('#modal-warning').modal('toggle');
+                                 divModal.append(Usuario);
+                                 divModal.append(Apoyo);
+                                 divModal.append(fecha);
+                                 divModal.append(Curp);
+                                 divModal.append(institucion);
+                                 divModal.append(Department);
+                                 divModal.append(linea);
+                             }
+                             alertify.error(response[0]['message']['text']);
+                             $('#modal-warning').modal('toggle');
+                         }
+                     }
+                 } else {
+                     alertify.success(response[0]['message']['text']);
+                 }
+             } else if (response[0]['personalData'] != null) {
+                 if (response[0]['message'] != null && response[0]['message']['exist'] == 1) {
+                     var divModal = $('#alert-container');
+                     if (response[0].cantidad == 1) {
+                         $('#alert-container').find('P').remove();
+                         $('#alert-container').find('HR').remove();
+                         for (let x = 0; x < response[0].cantidad; x++) {
+                             var Usuario = document.createElement("P"); // Create a <p> element
+                             Usuario.innerText = 'El usuario: ' + response[0]['personalData']['name'];
+                             var Apoyo = document.createElement("P"); // Create a <p> element
+                             Apoyo.innerText = 'Le brindaron el apoyo de: ' + response[0]['Apoyo' + x];
+                             var fecha = document.createElement("P"); // Create a <p> element
+                             fecha.innerText = 'Solicitado el dia: ' + response[0]['date' + x]; //['date'].substr(-30, 10);
+                             var Curp = document.createElement("P"); // Create a <p> element
+                             Curp.innerText = 'Al solicitante con la CURP: ' + response[0]['CualSolicitante' + x];
+                             var institucion = document.createElement("P"); // Create a <p> element
+                             institucion.innerText = 'De la institución: ' + response[0]['institute' + x];
+                             var Department = document.createElement("P"); // Create a <p> element
+                             Department.innerText = 'Del departamento: ' + response[0]['Departament' + x];
+                             var linea = document.createElement("HR");
 
-            //         } else {
-            //             if (response[0].cantidad > 1) {
-            //                 $('#alert-container').find('P').remove();
-            //                 $('#alert-container').find('HR').remove();
-            //                 for (let y = 0; y < response[0].cantidad; y++) {
-            //                     var Usuario = document.createElement("P"); // Create a <p> element
-            //                     Usuario.innerText = 'El usuario: ' + response[0]['requisition' + y];
-            //                     var Apoyo = document.createElement("P"); // Create a <p> element
-            //                     Apoyo.innerText = 'Le brindaron el apoyo de: ' + response[0]['Apoyo' + y];
-            //                     var fecha = document.createElement("P"); // Create a <p> element
-            //                     fecha.innerText = 'Solicitado el dia: ' + response[0]['date' + y]['date'].substr(-30, 10);
-            //                     var Curp = document.createElement("P"); // Create a <p> element
-            //                     Curp.innerText = 'Al beneficiario con la CURP: ' + response[0]['CualBeneficiario' + y]['curp'];
-            //                     var institucion = document.createElement("P"); // Create a <p> element
-            //                     institucion.innerText = 'De la institución: ' + response[0]['institute' + y]['name'];
-            //                     var Department = document.createElement("P"); // Create a <p> element
-            //                     Department.innerText = 'Del departamento: ' + response[0]['departament' + y]['name'];
-            //                     var linea = document.createElement("HR");
-            //                     divModal.append(Usuario);
-            //                     divModal.append(Apoyo);
-            //                     divModal.append(fecha);
-            //                     divModal.append(Curp);
-            //                     divModal.append(institucion);
-            //                     divModal.append(Department);
-            //                     divModal.append(linea);
-            //                 }
-            //                 alertify.error(response[0]['message']['text']);
-            //                 $('#modal-warning').modal('toggle');
-            //             }
-            //         }
-            //     } else {
-            //         alertify.success(response[0]['message']['text']);
-            //     }
-            // } else if (response[0]['personalData'] != null) {
-            //     if (response[0]['message'] != null && response[0]['message']['exist'] == 1) {
-            //         var divModal = $('#alert-container');
-            //         if (response[0].cantidad == 1) {
-            //             $('#alert-container').find('P').remove();
-            //             $('#alert-container').find('HR').remove();
-            //             for (let x = 0; x < response[0].cantidad; x++) {
-            //                 var Usuario = document.createElement("P"); // Create a <p> element
-            //                 Usuario.innerText = 'El usuario: ' + response[0]['personalData']['name'];
-            //                 var Apoyo = document.createElement("P"); // Create a <p> element
-            //                 Apoyo.innerText = 'Le brindaron el apoyo de: ' + response[0]['Apoyo' + x];
-            //                 var fecha = document.createElement("P"); // Create a <p> element
-            //                 fecha.innerText = 'Solicitado el dia: ' + response[0]['date' + x]['date'].substr(-30, 10);
-            //                 var Curp = document.createElement("P"); // Create a <p> element
-            //                 Curp.innerText = 'Al solicitante con la CURP: ' + response[0]['CualSolicitante' + x];
-            //                 var institucion = document.createElement("P"); // Create a <p> element
-            //                 institucion.innerText = 'De la institución: ' + response[0]['institute' + x];
-            //                 var Department = document.createElement("P"); // Create a <p> element
-            //                 Department.innerText = 'Del departamento: ' + response[0]['Departament' + x];
-            //                 var linea = document.createElement("HR");
+                             divModal.append(Usuario);
+                             divModal.append(Apoyo);
+                             divModal.append(fecha);
+                             divModal.append(Curp);
+                             divModal.append(institucion);
+                             divModal.append(Department);
+                             divModal.append(linea);
+                         }
+                         alertify.error(response[0]['message']['text']);
+                         $('#modal-warning').modal('toggle');
+                     }
+                     //console.log(response[0]);
 
-            //                 divModal.append(Usuario);
-            //                 divModal.append(Apoyo);
-            //                 divModal.append(fecha);
-            //                 divModal.append(Curp);
-            //                 divModal.append(institucion);
-            //                 divModal.append(Department);
-            //                 divModal.append(linea);
+               }
 
-            //             }
-            //             alertify.error(response[0]['message']['text']);
-            //             $('#modal-warning').modal('toggle');
-
-            //         }
-            //         console.log(response[0]);
-
-            //     }
-
-
-
-            // } else
-            //     alertify.success(response[0]['message']['text']);
+            } else{
+                alertify.success(response[0]['message']['text']);
+            }
+                
         })
         .fail(function() {
             console.log("error");
@@ -2329,29 +2635,95 @@ function verifyCurpPetitioner(btn) {
 }
 
 
-function nextNavTab(btn) {
+function nextNavTab(btn,event) {
     var btnId = btn.id;
     var btnArray = btnId.split('-')
     var registerId = btnArray[1];
     var navActual = btnArray[0];
+    var session =  $('#session').val();                
+
+
+   //console.log(session);  
     switch (navActual) {
         case "requestGeneralData":
+            
+         var form = $('#requestGeneralData');
+          
+        //debugger
+
+         if (!checkCampos(form))
+        {
+            event.preventDefault();
+            alert('Todos Los Campos son requeridos!!');
+            return 
+        }
+        else
+        {   
+           //debugger
+            var formBGD = $('#beneficiaryGeneralData-tab');
+            //formBGD.prop('disabled',false);
+            formBGD.removeClass('disabled');
+            formBGD.addClass('actived');
 
             if (registerId == 1)
                 $('#myTab a[href="#beneficiaryGeneralData"]').tab('show');
-            break;
+        }         
+
+        break;
 
         case "beneficiaryGeneralData":
-            if (registerId == 1)
-                $('#myTab a[href="#familySituation"]').tab('show');
-            else
-                $('#myTab a[href="#requestGeneralData"]').tab('show');
-            break;
 
+        var form = $('#beneficiaryGeneralData');
+          
+        //debugger
+
+         if (!checkCampos(form))
+        {
+            //event.preventDefault();
+            alert('Todos Los Campos son requeridos!!');
+            return 
+        }
+        else
+        {   
+           
+            if (registerId == 1)
+            {
+                if (session  < 4)
+                {
+                     var formED = $('#economicData-tab');
+                     //formBGD.prop('disabled',false);
+                     formED.removeClass('disabled');
+                     formED.addClass('actived');
+
+                     $('#myTab a[href="#economicData"]').tab('show')
+                }     
+                else
+                {
+                     var formFS = $('#familySituation-tab');
+                     //formBGD.prop('disabled',false);
+                     formFS.removeClass('disabled');
+                     formFS.addClass('actived');
+                           
+                     $('#myTab a[href="#familySituation"]').tab('show');
+                }     
+            }    
+            else
+            {
+                var formBGD = $('#beneficiaryGeneralData-tab');
+                formBGD.removeClass('actived');
+                formBGD.addClass('disabled');
+                $('#myTab a[href="#requestGeneralData"]').tab('show');
+            }    
+            break;
+        }
         case "familySituation":
             if (registerId == 1)
                 $('#myTab a[href="#lifeConditions"]').tab('show');
             else
+                var formFS = $('#familySituation-tab');
+                formFS.removeClass('actived');
+                formFS.addClass('disabled');
+                
                 $('#myTab a[href="#beneficiaryGeneralData"]').tab('show');
             break;
 
@@ -2373,10 +2745,49 @@ function nextNavTab(btn) {
 
 }
 
+function checkCampos(tab)
+{
+//     var camposRellenados = true;
+//   //var form = $('#requestGeneralData');
+//     var form = tab;
+
+//     $(form.find('input[required]').each(function() {
+//         var $this = $(this);
+//         //if ($this.val().length <= 0 )
+//         // {
+//             if ($this.val() == "")
+//             {
+//                camposRellenados = false;
+//             }
+//         //}
+//     }     
+//     ));
+    
+    var empty = tab.find('input[required]');
+    var validado = true;
+
+    //debugger  
+
+    $.each(empty, function(index, value) {
+        if (value.value == "")
+        {
+               validado = false;
+               //return;
+        }       
+          });
+    
+  
+    if(validado == false) 
+        return false;
+    else 
+       return true;
+ 
+}
 
 function saveAfter() {
     var form = $('#formRequest');
     form.prop('disabled', false);
+
     $(form.find('input')).each(function(i, v) {
         v.removeAttribute("required");
     });
@@ -2387,3 +2798,65 @@ function saveAfter() {
     action.val('saveWOR');
     document.getElementById("formRequest").submit();
 }
+
+// function validarinputs()
+//  {
+//     var form = $('#formRequest');
+//     var formjq = form.serializeArray();
+
+//     var validado = true;
+
+//     formjq.forEach(element => {
+//       if (!validado) 
+//          return;
+//       var vinput = $('#'+element.name);
+//       if (!vinput.hasClass('ignore'))
+//       {
+//         vinputvalidado = 
+//       }    
+
+
+        
+//     });
+//     console.log(formjq);
+
+// }
+
+// function validarinput(inputjq)
+// {
+//     if (inputjq.val() == "" )
+//     {  alert('no puede estar vacio');
+//        inputjq.focus;
+//        return false;
+
+//     }
+     
+// }
+
+// function valida(event)
+// {
+
+//     event.preventDefault();
+
+//     var form = $('#formRequest');
+   
+//     var empty = $(form).find('input[required]');
+//     var validado = true;
+
+//     $.each(empty, function(index, value) {
+//         if (value.value == "")
+//         {
+//                validado = false;
+//                //return;
+//         }       
+//           });
+//     //debugger
+//     if (!validado)
+//     {
+//       // e.preventDefault();
+//       return (alertify.error('DEBE CAPTURAR TODOS LOS DATOS!'));
+//     }  
+    
+//   return;
+    
+// }

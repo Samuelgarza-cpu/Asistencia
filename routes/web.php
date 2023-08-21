@@ -27,7 +27,7 @@ use Intervention\Image\Filters\DemoFilter;
 Route::get('/', function(){
     if(Auth::check()){
         if(session('user_agent') == 'Soport')
-            return redirect('/usuarios');
+            return redirect('/muebles');
         elseif(session('user_agent') == 'TrSo')
             return redirect('/solicitudes');
         else
@@ -124,6 +124,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/generardocumento/{id}','inside\RequestsController@document');
     Route::get('/verdocumento/{id}','inside\RequestsController@showDoc');
 
+    Route::get('/consultas', 'inside\ConsultasController@index');
+    Route::post('/consultas', 'inside\ConsultasController@consultas');
+
+
     //Errors//Control
     Route::get('/bitacora_errores', 'Errors\ErrorsLogController@index');
     Route::post('/bitacora_errores', 'Errors\ErrorsLogController@errors');
@@ -137,6 +141,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/usuarios', 'inside\UsersController@index');
     Route::post('/usuarios', 'inside\UsersController@users');
+
     Route::get('/registrar_usuario', 'inside\UsersController@new');
     Route::post('/registrar_usuario', 'inside\UsersController@save');
     Route::get('/modificar_usuario/{id}', 'inside\UsersController@updated');
@@ -216,7 +221,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     $user = new User();
-    $user->name = 'Sam';
+    $user->name = 'samuel';
     $user->password = Hash::make('123');
     $user->email = 'sam@gmail.com';
     $user->owner = 'Samuel Garza del Toro';

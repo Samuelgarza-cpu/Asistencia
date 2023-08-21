@@ -69,7 +69,6 @@ class LoginController extends Controller
                 session(['nameuser' => $user['name']]);
                 session(['userImage' => $departments_institutes['image']]);
                 session(['department_institute_id' => $user['departments_institutes_id']]);
-                // return redirect('home');
                 if($request->cookie('CPass') == null && $request->cookie('CName') == null && $remember_me)
                 return redirect('cookieset/'.$request->password);
                 else{

@@ -1,3 +1,4 @@
+
 @extends('base.base')
 @section('cssDashboard')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
@@ -19,13 +20,13 @@
   }
   </style>
 @endsection
-{{-- @section('text')
+<!--{{-- @section('text')
 @if (session('message'))
     <div class="alert alert-warning">
         {{ session('message') }}
     </div>
 @endif
-@endsection --}}
+@endsection --}}-->
 
 @section('content')
 <div class="card shadow mb-4">
@@ -37,6 +38,7 @@
       @csrf
       <input type="hidden" name="action" id="action" value="{{$action}}"/>
       <input type="hidden" name="actionUpdateWork" id="actionUpdateWork" value=""/>
+      <input type="hidden" name="session" id="session" value="{{$department_institute_id}}"/>
       @if(isset($requisition))
         <input type="hidden" name="id" id="id" value="{{$requisition->id}}">
       @else
@@ -49,17 +51,29 @@
       @endif
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" id="requestGeneralData-tab" data-toggle="tab" href="#requestGeneralData" role="tab" aria-controls="requestGeneralData" aria-selected="true">Datos generales de solicitud</a>
+          <a class="nav-link" id="requestGeneralData-tab" data-toggle="tab" href="#requestGeneralData" role="tab" aria-controls="requestGeneralData" aria-selected="true">Datos generales de solicitud</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="beneficiaryGeneralData-tab" data-toggle="tab" href="#beneficiaryGeneralData" role="tab" aria-controls="beneficiaryGeneralData" aria-selected="false">Datos generales de beneficiario</a>
+          <a class="nav-link disabled"  id="beneficiaryGeneralData-tab" data-toggle="tab" href="#beneficiaryGeneralData" role="tab" aria-controls="beneficiaryGeneralData" aria-selected="true">Datos generales de beneficiario</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" id="familySituation-tab" data-toggle="tab" href="#familySituation" role="tab" aria-controls="familySituation" aria-selected="false">Situación familiar</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="lifeConditions-tab" data-toggle="tab" href="#lifeConditions" role="tab" aria-controls="lifeConditions" aria-selected="false">Condiciones de vida</a>
-        </li>
+        @if(session('department_institute_id') <> 4)
+          <li class="nav-item">
+             <a class="nav-link disabled" id="familySituation-tab" data-toggle="tab" href="#familySituation" role="tab" aria-controls="familySituation" aria-selected="false">Situación familiar</a>
+          </li>
+        @else
+          <li class="nav-item">
+             <a class="nav-link disabled" id="familySituation-tab" data-toggle="tab" href="#familySituation" role="tab" aria-controls="familySituation" aria-selected="false">Situación familiar</a>
+          </li>
+        @endif  
+        @if(session('department_institute_id') <> 4)
+          <li class="nav-item">
+            <a class="nav-link disabled" id="lifeConditions-tab" data-toggle="tab" href="#lifeConditions" role="tab" aria-controls="lifeConditions" aria-selected="false">Condiciones de vida</a>
+          </li>
+        @else  
+          <li class="nav-item">
+            <a class="nav-link" id="lifeConditions-tab" data-toggle="tab" href="#lifeConditions" role="tab" aria-controls="lifeConditions" aria-selected="false">Condiciones de vida</a>
+          </li>
+        @endif     
         <li class="nav-item">
           <a class="nav-link" id="economicData-tab" data-toggle="tab" href="#economicData" role="tab" aria-controls="economicData" aria-selected="false">Ingresos económicos</a>
         </li>
@@ -72,14 +86,14 @@
             <div class="form-group col-md-4 files-div">
               @if(isset($requisition))
                 <span class="file petitionerImage">
-                  <input type="file" name=" " id="petitionerImage" class="form-control imagePetitioner" accept="image/*">
+                  <input type="file" name="petitionerImage" id="petitionerImage" accept="image/*" class="form-control imagePetitioner">
                 </span>
                 <label id="lblpetitionerImage" name="lblpetitionerImage"  value="{{$requisition->image}}" for="petitionerImage" class="label-img">
                   <span>{{$requisition->image}}</span>
                 </label>
               @else
                 <span class="file petitionerImage">
-                  <input type="file" name="petitionerImage" accept="image/*" id="petitionerImage" class="form-control imagePetitioner" required>
+                  <input type="file" name="petitionerImage"  id="petitionerImage" accept="image/*" class="form-control imagePetitioner">
                   <div class="invalid-feedback">
                     Favor de ingresar la imagen del solicitante
                   </div>
@@ -111,19 +125,32 @@
               @if(isset($requisition->petitioner))
                 <input type="text" class="form-control" id="petitioner" name="petitioner" placeholder="Ingrese el nombre del solicitante" required value="{{$requisition->petitioner}}">
               @else
-                <input type="text" class="form-control" id="petitioner" name="petitioner" placeholder="Ingrese el nombre del solicitante" required>
+                <input type="text" class="form-control" id="petitioner" name="petitioner" placeholder="Ingrese el nombre del solicitante" required value="">
               @endif
               <div class="invalid-feedback">
                   Favor de ingresar el nombre del solicitante
               </div>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-2">
+              <label for="agePetitioner">Edad del solicitante</label> 
+              <div class="input-group">
+                @if(isset($requisition->agePetitioner))
+                  <input type="text" class="form-control" id="agePetitioner" name="agePetitioner" data-mask="000" placeholder="Ingrese la edad solicitante" required value="{{$requisition->agePetitioner}}">
+                @else
+                  <input type="text" class="form-control" id="agePetitioner" name="agePetitioner" data-mask="000"   placeholder="Ingrese la edad del solicitante" required value="" >
+                @endif
+                <div class="invalid-feedback">
+                  Favor de ingresar la EDAD del solicitante
+                </div>
+              </div>  
+            </div>
+            <div class="form-group col-md-4">
               <label for="curpPetitioner">Curp del solicitante</label>
               <div class="input-group">
                 @if(isset($requisition->curpPetitioner))
                   <input type="text" class="form-control" id="curpPetitioner1" name="curpPetitioner1" data-mask="SSSS000000SSSSSSAA" placeholder="Ingrese la curp del solicitante" required value="{{$requisition->curpPetitioner}}">
                 @else
-                  <input type="text" class="form-control" id="curpPetitioner1" name="curpPetitioner1" data-mask="SSSS000000SSSSSSAA" placeholder="Ingrese la curp del solicitante" required>
+                  <input type="text" class="form-control" id="curpPetitioner1" name="curpPetitioner1" data-mask="SSSS000000SSSSSSAA" placeholder="Ingrese la curp del solicitante" required value="" >
                 @endif
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" type="button" onclick="verifyCurpPetitioner(this)" id="check-1">Verificar</button>
@@ -138,38 +165,49 @@
             <div class="form-group col-md-2">
               <label for="type">Tipo de documento</label>
               <select id="type" name="type" class="form-control" required>
+              @if(session('department_institute_id') <> 4)
                 @if(isset($requisition->type))
                   <option value="" {{"" == $requisition->type ? 'selected' : '' }}>selecciona...</option>
-                  <option value="ts" {{"ts" == $requisition->type ? 'selected' : '' }}>Trabajo Social</option>
+                  <option value="solicitud" {{"solicitud" == $requisition->type ? 'selected' : '' }}>Solicitud</option>
+                @else
+                  <option value="">selecciona...</option>
+                  <option value="solicitud">Solicitud</option>
+                @endif
+              @else  
+                @if(isset($requisition->type))
+                  <option value="" {{"" == $requisition->type ? 'selected' : '' }}>selecciona...</option>
+                  <option value="ts1" {{"ts1" == $requisition->type ? 'selected' : '' }}>Trabajo Social</option>
                   <option value="responsiva" {{"responsiva" == $requisition->type ? 'selected' : '' }}>Responsiva</option>
                   <option value="foliado" {{"foliado" == $requisition->type ? 'selected' : '' }}>Foliado</option>
                 @else
                   <option value="">selecciona...</option>
-                  <option value="ts">Trabajo Social</option>
+                  <!--{{--<option value="ts">Trabajo Social</option>--}}-->
+                  <option value="ts1">Trabajo Social</option>
                   <option value="responsiva">Responsiva</option>
                   <option value="foliado">Foliado</option>
                 @endif
+               @endif 
               </select>
             </div>
             <div class="form-group col-md-2">
               <label for="supports_id">Categoría del apoyo</label>
                 @if(isset($requisition->supports_id))
                     <select id="supports_id" name="supports_id" class="form-control" required>
-                        <option value="">selecciona...</option>
-                        @if(isset($supports))
-                            @foreach($supports as $element)
-                                <option value="{{$element['id']}}" {{$element['id'] == $requisition->supports_id ? 'selected' : ''}}>{{$element['name']}}</option>
-                            @endforeach
-                        @endif
+                    <option value="">selecciona...</option>
+                    @if(isset($supports))
+                        @foreach($supports as $element)
+                          <option value="{{$element['id']}}" {{$element['id'] == $requisition->supports_id ? 'selected' : ''}}>{{$element['name']}}</option>
+                        @endforeach
+                    @endif
                     </select>
                 @else
-                    <select id="supports_id" name="supports_id" class="form-control" disabled required>
-                        <option value="">selecciona...</option>
-                        @if(isset($supports))
-                            @foreach($supports as $element)
-                                <option value="{{$element['id']}}">{{$element['name']}}</option>
-                            @endforeach
-                        @endif
+                    <select id="supports_id" disabled name="supports_id" class="form-control"  required> 
+                    <option value="">selecciona...</option>
+                    @if(isset($supports))
+                        @foreach($supports as $element)
+                          <option value="{{$element['id']}}">{{$element['name']}}</option>
+                        @endforeach
+                    @endif
                     </select>
                 @endif
             </div>
@@ -201,19 +239,26 @@
               </div>
             </div>
           </div>
+          <hr>
           <div>
-            @if(isset($request))
-              <input type="hidden" name="countProduct" id="countProduct" value="{{$request['countProduct']}}">
-              <input type="hidden" name="countTotalP" id="countTotalP" value="{{$request['countProduct']}}">
-              <input type="hidden" name="fieldsProducts" id="fieldsProducts" value="{{$request['countProduct']}}">
+            <!-- <span class="m-0 font-weight-bold text-primary title-table">Productos
+               <button type="button" id="addProduct" class="btn btn-primary float-right">Agregar</button>
+            </span>-->
+            @if(isset($requisition))
+             <!--<input type="hidden" name="countProduct" id="countProduct" value="{{$requisition->countProduct}}">-->
+             <input type="hidden" name="countProduct" id="countProduct" value="{{$requisition->CountProduct == "0" || $requisition->CountProduct == null ? 1 : $requisition->CountProduct}}">
+             <!--<input type="hidden" name="countTotalP" id="countTotalP" value="{{$requisition->countProduct}}">-->
+             <input type="hidden" name="countTotalP" id="countTotalP" value="{{$requisition->CountProduct == "0" || $requisition->CountProduct == null ? 1 : $requisition->CountProduct}}">
+             <!--<input type="hidden" name="fieldsProducts" id="fieldsProducts" value="{{$requisition->countProduct}}">-->
+             <input type="hidden" name="fieldsProducts" id="fieldsProducts" value="{{$requisition->CountProduct == "0" || $requisition->CountProduct == null ? 1 : $requisition->CountProduct}}">
             @else
               <input type="hidden" name="countProduct" id="countProduct" value="1">
               <input type="hidden" name="countTotalP" id="countTotalP" value="1">
               <input type="hidden" name="fieldsProducts" id="fieldsProducts" value="1">
             @endif
           </div>
-
-          {{-- <div class="headerAppend">Producto Principal</div> --}}
+          <hr>
+       <div class="headerAppend">Producto Principal</div> 
           <div class="form-row">
             <div class="form-group col-md-3">
                 <label for="suppliers_id1">Proveedor</label>
@@ -283,89 +328,105 @@
                 @endif
               </div>
             </div>
-          </div>
-          {{-- @if(isset($request))
-            @for($i = 2 ; $i <= $request['countProduct'];$i++)
-              <div id="{{'fDP-'.$i}}">
-                <hr>
-                <div class="headerAppend">Producto {{$i}}
-                  <button type="button" id="{{'deleteProduct-'.$i}}" class="btn float-right" onclick="deleteProduct(this)">
-                    <i class="fas fa-trash-alt fa-2x colorIcon"></i>
-                  </button>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-3">
-                    <label for="{{'suppliers_id'.$i}}">Proveedor</label>
-                    <select id="{{'suppliers_id'.$i}}" disabled name="{{'suppliers_id'.$i}}" class="form-control" required>
-                      <option value="">Selecciona...</option>
-                        @if(isset($suppliers))
-                          @foreach($suppliers['suppliers'.$i] as $element)
-                            <option value="{{$element['id']}}" {{$element['id'] == $requisition['suppliers_id'.$i] ? 'selected' : '' }}>{{$element['companyname']}}</option>
-                          @endforeach
-                        @else
-                          @foreach($suppliers as $element)
-                            <option value="{{$element['id']}}">{{$element['companyname']}}</option>
-                          @endforeach
-                        @endif
-                    </select>
+          </div> 
+          <div>   <!-- otros productos --> 
+            @if(session('department_institute_id') <> 4)
+              <span class="m-0 font-weight-bold text-primary title-table" hidden>Productos
+                  <button type="button" id="addProduct" class="btn btn-primary float-right" hidden>Agregar</button>
+              </span>
+            @else  
+              <span class="m-0 font-weight-bold text-primary title-table">Productos
+                  <button type="button" id="addProduct" class="btn btn-primary float-right">Agregar</button>
+              </span>
+            @endif  
+            @if(isset($requisition))
+               @for($i = 2 ; $i <= $requisition->CountProduct;$i++)
+                <div id="{{'fDP-'.$i}}">
+                  <hr>
+                  <div class="headerAppend">Producto {{$i}}
+                    <button type="button" id="{{'deleteProduct-'.$i}}" class="btn float-right" onclick="deleteProduct(this)">
+                      <i class="fas fa-trash-alt fa-2x colorIcon"></i>
+                    </button>
                   </div>
-                  <div class="form-group col-md-3">
-                    <label for="{{'products_id'.$i}}">Producto</label>
-                    <select id="{{'products_id'.$i}}" disabled name="{{'products_id'.$i}}" class="form-control" required>
-                      <option value="">seleccione...</option>
+                  <div class="form-row">
+                    <div class="form-group col-md-3">
+                      <label for="{{'suppliers_id'.$i}}">Proveedor</label>
+                      <select id="{{'suppliers_id'.$i}}" name="{{'suppliers_id'.$i}}" class="form-control" onchange="getProd(this)" required>
+                        <option value="">Selecciona...</option>
+                          @if(isset($suppliers))
+                            @if(isset($requisition['suppliers_id'.$i]))
+                              @foreach($suppliers as $element)
+                                <option value="{{$element['id']}}" {{$element['id'] == $requisition['suppliers_id'.$i] ? 'selected' : '' }}>{{$element['companyname']}}</option>
+                              @endforeach
+                            @else
+                              @foreach($suppliers as $element)
+                                <option value="{{$element['id']}}">{{$element['companyname']}}</option>
+                              @endforeach
+                            @endif
+                          @endif  
+                      </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label for="{{'products_id'.$i}}">Producto</label>
+                      <select id="{{'products_id'.$i}}"  name="{{'products_id'.$i}}" class="form-control"  onchange="getPrecio(this)" required>
+                        <option value="">seleccione...</option>
+                        @if(isset($products))
+                          @if(isset($requisition['products_id'.$i]))                    
+                            @foreach($products as $element)
+                              <option value="{{$element['id']}}" {{$element['id'] == $requisition['products_id'.$i] ? 'selected' : '' }}>{{$element['name']}}</option>
+                            @endforeach
+                          @else
+                            @foreach($products as $element)
+                              <option value="{{$element['id']}}">{{$element['name']}}</option>
+                            @endforeach
+                          @endif
+                        @endif  
+                      </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="{{'unitPrice'.$i}}">Precio Unitario</label>
                       @if(isset($products))
-                          @foreach($products['product'.$i] as $element)
-                            <option value="{{$element['id']}}" {{$element['id'] == $requisition['products_id'.$i] ? 'selected' : '' }}>{{$element['name']}}</option>
-                          @endforeach
+                        <input type="text" class="form-control" id="{{'unitPrice'.$i}}" disabled name="{{'unitPrice'.$i}}" placeholder="Ingresar el precio del producto" onchange="enabledCantidad(this)" required value="{{$requisition['unitPrice'.$i]}}">
                       @else
-                          @foreach($products as $element)
-                            <option value="{{$element['id']}}">{{$element['name']}}</option>
-                          @endforeach
+                        <input type="text" class="form-control" id="{{'unitPrice'.$i}}" disabled name="{{'unitPrice'.$i}}" placeholder="Ingresar el precio del producto" required value="0">
                       @endif
-                    </select>
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="{{'unitPrice'.$i}}">Precio Unitario</label>
-                    @if(isset($requisition->products))
-                      <input type="text" class="form-control" id="{{'unitPrice'.$i}}" disabled name="{{'unitPrice'.$i}}" placeholder="Ingresar el precio del producto" required value="{{$requisition['unitPrice'.$i]}}">
-                    @else
-                      <input type="text" class="form-control" id="{{'unitPrice'.$i}}" disabled name="{{'unitPrice'.$i}}" placeholder="Ingresar el precio del producto" required value="0">
-                    @endif
-                    <div class="invalid-feedback">
-                      Favor de ingresar el precio del producto
+                      <div class="invalid-feedback">
+                        Favor de ingresar el precio del producto
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="{{'qty'.$i}}">Cantidad</label>
-                    @if(isset($requisition->products))
-                      <input type="text" class="form-control" id="{{'qty'.$i}}" disabled name="{{'qty'.$i}}" placeholder="Ingresar la cantidad de productos" required value="{{$requisition['qty'.$i]}}">
-                    @else
-                      <input type="text" class="form-control" id="{{'qty'.$i}}" disabled name="{{'qty'.$i}}" placeholder="Ingresar la cantidad de productos" required value="0">
-                    @endif
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="{{'totalPrice'.$i}}">Costo Total</label>
-                    @if(isset($requisition->products))
-                      <input type="text" class="form-control" id="{{'totalPrice'.$i}}" disabled name="{{'totalPrice'.$i}}" disabled required value="{{$requisition['totalPrice'.$i]}}">
-                    @else
-                      <input type="text" class="form-control" id="{{'totalPrice'.$i}}" disabled name="{{'totalPrice'.$i}}" disabled required value="0">
-                    @endif
-                    <div class="invalid-feedback">
-                      Favor de ingresar el total del costo
+                    <div class="form-group col-md-2">
+                      <label for="{{'qty'.$i}}">Cantidad</label>
+                      @if(isset($products))
+                        <input type="text" class="form-control" id="{{'qty'.$i}}" name="{{'qty'.$i}}" placeholder="Ingresar la cantidad de productos" onchange="totalCantidad(this)" required value="{{$requisition['qty'.$i]}}">
+                      @else
+                        <input type="text" class="form-control" id="{{'qty'.$i}}" name="{{'qty'.$i}}" placeholder="Ingresar la cantidad de productos" required value="0">
+                      @endif
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="{{'totalPrice'.$i}}">Costo Total</label>
+                      @if(isset($products))
+                         <input type="text" class="form-control" id="{{'totalPrice'.$i}}" name="{{'totalPrice'.$i}}" disabled required value="{{$requisition['totalPrice'.$i]}}">
+                      @else
+                        <input type="text" class="form-control" id="{{'totalPrice'.$i}}" name="{{'totalPrice'.$i}}" disabled required value="0">
+                      @endif
+                      <div class="invalid-feedback">
+                        Favor de ingresar el total del costo
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            @endfor
-          @endif
-          <div id="products"></div> --}}
-          <hr>
+              @endfor
+            @endif
+            <div id="products"></div> 
+          </div>
+         <hr>
           <a href="/solicitudes"  class="btn btn-primary float-right">Cancelar</a>
-          <button type="button" id="requestGeneralData-1"  onclick="nextNavTab(this)" class="btn btn-primary float-right" style="margin-right: 3px;">Siguiente</button>
-          <button type="button" onclick="saveAfter()" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button>
-        
+          <button type="button" id="requestGeneralData-1"  onclick="nextNavTab(this,event)" class="btn btn-primary float-right" style="margin-right: 3px;">Siguiente</button>
+          <!-- <button type="button" id="requestGeneralData-1"  onclick="validarinputs()" class="btn btn-primary float-right" style="margin-right: 3px;">Siguiente</button> -->
+         <hr> 
+         <!-- {{-- <button type="button" onclick="saveAfter()" class="7btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button> --}}-->
         </div>
-        {{-- beneficiaryGeneralData --}}
+        {{-- BeneficiaryGeneralData --}}
         <div class="tab-pane fade" id="beneficiaryGeneralData" role="tabpanel" aria-labelledby="beneficiaryGeneralData-tab">
           <br>
           <div>
@@ -392,7 +453,7 @@
           	</div>
          </div>            
           <div class="form-row">
-            <div class="form-group col-md-7">
+            <div class="form-group col-md-3">
               <label for="curpbeneficiary1">Curp del beneficiario</label>
               <div class="input-group">
                 @if(isset($requisition->beneficiary1))
@@ -408,7 +469,7 @@
                 </div>
               </div>
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-3">
                 <label for="agebeneficiary1">Edad</label>
                 @if(isset($requisition->beneficiary1))
                   <input type="text" class="form-control" id="agebeneficiary1" data-mask="000" name="agebeneficiary1" placeholder="Ingrese la edad del beneficiario" required value="{{$requisition->beneficiary1['age']}}">
@@ -417,7 +478,18 @@
                 @endif
             </div>
             <div class="form-group col-md-3">
-              <label for="phonenumber1">Número telefónico</label>
+                <label for="sermedico1">Servicio Médico</label>
+                @if(isset($requisition->sermedico1))
+                    <input type="text" class="form-control" id="sermedico1"  name="sermedico1" placeholder="Ingrese Servicio Médico" required value="{{$requisition->sermedico1}}">
+                @else
+                    <input type="text" class="form-control" id="sermedico1"  name="sermedico1" placeholder="Ingrese Servicio Médico" required>
+                @endif
+                <div class="invalid-feedback">
+                     Favor de ingresar el Servicio Médico
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="phonenumber1">Número telefónico</label>
                 @if(isset($requisition->beneficiary1))
                   <input type="text" class="form-control" id="phonenumber1" name="phonenumber1" placeholder="Ingresar número telefónico del beneficiario" data-mask="000-000-0000" value="{{$requisition->beneficiary1['ext']['number']}}" required>
                 @else
@@ -431,7 +503,7 @@
           <div class="form-row">
             <div class="form-group col-md-4">
               <label for="namebeneficiary1">Nombre(s)</label>
-              @if(isset($requisition->beneficiary1))
+             count @if(isset($requisition->beneficiary1))
                 <input type="text" class="form-control" id="namebeneficiary1" name="namebeneficiary1" value="{{$requisition->beneficiary1['name']}}" placeholder="Ingrese el nombre del beneficiario" required>
               @else
                 <input type="text" class="form-control" id="namebeneficiary1" name="namebeneficiary1" placeholder="Ingrese el nombre del beneficiario" required>
@@ -522,8 +594,9 @@
             </div>
           </div>                    
           <span class="m-0 font-weight-bold text-primary headerAppend">Diagnostico de Beneficiario
-              <button type="button" id="addDiagnosticBeneficiary1" class="btn btn-primary float-right">Agregar</button>
+             <!--  <button type="button" id="addDiagnosticBeneficiary1" class="btn btn-primary float-right">Agregar</button> -->
           </span>
+
           @if(isset($requisition))
             <input type="hidden" name="countDiagnosticBeneficiary1" id="countDiagnosticBeneficiary1" value="{{$requisition['countDiagnosticBeneficiary1'] == 0 || $requisition['countDiagnosticBeneficiary1'] == null ? 1 : $requisition['countDiagnosticBeneficiary1']}}">                                                                                                              
             <input type="hidden" name="countTotalDB1" id="countTotalDB1" value="{{$requisition['countDiagnosticBeneficiary1'] == 0 || $requisition['countDiagnosticBeneficiary1'] == null ? 1 : $requisition['countDiagnosticBeneficiary1']}}">
@@ -543,40 +616,78 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="disabilitycategories1_1">Categoria del Diagnostico</label>
-              <select id="disabilitycategories1_1" name="disabilitycategories1_1" class="form-control" required>
-                <option value="">selecciona...</option>
-                @if(isset($catDisabilities))
-                  @if(isset($requisition['beneficiary1']))
-                    @foreach($catDisabilities as $element)
-                      <option value="{{$element['id']}}" {{$element['id'] == $requisition->beneficiary1['catDisabilities_id1'] ? 'selected' : '' }}>{{$element['name']}}</option>
-                    @endforeach
+              @if(session('department_institute_id') <> 4)
+                <select id="disabilitycategories1_1"  name="disabilitycategories1_1"  disabled class="form-control">
+                  <option value="">selecciona...</option>
+                  @if(isset($catDisabilities))
+                    @if(isset($requisition['beneficiary1']))
+                      @foreach($catDisabilities as $element)
+                        <option value="{{$element['id']}}" {{$element['id'] == $requisition->beneficiary1['catDisabilities_id1'] ? 'selected' : '' }}>{{$element['name']}}</option>
+                      @endforeach
+                    @else
+                      @foreach($catDisabilities as $element)
+                        <option value="{{$element['id']}}">{{$element['name']}}</option>
+                      @endforeach
+                    @endif
                   @else
-                    @foreach($catDisabilities as $element)
+                    @foreach($categotydisability as $element)
                       <option value="{{$element['id']}}">{{$element['name']}}</option>
-                    @endforeach
-                  @endif
-                @else
-                  @foreach($categotydisability as $element)
-                    <option value="{{$element['id']}}">{{$element['name']}}</option>
-                  @endforeach
-                @endif
-              </select>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="disability1_1">Diagnostico</label>
-              @if(isset($requisition->beneficiary1))
-                <select id="disability1_1" name="disability1_1"  class="form-control" required>
-                  <option value="">Selecciona...</option>
-                  @if(isset($requisition->beneficiary1Disabilities1))
-                    @foreach($requisition->beneficiary1Disabilities1 as $element)
-                      <option value="{{$element['id']}}" {{$element->id == $requisition->beneficiary1['disabilities_id1'] ? 'selected' : ''}}>{{$element['name']}}</option>
                     @endforeach
                   @endif
                 </select>
               @else
-                <select id="disability1_1" name="disability1_1" disabled class="form-control" required>
-                  <option value="">Selecciona...</option>
+                <select id="disabilitycategories1_1"  name="disabilitycategories1_1"  class="form-control">                   
+                  <option value="">selecciona...</option>
+                  @if(isset($catDisabilities))
+                    @if(isset($requisition['beneficiary1']))
+                      @foreach($catDisabilities as $element)
+                        <option value="{{$element['id']}}" {{$element['id'] == $requisition->beneficiary1['catDisabilities_id1'] ? 'selected' : '' }}>{{$element['name']}}</option>
+                      @endforeach
+                    @else
+                      @foreach($catDisabilities as $element)
+                        <option value="{{$element['id']}}">{{$element['name']}}</option>
+                      @endforeach
+                    @endif
+                  @else
+                    @foreach($categotydisability as $element)
+                      <option value="{{$element['id']}}">{{$element['name']}}</option>
+                    @endforeach
+                  @endif
                 </select>
+              @endif
+            </div>
+            <div class="form-group col-md-6">
+              <label for="disability1_1">Diagnostico</label>
+              @if(session('department_institute_id') <> 4)
+                @if(isset($requisition->beneficiary1))
+                  <select id="disability1_1" name="disability1_1" disabled class="form-control">  
+                    <option value="">Selecciona...</option>
+                    @if(isset($requisition->beneficiary1Disabilities1))
+                      @foreach($requisition->beneficiary1Disabilities1 as $element)
+                        <option value="{{$element['id']}}" {{$element->id == $requisition->beneficiary1['disabilities_id1'] ? 'selected' : ''}}>{{$element['name']}}</option>
+                      @endforeach
+                    @endif
+                  </select>
+                @else
+                  <select id="disability1_1" name="disability1_1" disabled class="form-control">
+                    <option value="">Selecciona...</option>
+                  </select>
+                @endif
+              @else
+                @if(isset($requisition->beneficiary1))
+                  <select id="disability1_1" name="disability1_1" class="form-control">
+                    <option value="">Selecciona...</option>
+                    @if(isset($requisition->beneficiary1Disabilities1))
+                       @foreach($requisition->beneficiary1Disabilities1 as $element)
+                        <option value="{{$element['id']}}" {{$element->id == $requisition->beneficiary1['disabilities_id1'] ? 'selected' : ''}}>{{$element['name']}}</option>
+                      @endforeach
+                    @endif
+                  </select>
+                @else
+                  <select id="disability1_1" name="disability1_1" class="form-control">
+                    <option value="">Selecciona...</option>
+                  </select>
+                @endif
               @endif
             </div>
           </div>
@@ -617,7 +728,7 @@
                               <option value="{{$element['id']}}" {{$element->id == $requisition->beneficiary1['disabilities_id'.$i] ? 'selected' : ''}}>{{$element['name']}}</option>
                             @endforeach
                         </select>
-                      @else
+                      @elses
                         <select id="{{'disability1_'.$i}}" name="{{'disability1_'.$i}}" disabled class="form-control" required>
                           <option value="">Selecciona...</option>
                         </select>
@@ -640,7 +751,7 @@
                   </button>
                 </div>
                 <div class="form-row">
-                  <div class="form-group col-md-7">
+                  <div class="form-group col-md-3">
                     <label for="{{'curpbeneficiary'.$i}}">Curp del beneficiario</label>
                     <div class="input-group">
                       @if(isset($requisition['beneficiary'.$i]))
@@ -656,13 +767,24 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group col-md-2">
+                  <div class="form-group col-md-3">
                     <label for="{{'agebeneficiary'.$i}}">Edad</label>
                     @if(isset($requisition->beneficiary1))
                       <input type="text" class="form-control" id="{{'agebeneficiary'.$i}}" data-mask="000" name="{{'agebeneficiary'.$i}}" placeholder="Ingrese la edad del beneficiario" required value="{{$requisition['beneficiary'.$i]['age']}}">
                     @else
                       <input type="text" class="form-control" id="{{'agebeneficiary'.$i}}" data-mask="000" name="{{'agebeneficiary'.$i}}" placeholder="Ingrese la edad del beneficiario" required>
                     @endif
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="{{'sermedico'.$i}}">Servicio Médico</label>
+                    @if(isset($requisition['beneficiary'.$i]))
+                      <input type="text" class="form-control" id="{{'sermedico'.$i}}"  name="{{'sermedico'.$i}}" placeholder="Ingrese el Servicio Médico" required value="{{$requisition['beneficiary'.$i]['sermedico']}}">
+                    @else
+                      <input type="text" class="form-control" id="{{'sermedico'.$i}}"  name="{{'sermedico'.$i}}" placeholder="Ingrese la Serrvicio Médico" required>
+                    @endif
+                  </div>
+                  <div class="invalid-feedback">
+                      Favor de ingresar el Servicio Médico
                   </div>
                   <div class="form-group col-md-3">
                     <label for="{{'phonenumber'.$i}}">Número telefónico</label>
@@ -770,34 +892,33 @@
                   </div>
                 </div>
                 <div>
-                  <span class="m-0 font-weight-bold text-primary headerAppend">Diagnostico de Beneficiario
-                    <button type="button" id="{{'addDiagnosticBeneficiary'.$i}}" onclick='addDisabilities(this)' class="btn btn-primary float-right">Agregar</button>
+                  <span class="m-0 font-weight-bold text-primary headerAppend">Diagnostico de Beneficiario {{$i}}
+                    {{--<button type="button" id="{{'addDiagnosticBeneficiary'.$i}}" onclick='addDisabilities(this)' class="btn btn-primary float-right">Agregar</button> --}}
                   </span>
                   @if(isset($requisition))
                     <input type="hidden" name="{{'countDiagnosticBeneficiary'.$i}}" id="{{'countDiagnosticBeneficiary'.$i}}" value="{{$requisition['countDiagnosticBeneficiary'.$i]}}">
                     <input type="hidden" name="{{'countTotalDB'.$i}}" id="{{'countTotalDB'.$i}}" value="{{$requisition['countDiagnosticBeneficiary'.$i]}}">
                   @else
-                    <input type="hidden" name="{{'countDiagnosticBeneficiary'.$i}}" id="{{'countDiagnosticBeneficiary'.$i}}" value="1">
+                    s<input type="hidden" name="{{'countDiagnosticBeneficiary'.$i}}" id="{{'countDiagnosticBeneficiary'.$i}}" value="1">
                     <input type="hidden" name="{{'countTotalDB'.$i}}" id="{{'countTotalDB'.$i}}" value="1">
                   @endif
                 </div>
-              </div>
-              @if(isset($requisition))
-                <div id="{{'requestDiagnostic'.$i}}">
+                @if(isset($requisition))
+                  <div id="{{'requestDiagnostic'.$i}}">
                   @for($x = 1; $x <= $requisition['countDiagnosticBeneficiary'.$i]; $x++)
                     <div id="{{'fDDB'.$i.'_'.$x}}">                        
                       <hr>
-                      <div id="{{'requestHeader'.$x}}" class="headerAppend">Categoria de Diagnostico {{$x}}
-                        <button type="button" id="{{'deleteDB'.$i.'_'.$x}}" class="btn float-right" onclick="deleteBeneficiaryDiag(this)">
+                      <div id="{{'requestHeader'.$x}}" class="headerAppend">Categoria de Diagnostico {{$x+1}}
+                        <!--<button type="button" id="{{'deleteDB'.$i.'_'.$x}}" class="btn float-right" onclick="deleteBeneficiaryDiag(this)">
                           <i class="fas fa-trash-alt fa-2x colorIcon"></i>
-                        </button>
+                        </button>-->
                       </div>
                       <div class="form-row" style="display: none;">
                         <div class="form-group col-md-12">                    
                           @if(isset($requisition['beneficiary'.$i]['Disabilitiesid'.$x]))
                             <input type="hidden" class="form-control" id="{{'beneficiaryDisabilitiesid'.$i.'_'.$x}}" name="{{'beneficiaryDisabilitiesid'.$i.'_'.$x}}" value="{{ $requisition['beneficiary'.$i.'Disabilitiesid'.$x]}}">
                           @else
-                            <input type="hidden" class="form-control" id="{{'beneficiaryDisabilitiesid'.$i.'_'.$x}}" name="{{'beneficiaryDisabilitiesid'.$i.'_'.$x}} value="">
+                            <input type="hidden" class="form-control" id="{{'beneficiaryDisabilitiesid'.$i.'_'.$x}}" name="{{'beneficiaryDisabilitiesid'.$i.'_'.$x}}" value="">
                           @endif
                         </div>
                       </div>
@@ -837,10 +958,12 @@
                       </div>
                     </div>
                   @endfor
-                </div>
-              @endif                
+                  </div>
+                @endif
+              </div>                  
             @endfor
           @endif
+       
           <div id="requests"></div>
           <hr/>
           <div class="headerAppend">
@@ -904,13 +1027,13 @@
                       <option value="{{$element['id']}}" {{$element['id'] == $requisition->address['communities_id'] ? 'selected' : '' }}>{{$element['name']}}</option>
                     @endforeach
                   @endif
-                </select>
+                </select> 
               @else
                 <select id="communities_id1" name="communities_id1" disabled class="form-control" required>
-                  <option value="">Selecciona...</option>
+                    <option value="">Selecciona...</option>
                 </select>
               @endif
-            </div>
+            </div> 
             <div class="form-group col-md-3">
               <label for="municipalities_id1">Municipio</label>
               <select id="municipalities_id1" name="municipalities_id1" disabled class="form-control" required>
@@ -946,8 +1069,8 @@
           <a href="solicitudes"  class="btn btn-primary float-right">Cancelar</a>
           <button type="button" id="beneficiaryGeneralData-1"  onclick="nextNavTab(this)" class="btn btn-primary float-right" style="margin-right: 3px;">Siguiente</button>
           <button type="button" id="beneficiaryGeneralData-2"  onclick="nextNavTab(this)" class="btn btn-primary float-right" style="margin-right: 3px;">Anterior</button>
-          <button type="button" onclick="saveAfter()" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button>          
-        </div>  
+          <!--{{-- <button type="button" onclick="saveAfter()" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button>--}}-->
+        </div> 
         {{-- familySituation --}}
         <div class="tab-pane fade" id="familySituation" role="tabpanel" aria-labelledby="familySituation-tab">
           <hr>
@@ -1020,7 +1143,9 @@
                   <option value="primo(a)" {{"primo(a)" == $requisition->ConditionsFamily1['relationship'] ? 'selected' : ''}}>Primo(a)</option>
                   <option value="hijo(a)" {{"hijo(a)" == $requisition->ConditionsFamily1['relationship'] ? 'selected' : ''}}>Hijo(a)</option>
                   <option value="abuelo(a)" {{"abuelo(a)" == $requisition->ConditionsFamily1['relationship'] ? 'selected' : ''}}>Abuelo(a)</option>
+                  <option value="esposo(a)" {{"esposo(a)" == $requisition->ConditionsFamily1['relationship'] ? 'selected' : ''}}>Esposo(a)</option>
                   <option value="otros" {{"otros" == $requisition->ConditionsFamily1['relationship'] ? 'selected' : ''}}>Otros</option>
+          
                 @else
                   <option value="">selecciona...</option>
                   <option value="padre">Padre</option>
@@ -1030,6 +1155,7 @@
                   <option value="primo(a)">Primo(a)</option>
                   <option value="hijo(a)">Hijo(a)</option>
                   <option value="abuelo(a)">Abuelo(a)</option>
+                  <option value="esposo(a)">Esposo(a)</option>
                   <option value="otros">Otros</option>
                 @endif
               </select>
@@ -1163,7 +1289,9 @@
                         <option value="hermano(a)" {{"hermano(a)" == $requisition['ConditionsFamily'.$i]['relationship'] ? 'selected' : ''}}>Hermano(a)</option>
                         <option value="hijo(a)" {{"hijo(a)" == $requisition['ConditionsFamily'.$i]['relationship'] ? 'selected' : ''}}>Hijo(a)</option>
                         <option value="abuelo(a)" {{"abuelo(a)" == $requisition['ConditionsFamily'.$i]['relationship'] ? 'selected' : ''}}>Abuelo(a)</option>
+                        <option value="esposo(a)" {{"esposo(a)" == $requisition['ConditionsFamily'.$i]['relationship'] ? 'selected' : ''}}>Esposo(a)</option>
                         <option value="otros" {{"otros" == $requisition['ConditionsFamily'.$i]['relationship'] ? 'selected' : ''}}>Otros</option>
+                      
                       @else
                         <option value="">selecciona...</option>
                         <option value="padre">Padre</option>
@@ -1173,6 +1301,7 @@
                         <option value="primo(a)">Primo(a)</option>
                         <option value="hermano(a)">Hermano(a)</option>
                         <option value="hijo(a)">Hijo(a)</option>
+                        <option value="esposo(a)">Esposo(a)</option>
                         <option value="abuelo(a)">Abuelo(a)</option>
                         <option value="otros">Otros</option>
                       @endif
@@ -1251,9 +1380,9 @@
           <a href="solicitudes"  class="btn btn-primary float-right">Cancelar</a>
           <button type="button" id="familySituation-1"  onclick="nextNavTab(this)" class="btn btn-primary float-right" style="margin-right: 3px;">Siguiente</button>
           <button type="button" id="familySituation-2"  onclick="nextNavTab(this)" class="btn btn-primary float-right" style="margin-right: 3px;">Anterior</button>
-          <button type="button" onclick="saveAfter()" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button>
+          <!--{{-- <button type="button" onclick="saveAfter()" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button> --}}-->
         </div>                
-        {{-- economicData --}}
+        {{-- lifeConditions --}}
         <div class="tab-pane fade" id="lifeConditions" role="tabpanel" aria-labelledby="lifeConditions-tab">
           <br>
           <div class="form-row">
@@ -1277,11 +1406,19 @@
             </div>
             <div class="form-group col-md-5">
                 <label for="number_rooms">Número de cuartos</label>
-                @if(isset($lifeConditions))
-                    <input type="text" class="form-control" id="number_rooms" name="number_rooms" value="{{$lifeConditions->number_rooms}}" data-mask="00" placeholder="Ingresar la cantidad de cuartos" required>
+                @if(session('department_institute_id') <> 4)
+                  @if(isset($lifeConditions))
+                    <input type="text" class="form-control" id="number_rooms" name="number_rooms" value="{{$lifeConditions->number_rooms}}" data-mask="00" placeholder="Ingresar la cantidad de cuartos">
+                  @else
+                    <input type="text" class="form-control" id="number_rooms" name="number_rooms" placeholder="Ingresar la cantidad de cuartos" data-mask="00" >
+                  @endif
                 @else
+                  @if(isset($lifeConditions))
+                    <input type="text" class="form-control" id="number_rooms" name="number_rooms" value="{{$lifeConditions->number_rooms}}" data-mask="00" placeholder="Ingresar la cantidad de cuartos" required >
+                  @else
                     <input type="text" class="form-control" id="number_rooms" name="number_rooms" placeholder="Ingresar la cantidad de cuartos" data-mask="00" required>
-                @endif
+                  @endif
+                 @endif
             </div>
           </div>
           <hr>
@@ -1361,6 +1498,7 @@
                             <option value="{{$element['id']}}">{{$element['name']}}</option>
                           @endforeach
                         @endif
+
                       @endif
                     </select>
                   </div>
@@ -1522,7 +1660,6 @@
                     <input type="hidden" class="form-control" id="{{'servicesid'.$i}}" name="{{'servicesid'.$i}}" value="">
                   @endif
                 </div>
-
                 <div class="form-row">
                   <div class="form-group col-md-12">
                     <label for="{{'services_id'.$i}}">Servicio</label>
@@ -1551,7 +1688,8 @@
           <a href="solicitudes"  class="btn btn-primary float-right">Cancelar</a>
           <button type="button" id="lifeConditions-1"  onclick="nextNavTab(this)" class="btn btn-primary float-right" style="margin-right: 3px;">Siguiente</button>
           <button type="button" id="lifeConditions-2"  onclick="nextNavTab(this)" class="btn btn-primary float-right" style="margin-right: 3px;">Anterior</button>
-          <button type="button" onclick="saveAfter()" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button>          
+          <!--{{-- <button type=
+            "button" onclick="saveAfter()" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button> --}}-->
         </div>
         {{-- economicData --}}
         <div class="tab-pane fade" id="economicData" role="tabpanel" aria-labelledby="economicData-tab">
@@ -1559,25 +1697,41 @@
           <div class="form-row">
             <div class="form-group col-md-4">
               <label for="income">Ingresos</label>
-              @if(isset($economicData))
-                <input type="text" class="form-control" id="income" name="income" placeholder="Ingresa los ingresos mensuales del beneficiario" required value="{{$economicData['income']}}">
+              @if(session('department_institute_id') <> 4)
+                  @if(isset($economicData))
+                    <input type="text" disabled class="form-control" id="income" name="income" placeholder="Ingresa los ingresos mensuales del beneficiario"  value="{{$economicData['income']}}">
+                  @else
+                    <input type="text" disabled class="form-control" id="income" name="income" placeholder="Ingresa los ingresos mensuales del beneficiario" >
+                  @endif
               @else
-                <input type="text" class="form-control" id="income" name="income" placeholder="Ingresa los ingresos mensuales del beneficiario" required>
+                  @if(isset($economicData))
+                    <input type="text" class="form-control" id="income" name="income" placeholder="Ingresa los ingresos mensuales del beneficiario" required value="{{$economicData['income']}}">
+                  @else
+                    <input type="text" class="form-control" id="income" name="income" placeholder="Ingresa los ingresos mensuales del beneficiario" required>
+                  @endif
               @endif
             </div>
             <div class="form-group col-md-4">
               <label for="expense">Egresos</label>
-              @if(isset($economicData))
-                <input type="text" class="form-control" id="expense" name="expense" placeholder="Ingresa los egresos mensuales del beneficiario" value="{{$economicData['expense']}}">
+              @if(session('department_institute_id') <> 4)
+                  @if(isset($economicData))
+                    <input type="text" disabled class="form-control" id="expense" name="expense" placeholder="Ingresa los egresos mensuales del beneficiario" value="{{$economicData['expense']}}">
+                  @else
+                    <input type="text"  disabled class="form-control" id="expense" name="expense" placeholder="Ingresa los egresos mensuales del beneficiario">
+                  @endif
               @else
-                <input type="text" class="form-control" id="expense" name="expense" placeholder="Ingresa los egresos mensuales del beneficiario">
+                  @if(isset($economicData))
+                    <input type="text" class="form-control" id="expense" name="expense" placeholder="Ingresa los egresos mensuales del beneficiario" value="{{$economicData['expense']}}">
+                  @else
+                    <input type="text" class="form-control" id="expense" name="expense" placeholder="Ingresa los egresos mensuales del beneficiario">
+                  @endif
               @endif
             </div>
           </div>
           <a href="solicitudes"  class="btn btn-primary float-right">Cancelar</a>
           <button type="submit" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar</button>
           <button type="button" id="economicData-1"  onclick="nextNavTab(this)" class="btn btn-primary float-right" style="margin-right: 3px;">Anterior</button>
-          <button type="button" onclick="saveAfter()" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button>
+          <!--{{-- <button type="button" onclick="saveAfter()" class="btn btn-primary float-right" style="margin-right: 3px;">Guardar para después</button> --}}-->
         </div>
        </div> 
     </form>
@@ -1621,7 +1775,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-warning-title">¡AVISO IMPORTANTE!</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
             <div id="alert-container"></div>
@@ -1634,12 +1788,18 @@
     </div>
   </div>
 </div>
-
-
-
 @endsection
 
 @section('jsDashboard')
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[type=text]').forEach( node => node.addEventListener('keypress', e => {
+        if(e.keyCode == 13) {
+          e.preventDefault();
+        }
+      }))
+    });
+  </script>  
   <script src="../assets/js/mainForm.js"></script>
   <script src="../assets/js/RequestForm.js"> </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>

@@ -57,7 +57,7 @@
                 "issues": "https://github.com/asm89/stack-cors/issues",
                 "source": "https://github.com/asm89/stack-cors/tree/v2.0.2"
             },
-            "install-path": "../../../Asistencia/vendor/asm89/stack-cors"
+            "install-path": "../asm89/stack-cors"
         },
         {
             "name": "balping/json-raw-encoder",
@@ -103,7 +103,7 @@
                 "encode",
                 "json"
             ],
-            "install-path": "../../../Asistencia/vendor/balping/json-raw-encoder"
+            "install-path": "../balping/json-raw-encoder"
         },
         {
             "name": "barryvdh/laravel-dompdf",
@@ -162,7 +162,7 @@
                 "laravel",
                 "pdf"
             ],
-            "install-path": "../../../Asistencia/vendor/barryvdh/laravel-dompdf"
+            "install-path": "../barryvdh/laravel-dompdf"
         },
         {
             "name": "beyondcode/laravel-dump-server",
@@ -230,7 +230,7 @@
                 "issues": "https://github.com/beyondcode/laravel-dump-server/issues",
                 "source": "https://github.com/beyondcode/laravel-dump-server/tree/1.7.0"
             },
-            "install-path": "../../../Asistencia/vendor/beyondcode/laravel-dump-server"
+            "install-path": "../beyondcode/laravel-dump-server"
         },
         {
             "name": "brick/math",
@@ -289,7 +289,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/brick/math"
+            "install-path": "../brick/math"
         },
         {
             "name": "consoletvs/charts",
@@ -338,7 +338,7 @@
                 }
             ],
             "description": "The laravel charting package",
-            "install-path": "../../../Asistencia/vendor/consoletvs/charts"
+            "install-path": "../consoletvs/charts"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -374,7 +374,7 @@
                 "MIT"
             ],
             "description": "implementation of xdg base directory specification for php",
-            "install-path": "../../../Asistencia/vendor/dnoegel/php-xdg-base-dir"
+            "install-path": "../dnoegel/php-xdg-base-dir"
         },
         {
             "name": "doctrine/inflector",
@@ -454,7 +454,7 @@
                 "uppercase",
                 "words"
             ],
-            "install-path": "../../../Asistencia/vendor/doctrine/inflector"
+            "install-path": "../doctrine/inflector"
         },
         {
             "name": "doctrine/instantiator",
@@ -526,7 +526,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/doctrine/instantiator"
+            "install-path": "../doctrine/instantiator"
         },
         {
             "name": "doctrine/lexer",
@@ -591,7 +591,7 @@
                 "parser",
                 "php"
             ],
-            "install-path": "../../../Asistencia/vendor/doctrine/lexer"
+            "install-path": "../doctrine/lexer"
         },
         {
             "name": "dompdf/dompdf",
@@ -662,7 +662,7 @@
             ],
             "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
             "homepage": "https://github.com/dompdf/dompdf",
-            "install-path": "../../../Asistencia/vendor/dompdf/dompdf"
+            "install-path": "../dompdf/dompdf"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -729,7 +729,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/dragonmantank/cron-expression"
+            "install-path": "../dragonmantank/cron-expression"
         },
         {
             "name": "egulias/email-validator",
@@ -800,7 +800,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/egulias/email-validator"
+            "install-path": "../egulias/email-validator"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -857,7 +857,7 @@
                 "issues": "https://github.com/ezyang/htmlpurifier/issues",
                 "source": "https://github.com/ezyang/htmlpurifier/tree/master"
             },
-            "install-path": "../../../Asistencia/vendor/ezyang/htmlpurifier"
+            "install-path": "../ezyang/htmlpurifier"
         },
         {
             "name": "facade/flare-client-php",
@@ -925,7 +925,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/facade/flare-client-php"
+            "install-path": "../facade/flare-client-php"
         },
         {
             "name": "facade/ignition",
@@ -1005,7 +1005,7 @@
                 "issues": "https://github.com/facade/ignition/issues",
                 "source": "https://github.com/facade/ignition"
             },
-            "install-path": "../../../Asistencia/vendor/facade/ignition"
+            "install-path": "../facade/ignition"
         },
         {
             "name": "facade/ignition-contracts",
@@ -1061,7 +1061,7 @@
                 "issues": "https://github.com/facade/ignition-contracts/issues",
                 "source": "https://github.com/facade/ignition-contracts/tree/1.0.2"
             },
-            "install-path": "../../../Asistencia/vendor/facade/ignition-contracts"
+            "install-path": "../facade/ignition-contracts"
         },
         {
             "name": "fideloper/proxy",
@@ -1122,7 +1122,7 @@
                 "issues": "https://github.com/fideloper/TrustedProxy/issues",
                 "source": "https://github.com/fideloper/TrustedProxy/tree/4.4.1"
             },
-            "install-path": "../../../Asistencia/vendor/fideloper/proxy"
+            "install-path": "../fideloper/proxy"
         },
         {
             "name": "filp/whoops",
@@ -1196,7 +1196,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/filp/whoops"
+            "install-path": "../filp/whoops"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -1276,7 +1276,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/fruitcake/laravel-cors"
+            "install-path": "../fruitcake/laravel-cors"
         },
         {
             "name": "fzaninotto/faker",
@@ -1334,7 +1334,7 @@
                 "source": "https://github.com/fzaninotto/Faker/tree/v1.9.2"
             },
             "abandoned": true,
-            "install-path": "../../../Asistencia/vendor/fzaninotto/faker"
+            "install-path": "../fzaninotto/faker"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1404,7 +1404,7 @@
                 "rest",
                 "web service"
             ],
-            "install-path": "../../../Asistencia/vendor/guzzlehttp/guzzle"
+            "install-path": "../guzzlehttp/guzzle"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1462,7 +1462,7 @@
                 "issues": "https://github.com/guzzle/promises/issues",
                 "source": "https://github.com/guzzle/promises/tree/1.4.0"
             },
-            "install-path": "../../../Asistencia/vendor/guzzlehttp/promises"
+            "install-path": "../guzzlehttp/promises"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1540,7 +1540,7 @@
                 "issues": "https://github.com/guzzle/psr7/issues",
                 "source": "https://github.com/guzzle/psr7/tree/1.7.0"
             },
-            "install-path": "../../../Asistencia/vendor/guzzlehttp/psr7"
+            "install-path": "../guzzlehttp/psr7"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -1590,7 +1590,7 @@
             "keywords": [
                 "test"
             ],
-            "install-path": "../../../Asistencia/vendor/hamcrest/hamcrest-php"
+            "install-path": "../hamcrest/hamcrest-php"
         },
         {
             "name": "intervention/image",
@@ -1663,7 +1663,66 @@
                 "thumbnail",
                 "watermark"
             ],
-            "install-path": "../../../Asistencia/vendor/intervention/image"
+            "install-path": "../intervention/image"
+        },
+        {
+            "name": "karriere/pdf-merge",
+            "version": "v2.1.0",
+            "version_normalized": "2.1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/karriereat/pdf-merge.git",
+                "reference": "9228f2575b4ab82b09ca060ba97ba4ab9e9840f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/karriereat/pdf-merge/zipball/9228f2575b4ab82b09ca060ba97ba4ab9e9840f9",
+                "reference": "9228f2575b4ab82b09ca060ba97ba4ab9e9840f9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0",
+                "tecnickcom/tcpdf": "^6.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.8",
+                "phpunit/phpunit": "^8.0 || ^9.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "time": "2022-12-30T10:03:09+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Karriere\\PdfMerge\\": "src/"
+                },
+                "classmap": [
+                    "tcpi/fpdf_tpl.php",
+                    "tcpi/tcpdi.php",
+                    "tcpi/tcpdi_parser.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes Pichler",
+                    "email": "johannes.pichler@karriere.at",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A wrapper for the TCPDF class that provides an elegant API for merging PDFs",
+            "keywords": [
+                "merge",
+                "pdf"
+            ],
+            "support": {
+                "issues": "https://github.com/karriereat/pdf-merge/issues",
+                "source": "https://github.com/karriereat/pdf-merge/tree/v2.1.0"
+            },
+            "install-path": "../karriere/pdf-merge"
         },
         {
             "name": "laravel/framework",
@@ -1828,7 +1887,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "install-path": "../../../Asistencia/vendor/laravel/framework"
+            "install-path": "../laravel/framework"
         },
         {
             "name": "laravel/tinker",
@@ -1899,7 +1958,7 @@
                 "issues": "https://github.com/laravel/tinker/issues",
                 "source": "https://github.com/laravel/tinker/tree/v2.6.0"
             },
-            "install-path": "../../../Asistencia/vendor/laravel/tinker"
+            "install-path": "../laravel/tinker"
         },
         {
             "name": "league/commonmark",
@@ -2003,7 +2062,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/league/commonmark"
+            "install-path": "../league/commonmark"
         },
         {
             "name": "league/flysystem",
@@ -2091,7 +2150,7 @@
                 "sftp",
                 "storage"
             ],
-            "install-path": "../../../Asistencia/vendor/league/flysystem"
+            "install-path": "../league/flysystem"
         },
         {
             "name": "league/mime-type-detection",
@@ -2150,7 +2209,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/league/mime-type-detection"
+            "install-path": "../league/mime-type-detection"
         },
         {
             "name": "luecano/numero-a-letras",
@@ -2206,7 +2265,7 @@
                 "issues": "https://github.com/lecano/php-numero-a-letras/issues",
                 "source": "https://github.com/lecano/php-numero-a-letras/tree/v1.4.1"
             },
-            "install-path": "../../../Asistencia/vendor/luecano/numero-a-letras"
+            "install-path": "../luecano/numero-a-letras"
         },
         {
             "name": "maatwebsite/excel",
@@ -2287,7 +2346,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/maatwebsite/excel"
+            "install-path": "../maatwebsite/excel"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -2351,7 +2410,7 @@
                 "stream",
                 "zip"
             ],
-            "install-path": "../../../Asistencia/vendor/maennchen/zipstream-php"
+            "install-path": "../maennchen/zipstream-php"
         },
         {
             "name": "markbaker/complex",
@@ -2453,7 +2512,7 @@
                 "issues": "https://github.com/MarkBaker/PHPComplex/issues",
                 "source": "https://github.com/MarkBaker/PHPComplex/tree/PHP8"
             },
-            "install-path": "../../../Asistencia/vendor/markbaker/complex"
+            "install-path": "../markbaker/complex"
         },
         {
             "name": "markbaker/matrix",
@@ -2530,7 +2589,7 @@
                 "issues": "https://github.com/MarkBaker/PHPMatrix/issues",
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/2.1.2"
             },
-            "install-path": "../../../Asistencia/vendor/markbaker/matrix"
+            "install-path": "../markbaker/matrix"
         },
         {
             "name": "mockery/mockery",
@@ -2601,7 +2660,7 @@
                 "test double",
                 "testing"
             ],
-            "install-path": "../../../Asistencia/vendor/mockery/mockery"
+            "install-path": "../mockery/mockery"
         },
         {
             "name": "monolog/monolog",
@@ -2700,7 +2759,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/monolog/monolog"
+            "install-path": "../monolog/monolog"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2761,7 +2820,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/myclabs/deep-copy"
+            "install-path": "../myclabs/deep-copy"
         },
         {
             "name": "myclabs/php-enum",
@@ -2824,7 +2883,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/myclabs/php-enum"
+            "install-path": "../myclabs/php-enum"
         },
         {
             "name": "nesbot/carbon",
@@ -2920,7 +2979,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/nesbot/carbon"
+            "install-path": "../nesbot/carbon"
         },
         {
             "name": "nikic/php-parser",
@@ -2979,7 +3038,7 @@
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
                 "source": "https://github.com/nikic/PHP-Parser/tree/v4.10.4"
             },
-            "install-path": "../../../Asistencia/vendor/nikic/php-parser"
+            "install-path": "../nikic/php-parser"
         },
         {
             "name": "nunomaduro/collision",
@@ -3070,7 +3129,7 @@
                     "type": "patreon"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/nunomaduro/collision"
+            "install-path": "../nunomaduro/collision"
         },
         {
             "name": "opis/closure",
@@ -3138,7 +3197,7 @@
                 "issues": "https://github.com/opis/closure/issues",
                 "source": "https://github.com/opis/closure/tree/3.6.1"
             },
-            "install-path": "../../../Asistencia/vendor/opis/closure"
+            "install-path": "../opis/closure"
         },
         {
             "name": "phar-io/manifest",
@@ -3201,7 +3260,7 @@
                 "issues": "https://github.com/phar-io/manifest/issues",
                 "source": "https://github.com/phar-io/manifest/tree/master"
             },
-            "install-path": "../../../Asistencia/vendor/phar-io/manifest"
+            "install-path": "../phar-io/manifest"
         },
         {
             "name": "phar-io/version",
@@ -3255,7 +3314,7 @@
                 "issues": "https://github.com/phar-io/version/issues",
                 "source": "https://github.com/phar-io/version/tree/3.0.4"
             },
-            "install-path": "../../../Asistencia/vendor/phar-io/version"
+            "install-path": "../phar-io/version"
         },
         {
             "name": "phenx/php-font-lib",
@@ -3295,7 +3354,7 @@
             ],
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
-            "install-path": "../../../Asistencia/vendor/phenx/php-font-lib"
+            "install-path": "../phenx/php-font-lib"
         },
         {
             "name": "phenx/php-svg-lib",
@@ -3338,7 +3397,7 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "install-path": "../../../Asistencia/vendor/phenx/php-svg-lib"
+            "install-path": "../phenx/php-svg-lib"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -3390,7 +3449,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "install-path": "../../../Asistencia/vendor/phpdocumentor/reflection-common"
+            "install-path": "../phpdocumentor/reflection-common"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -3449,7 +3508,7 @@
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
                 "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/master"
             },
-            "install-path": "../../../Asistencia/vendor/phpdocumentor/reflection-docblock"
+            "install-path": "../phpdocumentor/reflection-docblock"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -3501,7 +3560,7 @@
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.4.0"
             },
-            "install-path": "../../../Asistencia/vendor/phpdocumentor/type-resolver"
+            "install-path": "../phpdocumentor/type-resolver"
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -3605,7 +3664,7 @@
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
                 "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.16.0"
             },
-            "install-path": "../../../Asistencia/vendor/phpoffice/phpspreadsheet"
+            "install-path": "../phpoffice/phpspreadsheet"
         },
         {
             "name": "phpoption/phpoption",
@@ -3663,7 +3722,7 @@
                 "php",
                 "type"
             ],
-            "install-path": "../../../Asistencia/vendor/phpoption/phpoption"
+            "install-path": "../phpoption/phpoption"
         },
         {
             "name": "phpspec/prophecy",
@@ -3733,7 +3792,7 @@
                 "issues": "https://github.com/phpspec/prophecy/issues",
                 "source": "https://github.com/phpspec/prophecy/tree/1.12.2"
             },
-            "install-path": "../../../Asistencia/vendor/phpspec/prophecy"
+            "install-path": "../phpspec/prophecy"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3809,7 +3868,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/phpunit/php-code-coverage"
+            "install-path": "../phpunit/php-code-coverage"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -3872,7 +3931,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/phpunit/php-file-iterator"
+            "install-path": "../phpunit/php-file-iterator"
         },
         {
             "name": "phpunit/php-text-template",
@@ -3916,7 +3975,7 @@
             "keywords": [
                 "template"
             ],
-            "install-path": "../../../Asistencia/vendor/phpunit/php-text-template"
+            "install-path": "../phpunit/php-text-template"
         },
         {
             "name": "phpunit/php-timer",
@@ -3978,7 +4037,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/phpunit/php-timer"
+            "install-path": "../phpunit/php-timer"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -4041,7 +4100,7 @@
                 }
             ],
             "abandoned": true,
-            "install-path": "../../../Asistencia/vendor/phpunit/php-token-stream"
+            "install-path": "../phpunit/php-token-stream"
         },
         {
             "name": "phpunit/phpunit",
@@ -4141,7 +4200,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/phpunit/phpunit"
+            "install-path": "../phpunit/phpunit"
         },
         {
             "name": "psr/container",
@@ -4193,7 +4252,7 @@
                 "container-interop",
                 "psr"
             ],
-            "install-path": "../../../Asistencia/vendor/psr/container"
+            "install-path": "../psr/container"
         },
         {
             "name": "psr/event-dispatcher",
@@ -4242,7 +4301,7 @@
                 "psr",
                 "psr-14"
             ],
-            "install-path": "../../../Asistencia/vendor/psr/event-dispatcher"
+            "install-path": "../psr/event-dispatcher"
         },
         {
             "name": "psr/http-client",
@@ -4294,7 +4353,7 @@
                 "psr",
                 "psr-18"
             ],
-            "install-path": "../../../Asistencia/vendor/psr/http-client"
+            "install-path": "../psr/http-client"
         },
         {
             "name": "psr/http-factory",
@@ -4349,7 +4408,7 @@
                 "request",
                 "response"
             ],
-            "install-path": "../../../Asistencia/vendor/psr/http-factory"
+            "install-path": "../psr/http-factory"
         },
         {
             "name": "psr/http-message",
@@ -4402,7 +4461,7 @@
                 "request",
                 "response"
             ],
-            "install-path": "../../../Asistencia/vendor/psr/http-message"
+            "install-path": "../psr/http-message"
         },
         {
             "name": "psr/log",
@@ -4452,7 +4511,7 @@
                 "psr",
                 "psr-3"
             ],
-            "install-path": "../../../Asistencia/vendor/psr/log"
+            "install-path": "../psr/log"
         },
         {
             "name": "psr/simple-cache",
@@ -4503,7 +4562,7 @@
                 "psr-16",
                 "simple-cache"
             ],
-            "install-path": "../../../Asistencia/vendor/psr/simple-cache"
+            "install-path": "../psr/simple-cache"
         },
         {
             "name": "psy/psysh",
@@ -4582,7 +4641,7 @@
                 "issues": "https://github.com/bobthecow/psysh/issues",
                 "source": "https://github.com/bobthecow/psysh/tree/v0.10.6"
             },
-            "install-path": "../../../Asistencia/vendor/psy/psysh"
+            "install-path": "../psy/psysh"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -4625,7 +4684,7 @@
                 }
             ],
             "description": "A polyfill for getallheaders.",
-            "install-path": "../../../Asistencia/vendor/ralouphie/getallheaders"
+            "install-path": "../ralouphie/getallheaders"
         },
         {
             "name": "ramsey/collection",
@@ -4705,7 +4764,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/ramsey/collection"
+            "install-path": "../ramsey/collection"
         },
         {
             "name": "ramsey/uuid",
@@ -4789,7 +4848,60 @@
                 "identifier",
                 "uuid"
             ],
-            "install-path": "../../../Asistencia/vendor/ramsey/uuid"
+            "install-path": "../ramsey/uuid"
+        },
+        {
+            "name": "rguedes/pdfmerger",
+            "version": "1.0.4",
+            "version_normalized": "1.0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rguedes/PDFMerger.git",
+                "reference": "8e1caa1093160107bb1796ce07d9fc3d6769fc34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rguedes/PDFMerger/zipball/8e1caa1093160107bb1796ce07d9fc3d6769fc34",
+                "reference": "8e1caa1093160107bb1796ce07d9fc3d6769fc34",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "time": "2019-01-04T09:47:31+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "PDFMerger": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Myo Kyaw Htun",
+                    "homepage": "https://github.com/myokyawhtun"
+                },
+                {
+                    "name": "Rolando Guedes",
+                    "homepage": "https://github.com/rguedes"
+                }
+            ],
+            "description": "PDFMerger for PHP",
+            "homepage": "https://github.com/rguedes/PDFMerger",
+            "keywords": [
+                "pdf",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/rguedes/PDFMerger/issues",
+                "source": "https://github.com/rguedes/PDFMerger/tree/1.0.4"
+            },
+            "abandoned": true,
+            "install-path": "../rguedes/pdfmerger"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -4837,7 +4949,7 @@
                 "parser",
                 "stylesheet"
             ],
-            "install-path": "../../../Asistencia/vendor/sabberworm/php-css-parser"
+            "install-path": "../sabberworm/php-css-parser"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -4895,7 +5007,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/code-unit-reverse-lookup"
+            "install-path": "../sebastian/code-unit-reverse-lookup"
         },
         {
             "name": "sebastian/comparator",
@@ -4972,7 +5084,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/comparator"
+            "install-path": "../sebastian/comparator"
         },
         {
             "name": "sebastian/diff",
@@ -5041,7 +5153,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/diff"
+            "install-path": "../sebastian/diff"
         },
         {
             "name": "sebastian/environment",
@@ -5107,7 +5219,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/environment"
+            "install-path": "../sebastian/environment"
         },
         {
             "name": "sebastian/exporter",
@@ -5187,7 +5299,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/exporter"
+            "install-path": "../sebastian/exporter"
         },
         {
             "name": "sebastian/global-state",
@@ -5254,7 +5366,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/global-state"
+            "install-path": "../sebastian/global-state"
         },
         {
             "name": "sebastian/object-enumerator",
@@ -5314,7 +5426,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/object-enumerator"
+            "install-path": "../sebastian/object-enumerator"
         },
         {
             "name": "sebastian/object-reflector",
@@ -5372,7 +5484,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/object-reflector"
+            "install-path": "../sebastian/object-reflector"
         },
         {
             "name": "sebastian/recursion-context",
@@ -5438,7 +5550,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/recursion-context"
+            "install-path": "../sebastian/recursion-context"
         },
         {
             "name": "sebastian/resource-operations",
@@ -5493,7 +5605,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/resource-operations"
+            "install-path": "../sebastian/resource-operations"
         },
         {
             "name": "sebastian/type",
@@ -5552,7 +5664,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/sebastian/type"
+            "install-path": "../sebastian/type"
         },
         {
             "name": "sebastian/version",
@@ -5598,7 +5710,82 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "install-path": "../../../Asistencia/vendor/sebastian/version"
+            "install-path": "../sebastian/version"
+        },
+        {
+            "name": "setasign/fpdi",
+            "version": "v2.3.7",
+            "version_normalized": "2.3.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Setasign/FPDI.git",
+                "reference": "bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05",
+                "reference": "bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zlib": "*",
+                "php": "^5.6 || ^7.0 || ^8.0"
+            },
+            "conflict": {
+                "setasign/tfpdf": "<1.31"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.7",
+                "setasign/fpdf": "~1.8",
+                "setasign/tfpdf": "1.31",
+                "squizlabs/php_codesniffer": "^3.5",
+                "tecnickcom/tcpdf": "~6.2"
+            },
+            "suggest": {
+                "setasign/fpdf": "FPDI will extend this class but as it is also possible to use TCPDF or tFPDF as an alternative. There's no fixed dependency configured."
+            },
+            "time": "2023-02-09T10:38:43+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "setasign\\Fpdi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Slabon",
+                    "email": "jan.slabon@setasign.com",
+                    "homepage": "https://www.setasign.com"
+                },
+                {
+                    "name": "Maximilian Kresse",
+                    "email": "maximilian.kresse@setasign.com",
+                    "homepage": "https://www.setasign.com"
+                }
+            ],
+            "description": "FPDI is a collection of PHP classes facilitating developers to read pages from existing PDF documents and use them as templates in FPDF. Because it is also possible to use FPDI with TCPDF, there are no fixed dependencies defined. Please see suggestions for packages which evaluates the dependencies automatically.",
+            "homepage": "https://www.setasign.com/fpdi",
+            "keywords": [
+                "fpdf",
+                "fpdi",
+                "pdf"
+            ],
+            "support": {
+                "issues": "https://github.com/Setasign/FPDI/issues",
+                "source": "https://github.com/Setasign/FPDI/tree/v2.3.7"
+            },
+            "funding": [
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/setasign/fpdi",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "../setasign/fpdi"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5676,7 +5863,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/swiftmailer/swiftmailer"
+            "install-path": "../swiftmailer/swiftmailer"
         },
         {
             "name": "symfony/console",
@@ -5776,7 +5963,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/console"
+            "install-path": "../symfony/console"
         },
         {
             "name": "symfony/css-selector",
@@ -5844,7 +6031,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/css-selector"
+            "install-path": "../symfony/css-selector"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -5914,7 +6101,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/deprecation-contracts"
+            "install-path": "../symfony/deprecation-contracts"
         },
         {
             "name": "symfony/error-handler",
@@ -5986,7 +6173,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/error-handler"
+            "install-path": "../symfony/error-handler"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -6074,7 +6261,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/event-dispatcher"
+            "install-path": "../symfony/event-dispatcher"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -6156,7 +6343,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/event-dispatcher-contracts"
+            "install-path": "../symfony/event-dispatcher-contracts"
         },
         {
             "name": "symfony/finder",
@@ -6220,7 +6407,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/finder"
+            "install-path": "../symfony/finder"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -6302,7 +6489,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/http-client-contracts"
+            "install-path": "../symfony/http-client-contracts"
         },
         {
             "name": "symfony/http-foundation",
@@ -6378,7 +6565,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/http-foundation"
+            "install-path": "../symfony/http-foundation"
         },
         {
             "name": "symfony/http-kernel",
@@ -6493,7 +6680,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/http-kernel"
+            "install-path": "../symfony/http-kernel"
         },
         {
             "name": "symfony/mime",
@@ -6578,7 +6765,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/mime"
+            "install-path": "../symfony/mime"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -6660,7 +6847,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/polyfill-ctype"
+            "install-path": "../symfony/polyfill-ctype"
         },
         {
             "name": "symfony/polyfill-iconv",
@@ -6743,7 +6930,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/polyfill-iconv"
+            "install-path": "../symfony/polyfill-iconv"
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
@@ -6827,7 +7014,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/polyfill-intl-grapheme"
+            "install-path": "../symfony/polyfill-intl-grapheme"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -6917,7 +7104,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/polyfill-intl-idn"
+            "install-path": "../symfony/polyfill-intl-idn"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
@@ -7004,7 +7191,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/polyfill-intl-normalizer"
+            "install-path": "../symfony/polyfill-intl-normalizer"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -7087,7 +7274,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/polyfill-mbstring"
+            "install-path": "../symfony/polyfill-mbstring"
         },
         {
             "name": "symfony/polyfill-php72",
@@ -7166,7 +7353,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/polyfill-php72"
+            "install-path": "../symfony/polyfill-php72"
         },
         {
             "name": "symfony/polyfill-php73",
@@ -7248,7 +7435,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/polyfill-php73"
+            "install-path": "../symfony/polyfill-php73"
         },
         {
             "name": "symfony/polyfill-php80",
@@ -7334,7 +7521,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/polyfill-php80"
+            "install-path": "../symfony/polyfill-php80"
         },
         {
             "name": "symfony/process",
@@ -7399,7 +7586,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/process"
+            "install-path": "../symfony/process"
         },
         {
             "name": "symfony/routing",
@@ -7492,7 +7679,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/routing"
+            "install-path": "../symfony/routing"
         },
         {
             "name": "symfony/service-contracts",
@@ -7574,7 +7761,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/service-contracts"
+            "install-path": "../symfony/service-contracts"
         },
         {
             "name": "symfony/string",
@@ -7660,7 +7847,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/string"
+            "install-path": "../symfony/string"
         },
         {
             "name": "symfony/translation",
@@ -7756,7 +7943,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/translation"
+            "install-path": "../symfony/translation"
         },
         {
             "name": "symfony/translation-contracts",
@@ -7837,7 +8024,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/translation-contracts"
+            "install-path": "../symfony/translation-contracts"
         },
         {
             "name": "symfony/var-dumper",
@@ -7928,7 +8115,82 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/symfony/var-dumper"
+            "install-path": "../symfony/var-dumper"
+        },
+        {
+            "name": "tecnickcom/tcpdf",
+            "version": "6.6.2",
+            "version_normalized": "6.6.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tecnickcom/TCPDF.git",
+                "reference": "e3cffc9bcbc76e89e167e9eb0bbda0cab7518459"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/e3cffc9bcbc76e89e167e9eb0bbda0cab7518459",
+                "reference": "e3cffc9bcbc76e89e167e9eb0bbda0cab7518459",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "time": "2022-12-17T10:28:59+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "config",
+                    "include",
+                    "tcpdf.php",
+                    "tcpdf_parser.php",
+                    "tcpdf_import.php",
+                    "tcpdf_barcodes_1d.php",
+                    "tcpdf_barcodes_2d.php",
+                    "include/tcpdf_colors.php",
+                    "include/tcpdf_filters.php",
+                    "include/tcpdf_font_data.php",
+                    "include/tcpdf_fonts.php",
+                    "include/tcpdf_images.php",
+                    "include/tcpdf_static.php",
+                    "include/barcodes/datamatrix.php",
+                    "include/barcodes/pdf417.php",
+                    "include/barcodes/qrcode.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Nicola Asuni",
+                    "email": "info@tecnick.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
+            "homepage": "http://www.tcpdf.org/",
+            "keywords": [
+                "PDFD32000-2008",
+                "TCPDF",
+                "barcodes",
+                "datamatrix",
+                "pdf",
+                "pdf417",
+                "qrcode"
+            ],
+            "support": {
+                "issues": "https://github.com/tecnickcom/TCPDF/issues",
+                "source": "https://github.com/tecnickcom/TCPDF/tree/6.6.2"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&currency_code=GBP&business=paypal@tecnick.com&item_name=donation%20for%20tcpdf%20project",
+                    "type": "custom"
+                }
+            ],
+            "install-path": "../tecnickcom/tcpdf"
         },
         {
             "name": "theseer/tokenizer",
@@ -7971,7 +8233,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "install-path": "../../../Asistencia/vendor/theseer/tokenizer"
+            "install-path": "../theseer/tokenizer"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -8023,7 +8285,7 @@
             ],
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
-            "install-path": "../../../Asistencia/vendor/tijsverkoyen/css-to-inline-styles"
+            "install-path": "../tijsverkoyen/css-to-inline-styles"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -8104,7 +8366,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/vlucas/phpdotenv"
+            "install-path": "../vlucas/phpdotenv"
         },
         {
             "name": "voku/portable-ascii",
@@ -8181,7 +8443,7 @@
                     "type": "tidelift"
                 }
             ],
-            "install-path": "../../../Asistencia/vendor/voku/portable-ascii"
+            "install-path": "../voku/portable-ascii"
         },
         {
             "name": "webmozart/assert",
@@ -8233,7 +8495,7 @@
                 "check",
                 "validate"
             ],
-            "install-path": "../../../Asistencia/vendor/webmozart/assert"
+            "install-path": "../webmozart/assert"
         }
     ],
     "dev": true,

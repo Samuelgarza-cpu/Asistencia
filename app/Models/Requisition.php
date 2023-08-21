@@ -8,7 +8,7 @@ class Requisition extends Model
 {
     
     protected $table= 'requests';
-    protected $fillable = ['folio', 'type', 'description', 'petitioner', 'image', 'users_id', 'usersAuth_id', 'status_id', 'curpPetitioner', 'beneficiary', 'supports_id', 'categories_id', 'date', 'departments_institutes_id'];
+    protected $fillable = ['folio', 'type', 'description', 'petitioner', 'image', 'users_id', 'usersAuth_id', 'status_id', 'curpPetitioner', 'beneficiary', 'supports_id', 'categories_id', 'date', 'departments_institutes_id', 'area','agePetitioner'];
        
     public function status(){
         return $this->belongsTo('Status');

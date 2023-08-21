@@ -31,6 +31,7 @@ class DashboardController extends Controller
             $sT1 = $requests->where('type','=','ts')->count();
             $sT2 = $requests->where('type','=','responsiva')->count();        
             $sT3 = $requests->where('type','=','foliado')->count();        
+            $sT4 = $requests->where('type','=','solicitud')->count();        
         }
         else{
             $requests = Requisition::where('departments_institutes_id','=', session('department_institute_id'))->get();
@@ -46,6 +47,7 @@ class DashboardController extends Controller
                 $sT1 = $requests->where('type','=','ts')->count();
                 $sT2 = $requests->where('type','=','responsiva')->count();        
                 $sT3 = $requests->where('type','=','foliado')->count();       
+                $sT4 = $requests->where('type','=','solicitud')->count();       
             }
             else{
                 $sPAA = 0;
@@ -59,6 +61,7 @@ class DashboardController extends Controller
                 $sT1 = 0;
                 $sT2 = 0;
                 $sT3 = 0;
+                $sT4 = 0;
             }
         }
         $data = array(
@@ -71,7 +74,8 @@ class DashboardController extends Controller
             'sT' => $sT,
             'sT1' => $sT1,
             'sT2' => $sT2,
-            'sT3' => $sT3
+            'sT3' => $sT3,
+            'sT4' => $sT4
         );
         return view('catalogs.dashboard', $data);
     }

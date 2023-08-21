@@ -7,7 +7,7 @@
   <meta name="author" content="">
   <style>
   .borders {
-    border: 1px solid black;
+    borde11r: 1px solid black;
   }
   table {
   border-collapse: collapse;
@@ -25,86 +25,135 @@
               <table>
                 <tr>
                   <td>
-                    {{-- <img src="{{$requisition->images_path.'DifMunicipal.jpg'}}"/> --}}
+                    <!--<img src="{{$requisition->images_path.'DifMunicipal.jpg'}}"/> -->
+                    <div style="margin: 0 auto; width: 130px">   
+                      <img  style="height:60px"  src="{{$requisition->images_path.'Logo-GP2225.png'}}" alt="me" style="width: 130px">
+                    </div>  
                   </td>
+                  <!--<div style="margin: 0 auto; width: 130px"> <img src="me.jpg" alt="me" style="width: 130px" /> </div>-->
                   <td>
-                    <table style="text-align: center; border-style:solid;">
-                      <tr>
-                        <td>
-                          PETICIÓN DE APOYO DE ASISTENCIA SOCIAL
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p>{{$requisition->date}}</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p id="folio">FOLIO: {{$requisition->folio}}</p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
+                      <table style="height: 60px text-align: center; border-style:solid; border-color:black;">
+                        <tr>
+                          <td  style = "text-align: center">
+                            <h3>PETICIÓN DE APOYO DE ASISTENCIA SOCIAL</h3>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style = "text-align: center"> 
+                            {{$requisition->date}}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td  style = "text-align: center">
+                            {{$requisition->folio}}
+                          </td>
+                        </tr> 
+                      </table>
+                   </td>
+                  <td>
+                    <div style="margin: 0 auto; width: 130px">   
+                       <img  style="height:60px"  src="{{$requisition->images_path.'LogoDif.png'}}" alt="me" style="width: 130px">
+                    </div>  
+                  </td>  
                 </tr>
               </table>
               <br/>
-              <table class="borders">
+              <table>
                 <tr>
-                  <td class="borders">
+                  <!--<td style="border-style:solid; border-color:black;">-->
+                  <td>
+                      <!--<div style="border-style:solid; border-color:black;">-->
+                        <img  style="height:80px width: 80px align=left"  src="{{$requisition->images_path.'petitioners/'.$requisition->image}}">
+                      <!--</div>-->
+                  </td>
+                </tr>
+              </table>
+              <table style="border-style:solid; border-color:black;">
+                <tr>
+                  <td style="border-style:solid; border-color:black;">
                     <p>NOMBRE DEL SOLICITANTE: </p>
                   </td>
-                  <td class="borders">
+                  <td style="border-style:solid; border-color:black;" >
                     <p id="namePetitioner">{{$requisition->petitioner}}</p>
                   </td>
+                  <td style="border-style:solid; border-color:black;"> 
+                    <p id="agePetitioner">Edad: {{$requisition->agePetitioner}}</p>
+                  </td>
                 </tr>
                 <tr>
-                  <td class="borders">
+                  <td style="border-style:solid; border-color:black;" >
                     <p>BENEFICIARIO(S):</p>
                   </td>
-                  <td class="borders">
-                    @foreach($requestPersonalData as $element)
-                      <p id="{{'nameBeneficiary'.$element->id}}">Beneficiario: {{$element->name.' '.$element->lastName.' '.$element->secondLastName}}</p>
-                      <p id="{{'ageBeneficiary'.$element->id}}">Edad: {{$element->age}}</p>
-                    @endforeach
-                  </td>
+                  <td style="border-style:solid; border-color:black;">
+                      @foreach($requestPersonalData as $element)
+                         <p id="{{'nameBeneficiary'.$element->id}}">{{$element->name.' '.$element->lastName.' '.$element->secondLastName}}</p>
+                      @endforeach       
+                  </td> 
+                  <td style="border-style:solid; border-color:black;">
+                      @foreach($requestPersonalData as $element)
+                        <p id="{{'ageBeneficiary'.$element->id}}">Edad: {{$element->age}}</p>
+                      @endforeach  
+                  </td>   
                 </tr>
                 <tr>
-                  <td class="borders">
+                  <td style="border-style:solid; border-color:black;">
                     <p>APOYO:</p>
                   </td>
-                  <td class="borders">
+                  <td style="border-bottom:solid; border-color:black;">
                     <p>Categoria: {{$categoria}}</p>
                     @if($requestSupplierProducts != "")
-                      <p id="{{'productInfo'.$requestSupplierProducts->id}}">{{$requestSupplierProducts->qty.' '.$requestSupplierProducts->productName.' Precio Unitario:'.number_format ( $requestSupplierProducts->price, 2, ".", ",").' Total:'.number_format ( $requestSupplierProducts->total, 2, ".", ",")}}</p>
+                      @foreach($requestSupplierProducts as $element) 
+                         @if($element->price == 0)
+                            <p id="{{'productInfo'.$element->id}}">{{$element->productName.' Importe:'.number_format ( $element->qty, 2, ".", ",")}}</p>
+                         @else   
+                            <p id="{{'productInfo'.$element->id}}">{{$element->qty.' '.$element->productName.' Precio Unitario:'.number_format ( $element->price, 2, ".", ",")}}</p>
+                         @endif   
+                       @endforeach   
                     @endif
+                    <p> Total General: {{number_format ( $total, 2, ".", ",")}}</p>
                   </td>
+                  <td style="border-bottom:solid; border-color:black;"></td>              
                 </tr>
                 <tr>
-                  <td class="borders">
+                  <td style="border-style:solid; border-color:black;">
                     <p>CASO:</p>
                   </td>
-                  <td class="borders">
+                  <td style="border-bottom:solid; border-color:black;">
                       <p id="{{'case'.$requisition->id}}">{{$requisition->description}}</p>
                   </td>
+                  <td style="border-bottom:solid; border-color:black;"></td>              
                 </tr>
                 <tr>
-                  <td class="borders">
+                  <td style="border-style:solid; border-color:black;">
+                    <p>TELEFONO:</p>
+                  </td >
+                  <td style="border-bottom:solid; border-color:black;">
+                      <p id="{{'numero'.$extPersonalData->id}}">{{$extPersonalData->number}}</p>
+                  </td>
+                  <td style="border-bottom:solid; border-color:black;"></td>              
+                </tr>
+                <tr>
+                  <td>
                     <p>AUTORIZADO:</p>
                   </td>
-                  <td class="borders">
+                  <td>
                     @if($requisition->status_id == 6 || $requisition->status_id == 4)
                       <img src="{{$requisition->mainPublic_path.$userAuth->stamp}}"/>
                     @endif
                   </td>
+                  <td></td>                            
                 </tr>
               </table>
+              <br></br>
+              <br></br>
+              <!--<h2 style="text-align: left;">{{session('nameuser')}}</h2>-->
+              <h2 style="text-align: left;">{{session('user')}}</h2>
               <p style="page-break-after: always;"></p>
               <!-- Primera Hoja -->
               <table>
                 <tr>
                   <td>
-                    <img style="height:100px" src="{{$requisition->images_path.'DIF.jpg'}}"/>
+                    <img style="height:100px" src="{{$requisition->images_path.'LogoDif.png'}}"/>
                   </td>
                   <td>
                     <h2 style="text-align: center;">SISTEMA PARA EL DESARROLLO INTEGRAL DE LA FAMILIA</h2>
@@ -114,17 +163,23 @@
                   </td>
                 </tr>
               </table>
-
               <table>
                 <tr>
                   <td colspan="2">
                     <table>
-                      <tr>
+ |                     <tr>
                         <td style="text-align: right;">
-                          <span>SOLICITA:</span>
+                          <span>SOLICITA:</span>  
                           @if($requestSupplierProducts != "")
-                            <span style="text-decoration: underline;" id="{{'productInfo'.$requestSupplierProducts->id}}">{{$requestSupplierProducts->qty.' '.$requestSupplierProducts->productName}}</span>
-                          @endif
+                             @foreach($requestSupplierProducts as $element) 
+                                @if($element->price == 0)
+                                  <span style="text-decoration: underline;" id="{{'productInfo'.$element->id}}">{{$element->productName.','}}</span>
+                                @else
+                                  <span style="text-decoration: underline;" id="{{'productInfo'.$element->id}}">{{$element->qty.' '.$element->productName.','}}</span>
+                                @endif
+                             @endforeach   
+                          @endif 
+                        
                         </td>
                       </tr>
                     </table>
@@ -136,23 +191,24 @@
               <table>
                 <tr>
                   @if($requisition->beneficiary == 1)
-                    <td style="width: 100%;" colspan="2">
-                      NOMBRE: <span style="text-decoration: underline;">{{$requisition->petitioner}}</span>
-                    </td>
+                    <td style="width: 100%;" colspan="3">
+                      NOMBRE: <span style="text-decoration: underline;">{{$requisition->petitioner}}</span>                  
+                   </td>
                   @else
-                    <td style="width: 80%">NOMBRE: <span style="text-decoration: underline;">{{$requestPersonalData[0]->name.' '.$requestPersonalData[0]->lastName.' '.$requestPersonalData[0]->secondLastName}}</span></td>
-                    <td style="width: 20%">EDAD: <span style="text-decoration: underline;">{{$requestPersonalData[0]->age}}</span></td>
+                    <!--<td colspan="2" style="width: 80%">NOMBRE: <span style="text-decoration: underline;">{{$requestPersonalData[0]->name.' '.$requestPersonalData[0]->lastName.' '.$requestPersonalData[0]->secondLastName}}</span></td>-->
+                    <td colspan="2" style="width: 80%">NOMBRE: <span style="text-decoration: underline;">{{$requisition->petitioner}}</span></td>
+                    <td colspan="1" style="width: 20%">EDAD: <span style="text-decoration: underline;">{{$requestPersonalData[0]->age}}</span></td>
                   @endif
                 </tr>
                 <tr>
-                  <td colspan="2">
+                  <td>
                     DOMICILIO:
                     {{-- <p>{{$address['state']->name}}</p> --}}
                     <span style="text-decoration: underline;">{{$address->street.' #'.$address->externalNumber.' '.$address->internalNumber}}</span>
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="2">
+                  <td colspan= "3">
                     <table>
                       <tr>
                         <td>
@@ -165,12 +221,14 @@
                           {{-- <p>{{$address['state']->name}}</p> --}}
                           <span style="text-decoration: underline;">{{$address['municipality']->name.', '.$address['state']->name}}</span>
                         </td>
+                        <td>
+                        </td>
                       </tr>
                     </table>
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="2">
+                  <td colspan="3">
                     <table>
                       <tr>
                         <td>
@@ -187,6 +245,24 @@
                           OCUPACION:
                           {{-- <p>{{$address['state']->name}}</p> --}}
                           <span style="text-decoration: underline;">{{$requestPersonalData[0]->employmentName}}</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan = "3"> 
+                    <table>
+                      <tr>
+                        <td>
+                          TELEFONO:
+                          {{-- <p>{{$address['state']->name}}</p> --}}
+                          <span syle="text-decoration: underline;">{{$extPersonalData->number}}</span>
+                        </td>
+                        <td>
+                          SERVICIO MEDICO:
+                          {{-- <p>{{$address['state']->name}}</p> --}}
+                          <span style="text-decoration: underline;">{{$requestPersonalData[0]->sermedico}}</span>
                         </td>
                       </tr>
                     </table>
@@ -254,7 +330,7 @@
                 @endif
               </table>
               <br>
-              <h2 STYLE="text-align: center;">CONDICIONES DE VIDA</h2>
+              <h2 style="text-align: center;">CONDICIONES DE VIDA</h2>
               <TABLE>
                 <tr>
                   <td style="text-align: center;">
@@ -269,50 +345,37 @@
               </TABLE>
               <br>
               <TABLE>
-                <TR>
-                  <TD>
-                    <TABLE>
-                      <tr>
-                        <TH>MUEBLES</TH>
-                      </tr>
-                      @foreach($requestFurnitures as $element)
-                      <TR>
-                        <TD style="text-align: center;">
-                          <span style="text-decoration: underline;">{{$element->name}}</span>
-                        </TD>
-                      </TR>
-                      @endforeach
-                    </TABLE>
-                  </TD>
-                  <TD>
-                    <table>
-                      <TR>
-                        <TH>SERVICIOS</TH>
-                      </TR>
-                      @foreach($requestServices as $element)
-                      <TR>
-                        <TD style="text-align: center;">
-                          <span style="text-decoration: underline;">{{$element->name}}</span>
-                        </TD>
-                      </TR>
-                      @endforeach
-                    </table>
-                  </TD>
-                  <TD>
-                    <TABLE>
-                      <TR>
-                        <TH>MATERIAL DE CONTRUCCIÓN</TH>
-                      </TR>
-                      @foreach($requestBuildingMaterial as $element)
-                      <TR>
-                        <TD style="text-align: center;">
-                          <span style="text-decoration: underline;">{{$element->name}}</span>
-                        </TD>
-                      </TR>
-                      @endforeach
-                    </TABLE>
-                  </TD>
-                </TR>
+                <tr>  
+                    <td>
+                       MUEBLES
+                    </td>
+                    @foreach($requestFurnitures as $element)
+                     {{--<TD style="text-align: center;">--}}
+                      <td>
+                         <span style="text-decoration: underline;">{{$element->name}}</span>
+                      </td>
+                    @endforeach   
+                </tr>
+                <tr>
+                    <td>
+                        SERVICIOS
+                    </td>
+                    @foreach($requestServices as $element)
+                      <td>
+                         <span style="text-decoration: underline;">{{$element->name}}</span>
+                      </td>
+                    @endforeach
+                </tr>
+                <tr> 
+                   <TD>
+                        MATERIAL DE CONSTRUCCIÓN
+                    </TD>
+                    @foreach($requestBuildingMaterial as $element)
+                    <TD>
+                         <span style="text-decoration: underline;">{{$element->name}}</span>
+                    </TD>
+                    @endforeach
+                  </tr>
               </TABLE>
               <br>
               <H3 style="text-align: center;">INGRESOS ECONÓMICOS</H3>
@@ -322,16 +385,25 @@
                   <td style="text-align: right;">EGRESOS: <span style="text-decoration: underline;">${{$economicData[0]->expense}}</span></td>
                 </tr>
               </table>
-              <br>
+              <H3 style="text-align: center;">OBSERVACIONES-CASO</H3>
+              <table>
+                <tr>
+                  <td>
+                      <p id="{{'case'.$requisition->id}}">{{$requisition->description}}</p>
+                  </td>
+                </tr>
+              </table>
+              <br></br>
+              <br></br>
               <table>
                 <tr>
                   <td>
                     <table>
-                      <tr>
+                     {{-- <tr>
                         <td style="text-align: center; height: 150px;">
                           <img style="height: 150px;" src="{{$requisition->mainPublic_path.$user->signature}}"/>
                         </td>
-                      </tr>
+                      </tr>--}}
                       <tr>
                         <td style="text-align: center">
                           USUARIO: <span style="text-decoration: underline;">{{$user->owner}}</span></tD>
@@ -341,15 +413,16 @@
                   </td>
                   <td>
                     <table>
-                      <tr>
+                      {{--<tr>
                         <td  style="text-align: center; height: 150px;">
                           @if($requisition->status_id == 4 || $requisition->status_id == 6)
-                            <img style="height: 150px;" src="{{$requisition->mainPublic_path.$user->signature}}"/>
+                            <img style="height: 150px;" src="{{$requisition->mainPublic_path.$user->signature}}"/>s
                           @endif
                         </td>
-                      </tr>
+                      </tr>--}}
                       <tr>
-                        <tD style="text-align: center">AUTORIZA: <span style="text-decoration: underline;">{{$userAuth->owner}}</span></tD>
+                        <!--<tD style="text-align: center">AUTORIZA: <span style="text-decoration: underline;">{{$userAuth->owner}}</span></tD>-->
+                       <td style="text-align: center">AUTORIZA: <span style="text-decoration: underline;">Lic. Blanca Estela Barbosa Salas</span></td>
                       </tr>
                     </table>
                   </td>
@@ -361,9 +434,17 @@
               <p style="page-break-after: always"></p>
               <!-- Peticion -->
               <table>
+               <tr>
+                  <td>
+                    <!--<div style="margin: 0 auto; width: 130px">-->   
+                    <div>     
+                      <img  style="height:60px" src="{{$requisition->images_path.'LogoDif.png'}}" alt="me" style="width: 130px">
+                    </div>  
+                  </td>  
+                </tr>
                 <tr>
                   <td>
-                    <p style="font-weight: bold;">Lic. Laura Maria Vitela Rodríguez</p>
+                    <p style="font-weight: bold;">Lic. Brenda Calderón Carrete</p>
                   </td>
                   <td style="text-align: right;">
                     <span style="font-weight: bold;">{{$requisition->date}}</span>
@@ -371,8 +452,8 @@
                 </tr>
                 <tr>
                   <td>
-                    <p>Presidenta DIF Municipal Gómez Palacio, Durango</p>
-                    <p>Presente.-</p>
+                    <p>Directora General DIF Municipal Gómez Palacio, Durango<br>
+                    Presente.-</p>
                   </td>
                 </tr>
                 <tr>
@@ -427,9 +508,17 @@
               <p style="page-break-after: always"></p>
               <!-- Peticion a la presidenta -->
               <table>
+              <tr>
+                  <td>
+                    <!--<div style="margin: 0 auto; width: 130px">-->   
+                    <div>     
+                      <img  style="height:60px"  src="{{$requisition->images_path.'LogoDif.png'}}" alt="me" style="width: 130px">
+                    </div>  
+                  </td>  
+                </tr>
                 <tr>
                   <td>
-                    <p style="font-weight: bold;">Lic. Laura Maria Vitela Rodríguez</p>
+                    <p style="font-weight: bold;">Lic. Brenda Calderón Carrete</p>
                   </td>
                   <td style="text-align: right;">
                     <span style="font-weight: bold;">{{$requisition->date}}</span>
@@ -437,22 +526,29 @@
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <p>Presidenta DIF Municipal Gómez Palacio, Durango</p>
+                    <p>Directora General DIF Municipal Gómez Palacio, Durango</p>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <p>Solicito su valiso apoyo con
-                      @if($requestSupplierProducts != "")
-                        <span id="{{'productInfo'.$requestSupplierProducts->id}}">{{$requestSupplierProducts->qty.' '.$requestSupplierProducts->productName}}</span>
-                      @endif
-                    para mi ya que no cuento con los medios económicos para solventar el gasto ya que lo necesito.</p>
+                    <p>Solicito su valiso apoyo con</p>
+                    @if($requestSupplierProducts != "")
+                        @foreach($requestSupplierProducts as $element)
+                          @if($element->price == 0)
+                            <span id="{{'productInfo'.$element->id}}">{{$element->productName}}</span>
+                          @else
+                            <span id="{{'productInfo'.$element->id}}">{{$element->qty.' '.$element->productName}}</span> 
+                          @endif  
+                        @endforeach
+                    @endif
+                    para mi ya que no cuento con los medios económicos para solventar el gasto ya que lo necesito.
                   </td>
                 </tr>
                 <tr>
                   <td colspan="2" style="text-align: right;">
                     <p>____________________________________</p>
-                    <p style="font-weight:bold">{{$requestPersonalData[0]->name.' '.$requestPersonalData[0]->lastName.' '.$requestPersonalData[0]->secondLastName}}</p>
+                  <!--  <p style="font-weight:bold">{{$requestPersonalData[0]->name.' '.$requestPersonalData[0]->lastName.' '.$requestPersonalData[0]->secondLastName}}</p>-->
+                    <p style="font-weight:bold">{{$requisition->petitioner}}</p>
                   </td>
                 </tr>
               </table>
@@ -462,7 +558,7 @@
               <table>
                 <tr>
                   <td>
-                    <img style="height:100px" src="{{$requisition->images_path.'DIF.jpg'}}"/>
+                    <img style="height:100px" src="{{$requisition->images_path.'LogoDif.png'}}"/>
                   </td>
                   <td>
                     <h2 style="text-align: center;">TRABAJO SOCIAL</h2>
@@ -588,9 +684,9 @@
               {{-- <p style="page-break-after: always;"></p> --}}
               <table>
                 <tr>
-                  <td colspan="2" style="text-align: center;">
+                  <!--<td colspan="2" style="text-align: center;">
                     <p>
-                      <img style="height:100px" src="{{$requisition->images_path.'DifMunicipal.jpg'}}"/>
+                      <img style="height:100px" src="{{$requisition->images_path.'LogoDif.png'}}"/>
                     </p>
                     <br>
                     <br>
@@ -598,10 +694,10 @@
                     <p>
                       <img style="height:100px" src="{{$requisition->images_path.'CedulaDIF.jpg'}}"/>
                     </p>
-                  </td>
+                  </td>-->
                   <td colspan="10">
                     <table>
-                      <tr>
+                      <!--<tr>
                         <td colspan="10" style="text-align: center;">
                           <h1>
                             Sistema para el Desarrollo Integral de la Familia
@@ -618,38 +714,83 @@
                             </div>
                           </div>
                         </td>
-                      </tr>
+                      </tr>-->
+                      <br>
+                      <br>
+                      <br>
                       <br>
                       <tr>
-                        <td colspan="12" >
-                          <p>
-                            *Recibimos del sistema para el Desarrollo Integral de la familia, La cantidad de : $ <label for="cantidad">{{$total}}</label>
+                        <td colspan="12">
+                          <!--<p>
+                            *Recibimos del sistema para el Desarrollo Integral de la familia, La cantidad de : $ <label for="cantidad">{{$total}}</label> 
+                          </p>-->  
+                          <div style= "margin-top: 76px ">
+                             <p><label style= "margin: 600px " for="cantidad">{{number_format ( $total, 2, ".", ",")}}</label></p>  
+                          <div>   
+                          <div style= "margin-top: -0.5cm">
+                              <p><label style= "margin: 227px"  for="cantidadletra"> Son : {{$totalletter}} </label></p>
+                          </div>    
+                          <br>
+                          <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="12">
+                         <!--<p>
+                            *Por Concepto de : <label for="concepto">
+                                   @if($requestSupplierProducts != "")
+                                      @foreach($requestSupplierProducts as $element)
+                                         {{$element->qty.' '.$element->productName}}
+                                      @endforeach   
+                                    @endif
+                                  </label>
+                          </p>-->
+                          <p style="margin-top: 0.5cm; line-height: 0.7cm">
+                            @if($requestSupplierProducts != "")
+                              @foreach($requestSupplierProducts as $element)
+                                @if($element->price == 0)
+                                   <label style="margin: 230px">{{$element->productName.' '.number_format ( $element->qty, 2, ".", ",")}}</label><br>
+                                @else   
+                                   <label style="margin: 230px">{{$element->qty.' '.$element->productName.' Precio Unitario:'.number_format ( $element->price, 2, ".", ",")}}</label><br>
+                                @endif  
+                              @endforeach   
+                            @endif
+                            <label style="margin: 230px">NOMBRE: {{$requisition->petitioner}}</label><br>
+                            <label style="margin: 230px">DOMICILIO: {{$address->street.' #'.$address->externalNumber.' '.$address->internalNumber}}</label><br>            
+                            <label style="margin: 230px">EDAD:{{$requisition->agePetitioner}}</label>     
                           </p>
-                            (<label for="cantidadletra"> Son : {{$totalletter}} </label>)
+                          <br>
                         </td>
                       </tr>
-                      <br>
                       <tr>
-                        <td colspan="12" >
-                          <p>
-                            *Por Concepto de : <label for="concepto">  @if($requestSupplierProducts != "")
-                                                                          {{$requestSupplierProducts->qty.' '.$requestSupplierProducts->productName}}
-                                                                       @endif
-                                               </label>
-                          </p>
+                        <td colspan="12"  >
+                           <!--<label style= "margin: 378px"  for="dia">{{$daytoday}}</label><label for="mes">{{'de '.$monthtodayletter.' de'}}</label><label for="anio">{{$yeartoday}}</label>-->
+                           <div style= "margin-top: 0.5cm"> 
+                             <label style= "margin: 360px"  for="dia">{{$daytoday}}</label>
+                           </div>  
+                            <!-- <p>
+                               <span style="text-decoration: underline;">__________________</span>
+                            </p>
+                            <label class="firma" for="dia">Recibí</label>-->
+                           </div>  
                         </td>
                       </tr>
-                      <br>
-                      <tr>
-                        <td colspan="8" >
-                          Gómez Palacio, Dgo. A  <label for="dia">{{$daytoday}}</label> de  <label for="mes">{{$monthtodayletter}}</label> de <label for="anio">{{$yeartoday}}</label> .
-                        </td>
-                        <td colspan="4" style="text-align: center;" >
+                      <tr>  
+                        <td colspan="12">
+                           <div> 
+                              <label style= "margin: 227px" for="mes">{{$monthtodayletter}}<label style= "margin: 151" for="anio">{{$yeartoday}}</label></label>
+                           </div>
+                           <!--<div>
+                             <label style= "margin: 378px"  for="año">{{$yeartoday}}</label>
+                           </div> --> 
+                        </td>   
+                        <!--<td colspan="4" style="text-align: center;" >
+                        <td>
                           <p>
                             <span style="text-decoration: underline;">__________________</span>
                           </p>
                           <label class="firma" for="dia">Recibí</label>
-                        </td>
+                        </td> -->
                       </tr>
                     </table>
                   </td>

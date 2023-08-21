@@ -20,7 +20,7 @@
   <table>
      <tr>
         <td>          
-          <img style="height:100px" src="{{$images_path.'DifMunicipal.jpg'}}"/>
+          <img style="height:100px" src="{{$images_path.'Logo-GP2225.png'}}"/>
         </td>
         <td style="text-align: center;">
           @if(isset($title1))

@@ -2503,18 +2503,19 @@ a.btn.disabled,
 fieldset:disabled a.btn {
     pointer-events: none;
 }
-
+/* drv 30/09/22 */
 .btn-primary {
-    color: #fff;
-    background-color: #5f0c0c;
-    border-color: #5f0c0c;
+    color: #000;
+    background-color: #1cc88a;
+    border-color: #1cc88a;
 }
 
 .btn-primary:hover {
-    color: #fff;
-    background-color: #862525;
-    border-color: #862525;
+    color: #000;
+    background-color: #858796;
+    border-color: #858796;
 }
+/* drv */
 
 .btn-primary:focus,
 .btn-primary.focus {
@@ -2523,13 +2524,14 @@ fieldset:disabled a.btn {
     border-color: #862525;
     box-shadow: 0 0 0 0.2rem rgba(95, 12, 12, 0.5);
 }
-
+/*drv 30/09/22*/
 .btn-primary.disabled,
 .btn-primary:disabled {
-    color: #fff;
-    background-color: #862525;
-    border-color: #862525;
+    color: #000;
+    background-color: #858796;
+    border-color: #858796;
 }
+/*drv*/
 
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active,
@@ -3123,7 +3125,7 @@ fieldset:disabled a.btn {
 .btn-link {
     font-weight: 400;
     color: #5f0c0c;
-    text-decoration: none;
+   text-decoration: none;
 }
 
 .btn-link:hover {
@@ -3138,7 +3140,7 @@ fieldset:disabled a.btn {
 
 .btn-link:disabled,
 .btn-link.disabled {
-    color: #862525;
+     color: #862525;
     pointer-events: none;
 }
 
@@ -10280,7 +10282,7 @@ a:focus {
 .bg-gradient-primary {
     /* background-image: url(../img/background.jpeg); */
     /* background-image: url(../img/background-640.jpg); */
-    background-image: url(../img/background-1280.jpg);
+    background-image: url(../img/hands.jpg);
     /* background-color: #4e73df;
     background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%); */
     background-size: cover;
@@ -11668,6 +11670,12 @@ body.sidebar-toggled footer.sticky-footer {
     height: 25rem;
     padding: 3rem;
 }
+img.redimension {
+    max-width:100%;
+    max-height:100%;
+    margin:100px auto;
+	display:block;
+  }
 
 .navbar-nav .nav-item+.nav-item {
     margin-left: 0rem!important;

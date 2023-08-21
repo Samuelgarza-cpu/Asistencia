@@ -8,7 +8,7 @@ class PersonalData extends Model
 {
     protected $table = 'personalData';
     public $timestamps = false;
-    protected $fillable = ['curp', 'name', 'lastName', 'secondLastName', 'age','addresses_id', 'familiar'];
+    protected $fillable = ['curp', 'name', 'lastName', 'secondLastName', 'age','addresses_id', 'familiar','sermedico'];
     public function extpersonalData(){
         return $this->hasMany('ExtPersonalData', 'personalData_id');
     }

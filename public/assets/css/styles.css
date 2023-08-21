@@ -2414,7 +2414,8 @@ textarea.form-control.is-invalid {
 .btn {
     display: inline-block;
     font-weight: 400;
-    color: #212529;
+/*    color: #212529;*/
+    color: #0000;
     text-align: center;
     vertical-align: middle;
     -webkit-user-select: none;
@@ -2462,7 +2463,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary {
-    color: #fff;
+    color: #000;
     background-color: #007bff;
     border-color: #007bff;
 }
@@ -4261,7 +4262,7 @@ input[type=button].btn-block {
 
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
-    color: #fff;
+    color: #000;
     background-color: #007bff;
 }
 
@@ -4650,7 +4651,8 @@ input[type=button].btn-block {
 }
 
 .navbar-dark .navbar-brand {
-    color: #fff;
+/* drv  tenia  #fff */
+    color: #000;
 }
 
 .navbar-dark .navbar-brand:hover,
@@ -6761,7 +6763,8 @@ button.bg-light:focus {
 }
 
 .bg-dark {
-    background-color: #350b16!important;
+   /*  drv background-color: #350b16!important;*/
+    background-color: #d4edda!important;
 }
 
 a.bg-dark:hover,
@@ -10246,7 +10249,7 @@ body {
 }
 
 .sb-topnav.navbar-light #sidebarToggle {
-    color: #212529;
+          color: #212529;
 }
 
 .sb-sidenav {
@@ -10261,7 +10264,7 @@ body {
 }
 
 .sb-sidenav-menu {
-    background-color: #3a090d;
+    background-color: #d4edda;
 }
 
 .sb-sidenav .sb-sidenav-menu .nav {
@@ -10284,9 +10287,12 @@ body {
     position: relative;
 }
 
+/* drv 02/10/22*/
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
-    font-size: 0.9rem;
+      font-size: 0.9rem;
+      color: #000;
 }
+/*drv*/
 
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-sidenav-collapse-arrow {
     display: inline-block;
@@ -10310,11 +10316,13 @@ body {
 
 .sb-sidenav-dark {
     background-color: #212529;
-    color: rgba(255, 255, 255, 0.5);
+    /*color: rgba(255, 255, 255, 0.5);*/
+      color: rgba(0,0,0,);
 }
 
 .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
-    color: rgb(255 255 255 / 55%);
+   /*color: rgb(255 255 255 / 55%); */
+      color: rgba(0,0,0,);
 }
 
 .sb-sidenav-dark .sb-sidenav-menu .nav-link {
@@ -10330,21 +10338,22 @@ body {
 }
 
 .sb-sidenav-dark .sb-sidenav-menu .nav-link:hover {
-    color: #fff;
+    color: #000;
 }
 
 .sb-sidenav-dark .sb-sidenav-menu .nav-link.active {
-    color: #fff;
-    background-color: #753035;
+    /* drv    color: #000;    background-color: #750035 */
+        color: #000;    background-color: #1cc88a
 }
 
 .sb-sidenav-dark .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
-    color: #fff;
+    color: #000;
 }
 
 .sb-sidenav-dark .sb-sidenav-footer {
-    background-color: #401e21 !important;
-    color: white;
+   /*drv  background-color: #401e21 !important;    color: #000;*/
+   background-color: #1cc88a!important;  
+   color: #000;
 }
 
 .sb-sidenav-light {
@@ -10357,8 +10366,8 @@ body {
 }
 
 .sb-sidenav-light .sb-sidenav-menu .nav-link {
-    color: #212529;
-}
+       color: #212529;
+ }
 
 .sb-sidenav-light .sb-sidenav-menu .nav-link .sb-nav-link-icon {
     color: #adb5bd;

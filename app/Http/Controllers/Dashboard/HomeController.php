@@ -19,7 +19,7 @@ class HomeController extends Controller
         if(session('user_agent')=='TrSo')
             return redirect('solicitudes');
         elseif(session('user_agent')=='Soport')
-            return redirect('usuarios');
+            return redirect('muebles');
         else
             return redirect('dashboard');
     }

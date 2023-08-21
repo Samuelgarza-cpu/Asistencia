@@ -36,7 +36,8 @@ class InstitutesDepartmentsController extends Controller
     public function updated(Request $request, $id){
         if(is_numeric($id)){
             $departmentInstitute = DepartmentInstitute::find($request->id);
-            if($institute != null && $institute->count() > 0){
+            if($departmentInstitute != null && $departmentInstitute->count() > 0)
+            {
                 $departments = Department::all();
                 $institutes = Institute::all();
 

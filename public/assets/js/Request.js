@@ -22,27 +22,26 @@ $(function() {
         });
     });
 
-    $('#active').change(addDeliveryPictures);
+   // $('#active').change(addDeliveryPictures);
 
 
 
 });
+// function addDeliveryPictures() {
+//     if (this.checked) {
 
-function addDeliveryPictures() {
-    if (this.checked) {
-
-        var deliverypicturedivID = $('#deliveryPicture');
-        var inputdeliveryid = "price";
+//         var deliverypicturedivID = $('#deliveryPicture');
+//         var inputdeliveryid = "price";
 
         // var spaninputdelivery = document.createElement('span');
         // spaninputdelivery.setAttribute("class", "file deliveryImage");
 
-        var inputdelivery = document.createElement('input');
-        inputdelivery.setAttribute("type", "text");
-        inputdelivery.setAttribute("class", "form-control");
-        inputdelivery.setAttribute("id", "price");
-        inputdelivery.setAttribute("name", inputdeliveryid);
-        inputdelivery.setAttribute("required", "required");
+        // var inputdelivery = document.createElement('input');
+        // inputdelivery.setAttribute("type", "text");
+        // inputdelivery.setAttribute("class", "form-control");
+        // inputdelivery.setAttribute("id", "price");
+        // inputdelivery.setAttribute("name", inputdeliveryid);
+        // inputdelivery.setAttribute("required", "required");
 
 
         // var divErrorDelivery = document.createElement('div');
@@ -57,7 +56,8 @@ function addDeliveryPictures() {
         // spanlabel.setAttribute("id", "title-delivery");
         // spanlabel.textContent = "Añadir imagen de entrega";
 
-        deliverypicturedivID.append(inputdelivery);
+        //deliverypicturedivID.append(inputdelivery);
+
         // spaninputdelivery.append(inputdelivery);
         // spaninputdelivery.append(divErrorDelivery);
         // deliverypicturedivID.append(labeldelivery);
@@ -82,14 +82,12 @@ function addDeliveryPictures() {
         //         }
         //     });
         // });
-    } else {
-        var formGroupDelete = $('#deliveryPicture');
-        formGroupDelete.find('span').remove();
-        formGroupDelete.find('label').remove();
-    }
-
-
-}
+//     } else {
+//         var formGroupDelete = $('#deliveryPicture');
+//         formGroupDelete.find('span').remove();
+//         formGroupDelete.find('label').remove();
+//     }
+// }
 
 window.operateEvents = {
     'click .update': function(e, value, row, index) {
@@ -137,40 +135,42 @@ window.operateEvents = {
         var titledept = document.getElementById("title-dept");
         titledept.innerHTML = "Subir el documento de la solicitud";
 
-        var formGroupDelete = $('#deliveryPicture');
-        formGroupDelete.find('span').remove();
-        formGroupDelete.find('label').remove();
+        //var formGroupDelete = $('#deliveryPicture');
+        //formGroupDelete.find('span').remove();
+        //formGroupDelete.find('label').remove();
 
         $('#modal-addDocument').modal('toggle');
     },
     'click .addDeliveryPicture': function(e, value, row, index) {
-        $('#registerDId').val(row.id);
+        $('#registerIId').val(row.id);
         document.getElementById("frm-addDeliveryPicture").reset();
         var titleimg = document.getElementById("title-image");
         titleimg.innerHTML = "Subir la imagen de entrega";
         $('#modal-addDeliveryPicture').modal('toggle');
     },
-    // 'click .showDocument': function(e, value, row, index) {
-    //     var registerSDId = row.id;
-    //     var action = "getDocument";
-    //     $.ajax({
-    //             type: "POST",
-    //             url: "solicitudes",
-    //             data: { 'action': action, "id": registerSDId, "_token": $("meta[name='csrf-token']").attr("content") }
-    //         })
-    //         .done(function(response) {
-    //             console.log(response);
-    //             var embed = $('#embed');
-    //             embed.attr('src', response.src);
-    //             $('#modal-showDocument').modal('toggle');
-    //         })
-    //         .fail(function() {
-    //             console.log("error");
-    //             $('#modal-showDocument').modal('toggle');
-    //         })
-    //         .always(function() {})
-    // },
+    //  'click .showDocument': function(e, value, row, index) {
+    //      var registerSDId = row.id;
+    //      //$('#registerDId').val(row.id);
+    //      var action = "getDocument";
+    //      $.ajax({
+    //              type: "POST",
+    //              url: "solicitudes",
+    //              data: { 'action': action, "_token": $("meta[name='csrf-token']").attr("content") }
+    //          })
+    //          .done(function(response) {
+    //             //console.log(response);
+    //             // debugger;
+    //             // var embed = $('#embedx');
+    //             // embed.attr("src", response);
+    //              $('#modal-showDocument').modal('toggle');
+    //          })
+    //          .fail(function() {
+    //              console.log("error");
+    //              $('#modal-showDocument').modal('toggle');
+    //          })
+    //          .always(function() {})
+    //  },
     'click .showDocument': function(e, value, row, index) {
-        window.location.href = 'verdocumento/' + row.id;
-    },
+         window.location.href = 'verdocumento/' + row.id;
+     },
 }

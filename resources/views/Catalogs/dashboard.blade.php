@@ -173,6 +173,9 @@
             <span class="mr-2">
                 <i class="fas fa-circle text-warning"></i>Foliado
             </span>
+            <span class="mr-2">
+                <i class="fas fa-circle text-primary"></i>Solicitud
+            </span>
         </div>
     </div>
  </div>
@@ -191,6 +194,7 @@
     var sT1 = {{$sT1}};
     var sT2 = {{$sT2}};
     var sT3 = {{$sT3}};
+    var sT4 = {{$sT4}};
 </script>
 <script src="../assets/js/Dashboard.js"></script>
 @endsection

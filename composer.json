@@ -15,10 +15,13 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.5",
+        "karriere/pdf-merge": "^2.1",
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "luecano/numero-a-letras": "~1.4",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "rguedes/pdfmerger": "^1.0",
+        "setasign/fpdi": "^2.3"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.4",

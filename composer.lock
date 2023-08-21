@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2588872031e60807c8fd39ae44d64da7",
+    "content-hash": "536fe6a73d5a9990fb68b0c227a20ff7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1169,6 +1169,62 @@
                 "source": "https://github.com/Intervention/image/tree/master"
             },
             "time": "2019-11-02T09:15:47+00:00"
+        },
+        {
+            "name": "karriere/pdf-merge",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/karriereat/pdf-merge.git",
+                "reference": "9228f2575b4ab82b09ca060ba97ba4ab9e9840f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/karriereat/pdf-merge/zipball/9228f2575b4ab82b09ca060ba97ba4ab9e9840f9",
+                "reference": "9228f2575b4ab82b09ca060ba97ba4ab9e9840f9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0",
+                "tecnickcom/tcpdf": "^6.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.8",
+                "phpunit/phpunit": "^8.0 || ^9.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Karriere\\PdfMerge\\": "src/"
+                },
+                "classmap": [
+                    "tcpi/fpdf_tpl.php",
+                    "tcpi/tcpdi.php",
+                    "tcpi/tcpdi_parser.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes Pichler",
+                    "email": "johannes.pichler@karriere.at",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A wrapper for the TCPDF class that provides an elegant API for merging PDFs",
+            "keywords": [
+                "merge",
+                "pdf"
+            ],
+            "support": {
+                "issues": "https://github.com/karriereat/pdf-merge/issues",
+                "source": "https://github.com/karriereat/pdf-merge/tree/v2.1.0"
+            },
+            "time": "2022-12-30T10:03:09+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3306,6 +3362,56 @@
             "time": "2020-08-18T17:17:46+00:00"
         },
         {
+            "name": "rguedes/pdfmerger",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rguedes/PDFMerger.git",
+                "reference": "8e1caa1093160107bb1796ce07d9fc3d6769fc34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rguedes/PDFMerger/zipball/8e1caa1093160107bb1796ce07d9fc3d6769fc34",
+                "reference": "8e1caa1093160107bb1796ce07d9fc3d6769fc34",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PDFMerger": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Myo Kyaw Htun",
+                    "homepage": "https://github.com/myokyawhtun"
+                },
+                {
+                    "name": "Rolando Guedes",
+                    "homepage": "https://github.com/rguedes"
+                }
+            ],
+            "description": "PDFMerger for PHP",
+            "homepage": "https://github.com/rguedes/PDFMerger",
+            "keywords": [
+                "pdf",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/rguedes/PDFMerger/issues",
+                "source": "https://github.com/rguedes/PDFMerger/tree/1.0.4"
+            },
+            "abandoned": true,
+            "time": "2019-01-04T09:47:31+00:00"
+        },
+        {
             "name": "sabberworm/php-css-parser",
             "version": "8.3.1",
             "source": {
@@ -3353,6 +3459,78 @@
                 "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.3.1"
             },
             "time": "2020-06-01T09:10:00+00:00"
+        },
+        {
+            "name": "setasign/fpdi",
+            "version": "v2.3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Setasign/FPDI.git",
+                "reference": "bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05",
+                "reference": "bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zlib": "*",
+                "php": "^5.6 || ^7.0 || ^8.0"
+            },
+            "conflict": {
+                "setasign/tfpdf": "<1.31"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.7",
+                "setasign/fpdf": "~1.8",
+                "setasign/tfpdf": "1.31",
+                "squizlabs/php_codesniffer": "^3.5",
+                "tecnickcom/tcpdf": "~6.2"
+            },
+            "suggest": {
+                "setasign/fpdf": "FPDI will extend this class but as it is also possible to use TCPDF or tFPDF as an alternative. There's no fixed dependency configured."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "setasign\\Fpdi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Slabon",
+                    "email": "jan.slabon@setasign.com",
+                    "homepage": "https://www.setasign.com"
+                },
+                {
+                    "name": "Maximilian Kresse",
+                    "email": "maximilian.kresse@setasign.com",
+                    "homepage": "https://www.setasign.com"
+                }
+            ],
+            "description": "FPDI is a collection of PHP classes facilitating developers to read pages from existing PDF documents and use them as templates in FPDF. Because it is also possible to use FPDI with TCPDF, there are no fixed dependencies defined. Please see suggestions for packages which evaluates the dependencies automatically.",
+            "homepage": "https://www.setasign.com/fpdi",
+            "keywords": [
+                "fpdf",
+                "fpdi",
+                "pdf"
+            ],
+            "support": {
+                "issues": "https://github.com/Setasign/FPDI/issues",
+                "source": "https://github.com/Setasign/FPDI/tree/v2.3.7"
+            },
+            "funding": [
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/setasign/fpdi",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-02-09T10:38:43+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5599,6 +5777,78 @@
                 }
             ],
             "time": "2021-01-27T10:15:41+00:00"
+        },
+        {
+            "name": "tecnickcom/tcpdf",
+            "version": "6.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tecnickcom/TCPDF.git",
+                "reference": "e3cffc9bcbc76e89e167e9eb0bbda0cab7518459"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/e3cffc9bcbc76e89e167e9eb0bbda0cab7518459",
+                "reference": "e3cffc9bcbc76e89e167e9eb0bbda0cab7518459",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "config",
+                    "include",
+                    "tcpdf.php",
+                    "tcpdf_parser.php",
+                    "tcpdf_import.php",
+                    "tcpdf_barcodes_1d.php",
+                    "tcpdf_barcodes_2d.php",
+                    "include/tcpdf_colors.php",
+                    "include/tcpdf_filters.php",
+                    "include/tcpdf_font_data.php",
+                    "include/tcpdf_fonts.php",
+                    "include/tcpdf_images.php",
+                    "include/tcpdf_static.php",
+                    "include/barcodes/datamatrix.php",
+                    "include/barcodes/pdf417.php",
+                    "include/barcodes/qrcode.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Nicola Asuni",
+                    "email": "info@tecnick.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
+            "homepage": "http://www.tcpdf.org/",
+            "keywords": [
+                "PDFD32000-2008",
+                "TCPDF",
+                "barcodes",
+                "datamatrix",
+                "pdf",
+                "pdf417",
+                "qrcode"
+            ],
+            "support": {
+                "issues": "https://github.com/tecnickcom/TCPDF/issues",
+                "source": "https://github.com/tecnickcom/TCPDF/tree/6.6.2"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&currency_code=GBP&business=paypal@tecnick.com&item_name=donation%20for%20tcpdf%20project",
+                    "type": "custom"
+                }
+            ],
+            "time": "2022-12-17T10:28:59+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -8103,5 +8353,5 @@
         "php": "^7.2.5"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }

@@ -38,11 +38,11 @@ var ctx2 = document.getElementById("myPieChart2");
 var myPieChart2 = new Chart(ctx2, {
     type: 'pie',
     data: {
-        labels: ["Trabajo Social", "Responsiva", "Foliado"],
+        labels: ["Trabajo Social", "Responsiva", "Foliado","Solicitud"],
         datasets: [{
-            data: [sT1, sT2, sT3],
-            backgroundColor: ['#007bff', '#28a745', '#ffc107'],
-            hoverBackgroundColor: ['#8abaee', '#54d8a8', '#fdce56'],
+            data: [sT1, sT2, sT3, sT4],
+            backgroundColor: ['#007bff', '#28a745', '#ffc107','#858796'],
+            hoverBackgroundColor: ['#8abaee', '#54d8a8', '#fdce56','#dddfeb'],
             hoverBorderColor: "rgba(234, 236, 244, 1)",
         }],
     },

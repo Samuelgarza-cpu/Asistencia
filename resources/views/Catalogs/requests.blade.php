@@ -63,50 +63,16 @@
                           <input type="hidden" name="registerId" id="registerDId" value="0">
                           <div class="form-group files-div">
                             <span class="file document">
-                                <input type="file" name="document" accept="application/pdf" id="document" class="form-control" required>
+                                <input type="file" multiple name="document[]" accept="application/pdf,img/*" id="document" class="form-control" required>
+                                <!--<input type="file" name="document" accept="application/pdf" id="document" class="form-control" required>-->
                                 <div class="invalid-feedback">
-                                Favor de ingresar el documento de la solicitud
-                            </div>
+                                    Favor de ingresar el documento de la solicitud
+                                </div>
                             </span>
                             <label for="document" class="label-button">
                                 <span id="title-dept">Subir el documento de la solicitud</span>
                             </label>
                           </div>
-
-                          <div class="form-group" id="autoriza">
-                            {{-- <select id="opcion" name="opcion" class="form-control" required>
-                                  <option value="">selecciona...</option>
-                                  <option value="autorizar">Autorizar</option>
-                                  <option value="rechazar">Rechazar</option>
-                              </select> --}}
-                            <label for="active">Autoriza</label>
-                            <div class="custom-control custom-switch">
-                              <input type="checkbox" class="custom-control-input" name="active" id="active">
-                              <label class="custom-control-label" for="active">Deslice a la derecha para activar</label>
-                            </div>
-                          </div>
-
-                          {{-- <div class="form-group files-div" id="deliveryPicture"></div> --}}
-                          <div class="form-group"id="deliveryPicture" >
-                            {{-- <input type="text" class="form-control" id="price" name="price" placeholder="$ Ingrese la cantidad autorizada" required> --}}
-                          </div>
-
-
-
-
-
-
-                          {{-- <div class="form-group" id="activeMain">
-
-                            <label for="active">¿Se entrego el producto?</label>
-                            <div class="custom-control custom-switch">
-                              <input type="checkbox" class="custom-control-input" name="active" id="active">
-                              <label class="custom-control-label" for="active">Deslice a la derecha para activar</label>
-                            </div>
-                          </div>
-
-
-                          <div class="form-group files-div" id="deliveryPicture"></div> --}}
                   </div>
                   <div class="modal-footer">
                       <button type="submit" class="btn btn-primary" id="confirmation">Confirmar</button>
@@ -131,25 +97,26 @@
                       <form method="POST" action="{{Request::url()}}" id="frm-addDeliveryPicture" class="needs-validation" novalidate enctype="multipart/form-data">
                         @csrf
                           <input type="hidden" name="action" id="action6" value="addDeliveryPicture"/>
-                          <input type="hidden" name="registerId" id="registerDId" value="0">
+                          <input type="hidden" name="registerId" id="registerIId" value="0">
                           <div class="form-group files-div">
                             <span class="file document">
-                                <input type="file" name="addDelivery" accept="application/pdf" id="addDelivery" class="form-control" required>
-                                <div class="invalid-feedback">
-                                Favor de ingresar la imagen de entrega
-                            </div>
+                              <input hidden type="file" name="addDelivery" accept="image/*" id="addDelivery" class="form-control" required>
+                              <!--<input type="file" multiple name="document[]" accept="application/pdf,img/*" id="document" class="form-control" required>-->
+                              <div class="invalid-feedback">
+                                 Favor de ingresar la imagen de entrega
+                              </div>
                             </span>
                             <label for="addDelivery" class="label-button">
                                 <span id="title-image">Subir la imagen de entrega</span>
                             </label>
                           </div>
-                          {{-- <div class="form-group" id="activeMain">
+                          <!--{-- <div class="form-group" id="activeMain">
                             <label for="active1">¿Se entrego el producto?</label>
                             <div class="custom-control custom-switch">
                               <input type="checkbox" class="custom-control-input" name="active1" id="active1" >
                               <label class="custom-control-label" for="active1">Deslice a la derecha para activar</label>
                             </div>
-                          </div> --}}
+                          </div> --}}-->
                   </div>
                   <div class="modal-footer">
                       <button type="submit" class="btn btn-primary" id="confirmation">Confirmar</button>
@@ -170,8 +137,12 @@
                       <h4 id="title-modal">Solicitud</h4>
                       <button type="button" class="close" data-dismiss="modal-confirmation" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   </div>
-                  <div class="modal-body" id="mensaje-modal-body">
-                    <embed src="" id="embed" type="application/pdf" width="100%" height="600px" />
+                  <div class="modal-body">
+                    <label>PRODUCTO</label>
+                    <button type="submit" class="btn btn-primary" id="confirmation">Confirmar</button>
+                      <!--<embed src= 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' id="embedx" type="application/pdf" width="30%" height="600px"/>-->
+                      <embed src= "/document-0R4CO2FNO351.pdf" id="embedx" type="application/pdf"/>
+                      <!--<embed src="" id="embedx" type="application/pdf"/> -->
                   </div>
                   <div class="modal-footer">
                       <button type="submit" class="btn btn-primary" id="confirmation">Confirmar</button>
@@ -186,5 +157,6 @@
 @endsection
 
 @section('jsForm')
+  <!-- <script src="https://cdn.jsdelivr.net/npm/pdf-merger-js@3.0.5/"></script>-->
   <script src="../assets/js/Request.js"></script>
 @endsection

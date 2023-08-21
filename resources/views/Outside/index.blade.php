@@ -45,7 +45,7 @@
                             <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Ingresa tu contraseña">
                             @endif
                           </div>
-                          <div class="form-group">
+                          {{-- <div class="form-group">
                             <div class="custom-control custom-checkbox small">
                                 @if((isset($CName) || isset($CPass)) && !(($CName) == null || $CPass==null) )
                                 <input type="checkbox" class="custom-control-input" id="customCheck" name='customCheck' checked>
@@ -54,21 +54,22 @@
                               @endif
                               <label class="custom-control-label" for="customCheck">Recordarme</label>
                             </div>
-                          </div>
+                          </div> --}}
                           <button type="submit" class="btn btn-primary btn-user btn-block">
                             Login
                           </button>
                           @if(session('success'))
-                          {{session('success')}}
+                             {{session('success')}}
                           @endif
                         </form>
                         <hr>
-                        <div class="text-center">
+                        {{--<div class="text-center">
                           <a class="small" href="/reset">¿Olvidaste tu contraseña?</a>
-                        </div>
+                        </div>--}}
                       </div>
                     </div>
-                    <div class="col-lg-6 d-none d-lg-block"><img class="main-logo-image" src="../assets/img/logotipo.png"></div>
+                    <div class="col-lg-6 d-none d-lg-block" align="center"><img class="redimension" src="../assets/img/Logo-GP2225.png"></div>
+                    <!-- <div class="col-lg-6 d-none d-lg-block" align="center"><img class="redimension" src="../assets/img/Logo_Dif.png"></div>-->
                   </div>
                 </div>
               </div>

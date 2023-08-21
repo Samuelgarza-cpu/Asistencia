@@ -66,7 +66,7 @@ $(function() {
         var forms = document.getElementsByClassName('needs-validation');
         var validation = Array.prototype.filter.call(forms, function(form) {
             form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
+                if (form.checkValidity() == false) {
                     event.preventDefault();
                     event.stopPropagation();
                 }
@@ -101,7 +101,7 @@ function refresh($url) {
                     locale: "es-Es",
                     data: response
                 });
-            }
+          }
         })
         .fail(function(response) {
             alert(response.responseJSON);

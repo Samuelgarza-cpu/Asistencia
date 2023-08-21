@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 use PDF;
 use DateTime;
+use Illuminate\Database\Seeder;
 
 use App\Charts\Reports;
 use App\Models\Status;
@@ -1029,9 +1030,9 @@ class ReportsController extends Controller
                     $count = 1;
 
                     if($area != null && $area != "")
-                        $requests = Requisition::where('date', '>=', $dateFrom)->where('date', '<=', $dateUntil)->where('area', '=', $area)->get();
+                        $requests = Requisition::where('date', '>=', $dateFrom)->where('date', '<=', $dateUntil)->where('area', '=', $area)->where('users_id','=', session ('user_id'))->get();
                     else
-                        $requests = Requisition::where('date', '>=', $dateFrom)->where('date', '<=', $dateUntil)->get();
+                        $requests = Requisition::where('date', '>=', $dateFrom)->where('date', '<=', $dateUntil)->where('users_id','=', session ('user_id'))->get();
                     if($type != null && $type != "0")
                         $requests =  $requests->where('type', '=', $type);
 
@@ -1095,10 +1096,13 @@ class ReportsController extends Controller
                             }
                             $value->typerequest = $value->type;
                         }
-
+                        
                         $status = Status::find($value->status_id);
                         if ($status !=  null)
-                            $value->status = $status->name;
+                            if (session('department_institute_id') <> 4 && ($status->id != 7))
+                               $value->status = 'Activa';
+                            else
+                               $value->status = $status->name;
 
                         $value->number = $count;
                         $count++;
@@ -1115,20 +1119,24 @@ class ReportsController extends Controller
                     }
 
                     $countarray = count($dataInformation) - 1 ;
-
+                    
                     $title1 = 'Reporte de Solicitudes';
                     $title2 = 'del '.$from->format('d-m-Y').' al '.$until->format('d-m-Y');
                     $images_path = public_path('assets/img/');
                     $data = array(
+                    
                         'title1' => $title1,
                         'title2' => $title2,
                         'dataInformation' => $dataInformation,
                         'images_path' => $images_path,
                         'count'=>$countarray
                     );
-
-                    $pdf = PDF::loadView('PDF.reportRequests',  $data);
-                    $pdf->setPaper('A4', 'portrait');
+                    //DB::table('Datos')->insert([
+                    //]);               
+                    
+                    
+                    $pdf = \PDF::loadView('PDF.reportRequests',  $data);
+                    $pdf->setPaper('letter', 'landscape');
                     return $pdf->stream('pdf_file.pdf');
                 }
                 break;
@@ -1153,7 +1161,7 @@ class ReportsController extends Controller
                     if($area != null && $area != "")
                         $requests = Requisition::where('date', '>=', $dateFrom)->where('date', '<=', $dateUntil)->where('area', '=', $area)->get();
                     else
-                        $requests = Requisition::where('date', '>=', $dateFrom)->where('date', '<=', $dateUntil)->get();
+                        $requests = Requisition::where('date', '>=', $dateFrom)->where('date', '<=', $dateUntil)->where('users_id','=', session ('user_id'))->get();
                     if($type != null && $type != "0")
                         $requests =  $requests->where('type', '=', $type);
 
@@ -1220,7 +1228,13 @@ class ReportsController extends Controller
 
                         $status = Status::find($value->status_id);
                         if ($status !=  null)
-                            $value->status = $status->name;
+                            if (session('department_institute_id') <> 4 && ($status->id != 7))
+                               $value->status = 'Activa';
+                            else
+                               $value->status = $status->name;
+
+                         // if ($status !=  null)
+                         //    $value->status = $status->name;
 
                         $value->number = $count;
                         $count++;
@@ -1230,15 +1244,17 @@ class ReportsController extends Controller
                     if ($products_id != null && $products_id != 0)
                          $requests= $requests->where( 'product_id', '=', $products_id);
                 }
-                array_push($dataInformation, ['#','Folio', 'Tipo','Fecha','Beneficiario','CURP','Dirección','Teléfono','Apoyo','Cantidad','Área']);
+
+                array_push($dataInformation, ['#','Folio', 'Tipo','Fecha','Beneficiario','CURP','Dirección','Teléfono','Apoyo','Cantidad','Área','Estatus']);
                 foreach($requests as $element){
-                    array_push($dataInformation, [$element->number, $element->folio, $element->typerequest, $element->date, $element->personalData, $element->curpPetitioner, $element->address, $element->beneficiariesNumber, $element->product, $element->qty, $element->area]);
+                    array_push($dataInformation, [$element->number, $element->folio, $element->typerequest, $element->date, $element->personalData, $element->curpPetitioner, $element->address, $element->beneficiariesNumber, $element->product, $element->qty, $element->area, $element->status]);
                 }
+
                 $file = 'RepSolicitudes '.$from->format('Ymd').' - '.$until->format('Ymd').'.xlsx';
                 $userExample = new UsersExport([$dataInformation]);
                 return Excel::download($userExample, $file);
-
                 break;
+
             default:
                 break;
         }
